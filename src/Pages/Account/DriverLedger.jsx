@@ -231,8 +231,8 @@ const DriverLedger = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-white md:p-4">
-      <div className="overflow-hidden overflow-x-auto max-w-5xl mx-auto bg-gradient-to-br from-gray-100 to-white">
+    <div className="border border-gray-200 md:p-4 rounded-xl">
+      <div className="overflow-hidden overflow-x-auto max-w-5xl mx-auto ">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-bold text-[#11375B] capitalize flex items-center gap-3">

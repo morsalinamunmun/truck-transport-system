@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { BiTrip } from "react-icons/bi";
 
 const TripReport = () => {
   const [trips, setTrips] = useState([]);
@@ -122,12 +123,15 @@ const TripReport = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-white shadow rounded">
-      <h2 className="text-2xl font-bold text-[#11375B] mb-5">Monthly Trip Report</h2>
+    <div className="p-4 max-w-7xl mx-auto bg-white shadow rounded-xl border border-gray-200">
+      <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
+                      <BiTrip className="text-lg" />
+                      Monthly Trip Report
+                    </h2>
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between my-5">
         
-        <div className="flex gap-2">
+        <div className="flex flex-wrap md:flex-row gap-3">
           <button
                            onClick={exportToExcel}
                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
@@ -163,7 +167,7 @@ const TripReport = () => {
 
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table id="trip-table" className="min-w-full text-sm text-left">
-          <thead className="bg-[#11375B] text-white capitalize text-sm">
+          <thead className="bg-[#11375B] text-white capitalize text-xs">
             <tr className="px-2 py-3">
               <th className="px-2 py-3">SL</th>
               <th className="px-2 py-3">Date</th>
@@ -178,7 +182,7 @@ const TripReport = () => {
           </thead>
           <tbody>
               {
-                currentVehiclesReport.length === 0 ? (
+                currentVehiclesReport.length === 0  ? (
     <tr>
       <td colSpan="8" className="text-center py-10 text-gray-500 italic">
         <div className="flex flex-col items-center">
@@ -201,7 +205,7 @@ const TripReport = () => {
     </tr>
   )  
             :(currentVehiclesReport.map((t, i) => (
-              <tr key={i} className="">
+              <tr key={i} className="text-gray-700">
                 <td className="px-2 py-3">{i + 1}</td>
                 <td className="px-2 py-3">{t.date}</td>
                 <td className="px-2 py-3">{t.vehicle_no}</td>
@@ -224,7 +228,11 @@ const TripReport = () => {
         </table>
       </div>
       {/* pagination */}
-            <div className="mt-10 flex justify-center">
+            {
+              currentVehiclesReport.length === 0 ? (
+                ""
+              )
+            :(<div className="mt-10 flex justify-center">
               <div className="space-x-2 flex items-center">
                 <button
                   onClick={handlePrevPage}
@@ -260,7 +268,7 @@ const TripReport = () => {
                   <GrFormNext />
                 </button>
               </div>
-            </div>
+            </div>)}
     </div>
   );
 };

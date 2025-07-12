@@ -165,8 +165,8 @@ const DailyIncome = () => {
   };
 
   return (
-    <main className="md:p-6">
-      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-8 border border-gray-200">
+    <main className="md:p-4">
+      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
@@ -176,7 +176,7 @@ const DailyIncome = () => {
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
               onClick={() => setShowFilter((prev) => !prev)}
-              className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="text-primary border border-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
             >
               <FaFilter /> Filter
             </button>
@@ -185,7 +185,7 @@ const DailyIncome = () => {
 
         {/* Export & Search */}
         <div className="md:flex justify-between items-center">
-          <div className="flex gap-1 md:gap-3 text-primary font-semibold rounded-md">
+          <div className="flex flex-wrap md:flex-row gap-1 md:gap-3 text-primary font-semibold rounded-md">
             <CSVLink
               data={csvData}
               headers={headers}
@@ -255,12 +255,20 @@ const DailyIncome = () => {
                 className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
               />
             </div>
+             <div className="mt-3 md:mt-0 flex gap-2">
+                                      <button
+                                        onClick={() => setCurrentPage(1)}
+                                        className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                                      >
+                                        <FaFilter /> Filter
+                                      </button>
+                                    </div>
           </div>
         )}
         {/* Table */}
         <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white capitalize text-sm">
+            <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Date</th>
@@ -275,7 +283,7 @@ const DailyIncome = () => {
                 <th className="px-4 py-3 action_column">Action</th>
               </tr>
             </thead>
-            <tbody className="text-[#11375B] font-semibold bg-gray-100">
+            <tbody className="text-gray-700">
               {
                 currentTrips.length === 0 ? (
     <tr>
@@ -349,7 +357,11 @@ const DailyIncome = () => {
           </table>
         </div>
         {/* pagination */}
-        <div className="mt-10 flex justify-center">
+        {
+          currentTrips.length === 0 ? (
+            ""
+          )
+        :(<div className="mt-10 flex justify-center">
           <div className="space-x-2 flex items-center">
             <button
               onClick={handlePrevPage}
@@ -385,7 +397,7 @@ const DailyIncome = () => {
               <GrFormNext />
             </button>
           </div>
-        </div>
+        </div>)}
       </div>
     </main>
   );

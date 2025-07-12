@@ -295,9 +295,9 @@ const handlePrint = useReactToPrint({
 
   console.log(trip, 'triplist')
   return (
-    <main className=" md:p-2">
+    <main className=" md:p-4">
       <Toaster />
-      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-md p-2 py-10 md:p-2 border border-gray-200">
+      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-md p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
@@ -378,6 +378,14 @@ const handlePrint = useReactToPrint({
                 className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
               />
             </div>
+            <div className="mt-3 md:mt-0 flex gap-2">
+                          <button
+                            onClick={() => setCurrentPage(1)}
+                            className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                          >
+                            <FaFilter /> Filter
+                          </button>
+                        </div>
           </div>
         )}
 

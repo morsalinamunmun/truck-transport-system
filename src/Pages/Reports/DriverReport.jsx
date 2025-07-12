@@ -117,6 +117,8 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { CgDrive } from "react-icons/cg";
+import { User } from "lucide-react";
 
 const DriverReport = () => {
   const [drivers, setDrivers] = useState([]);
@@ -142,18 +144,36 @@ const DriverReport = () => {
   });
 
   // Aggregate per driver
-  const driverStats = drivers.map(driver => {
+  // const driverStats = drivers.map(driver => {
+  //   const dt = tripsFiltered.filter(t => t.driver_name === driver.name);
+  //   const totalTrips = dt.length;
+  //   const totalRent = dt.reduce((sum, t) => sum + Number(t.total_rent||0), 0);
+  //   const totalExp = dt.reduce((sum, t) => sum + Number(t.total_exp||0), 0);
+  //   return {
+  //     name: driver.name,
+  //     mobile: driver.mobile,
+  //     totalTrips, totalRent, totalExp,
+  //     totalProfit: totalRent - totalExp
+  //   };
+  // });
+
+  const driverStats = drivers
+  .map(driver => {
     const dt = tripsFiltered.filter(t => t.driver_name === driver.name);
     const totalTrips = dt.length;
-    const totalRent = dt.reduce((sum, t) => sum + Number(t.total_rent||0), 0);
-    const totalExp = dt.reduce((sum, t) => sum + Number(t.total_exp||0), 0);
+    const totalRent = dt.reduce((sum, t) => sum + Number(t.total_rent || 0), 0);
+    const totalExp = dt.reduce((sum, t) => sum + Number(t.total_exp || 0), 0);
     return {
       name: driver.name,
       mobile: driver.mobile,
-      totalTrips, totalRent, totalExp,
+      totalTrips,
+      totalRent,
+      totalExp,
       totalProfit: totalRent - totalExp
     };
-  });
+  })
+  .filter(driver => driver.totalTrips > 0 || driver.totalRent > 0 || driver.totalExp > 0);
+
 
   const exportExcel = () => {
     const data = driverStats.map((d,i) => ({
@@ -208,11 +228,14 @@ const DriverReport = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-white shadow rounded">
-      <h2 className="text-2xl font-bold text-[#11375B] mb-5">Driver Performance Report</h2>
+    <div className="p-4 max-w-7xl mx-auto bg-white shadow rounded-lg border border-gray-200">
+      <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
+                <User className="text-lg" />
+                river Performance Report
+              </h2>
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex gap-2">
+      <div className="flex items-center justify-between my-6 ">
+        <div className="flex flex-wrap md:flex-row gap-3">
           <button
               onClick={exportExcel}
               className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
@@ -242,7 +265,7 @@ const DriverReport = () => {
 
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table id="driver-report" className="min-w-full text-sm text-left">
-          <thead className="bg-[#11375B] text-white capitalize text-sm">
+          <thead className="bg-[#11375B] text-white capitalize text-xs">
             <tr><th className="px-2 py-3">SL</th><th className="px-2 py-3">Driver</th><th className="px-2 py-3">Mobile</th><th className="px-2 py-3">Trips</th><th className="px-2 py-3">Rent</th><th className="px-2 py-3">Expense</th><th className="px-2 py-3">Profit</th></tr>
           </thead>
           <tbody>
@@ -285,7 +308,11 @@ const DriverReport = () => {
         </table>
       </div>
       {/* pagination */}
-            <div className="mt-10 flex justify-center">
+            {
+              currentDriverReport.length === 0 ? (
+                ""
+              )
+            :(<div className="mt-10 flex justify-center">
               <div className="space-x-2 flex items-center">
                 <button
                   onClick={handlePrevPage}
@@ -321,7 +348,7 @@ const DriverReport = () => {
                   <GrFormNext />
                 </button>
               </div>
-            </div>
+            </div>)}
     </div>
   );
 };

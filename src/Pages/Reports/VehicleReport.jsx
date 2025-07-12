@@ -5,6 +5,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { Truck } from "lucide-react";
 
 const VehicleReport = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -82,10 +83,13 @@ const VehicleReport = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-white shadow rounded">
-      <h2 className="text-2xl font-bold text-[#11375B] mb-5">Vehicle Summary Report</h2>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex gap-2">
+    <div className="p-4 max-w-7xl mx-auto bg-white shadow rounded-xl border border-gray-200">
+      <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
+                <Truck className="text-lg" />
+                Vehicle Summary Report
+              </h2>
+      <div className="flex items-center justify-between my-5">
+        <div className="flex flex-wrap md:flex-row gap-3">
            <button
               onClick={exportExcel}
               className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
@@ -115,7 +119,7 @@ const VehicleReport = () => {
       </div>
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table id="vehicle-report" className="min-w-full text-sm text-left">
-          <thead className="bg-[#11375B] text-white capitalize text-sm">
+          <thead className="bg-[#11375B] text-white capitalize text-xs">
             <tr className="px-2 py-3"><th>SL</th><th className="px-2 py-3">Vehicle No</th><th className="px-2 py-3">Trips</th><th className="px-2 py-3">Rent</th><th className="px-2 py-3">Expense</th><th className="px-2 py-3">Profit</th></tr></thead>
           <tbody>
             {

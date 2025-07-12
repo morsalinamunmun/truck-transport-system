@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import { SlCalender } from "react-icons/sl";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
 const MonthlyStatement = () => {
   const [data, setData] = useState([]);
@@ -83,9 +84,27 @@ const MonthlyStatement = () => {
   const getTotal = (key) =>
     data.reduce((acc, cur) => acc + parseFloat(cur[key] || 0), 0);
 
+  // pagination
+  const [currentPage, setCurrentPage] = useState([1])
+  const itemsPerPage = 10;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCalculationData = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage((currentPage) => currentPage - 1);
+  };
+  const handleNextPage = () => {
+    if (currentPage < totalPages)
+      setCurrentPage((currentPage) => currentPage + 1);
+  };
+  const handlePageClick = (number) => {
+    setCurrentPage(number);
+  };
+
   return (
     <div className="p-4">
-      <div className="bg-white p-4 shadow rounded-md">
+      <div className="bg-white md:p-4 shadow rounded-lg">
         <h2 className="text-xl font-bold text-primary flex items-center gap-2">
           <SlCalender className="text-lg" />
           Monthly Statement
@@ -94,9 +113,9 @@ const MonthlyStatement = () => {
         {loading ? (
           <p className="mt-4 text-center text-gray-600">Loading...</p>
         ) : (
-          <div className="overflow-x-auto mt-4">
-            <table className="min-w-full border border-gray-200 text-sm  rounded-xl">
-              <thead className="bg-primary text-white rounded-xl">
+          <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
+            <table className="min-w-full text-sm text-left">
+              <thead className="bg-primary text-white capitalize text-xs">
                 <tr>
                   <th className="px-3 py-2 border">#</th>
                   <th className="px-3 py-2 border">Month</th>
@@ -109,7 +128,7 @@ const MonthlyStatement = () => {
               </thead>
               <tbody>
                 {
-                    data.length === 0 ? (
+                    currentCalculationData.length === 0 ? (
     <tr>
       <td colSpan="8" className="text-center py-10 text-gray-500 italic">
         <div className="flex flex-col items-center">
@@ -131,10 +150,10 @@ const MonthlyStatement = () => {
       </td>
     </tr>
   ) 
-                :(data.map((item) => (
+                :(currentCalculationData.map((item) => (
                   <tr
                     key={item.id}
-                    className="border-t hover:bg-gray-100 transition-all"
+                    className="border-t hover:bg-gray-50 transition-all"
                   >
                     <td className="px-3 py-2  text-center">{item.id}</td>
                     <td className="px-3 py-2 ">{item.month}</td>
@@ -209,6 +228,49 @@ const MonthlyStatement = () => {
             </table>
           </div>
         )}
+
+         {/* pagination */}
+                {
+                  currentCalculationData.length === 0 ? (
+                    ""
+                  )
+                :(<div className="mt-10 flex justify-center">
+                  <div className="space-x-2 flex items-center">
+                    <button
+                      onClick={handlePrevPage}
+                      className={`p-2 ${
+                        currentPage === 1 ? "bg-gray-300" : "bg-primary text-white"
+                      } rounded-sm`}
+                      disabled={currentPage === 1}
+                    >
+                      <GrFormPrevious/>
+                    </button>
+                    {[...Array(totalPages).keys()].map((number) => (
+                      <button
+                        key={number + 1}
+                        onClick={() => handlePageClick(number + 1)}
+                        className={`px-3 py-1 rounded-sm ${
+                          currentPage === number + 1
+                            ? "bg-primary text-white hover:bg-gray-200 hover:text-primary transition-all duration-300 cursor-pointer"
+                            : "bg-gray-200 hover:bg-primary hover:text-white transition-all cursor-pointer"
+                        }`}
+                      >
+                        {number + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={handleNextPage}
+                      className={`p-2 ${
+                        currentPage === totalPages
+                          ? "bg-gray-300"
+                          : "bg-primary text-white"
+                      } rounded-sm`}
+                      disabled={currentPage === totalPages}
+                    >
+                      <GrFormNext />
+                    </button>
+                  </div>
+                </div>)}
       </div>
     </div>
   );

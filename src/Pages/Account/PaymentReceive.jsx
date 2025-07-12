@@ -27,36 +27,36 @@ const PaymentReceive = () => {
     <div className=" md:p-4">
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-6 border border-gray-200">
         <div className="md:flex items-center justify-between mb-6">
-          <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
-            <MdOutlineAirplaneTicket className="text-[#11375B] text-2xl" />
-            payment List
-          </h1>
+          <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
+                          <MdOutlineAirplaneTicket className="text-[#11375B] text-2xl" />
+                          Payment Receive
+                        </h2>
           <div className="mt-3 md:mt-0 flex gap-2">
             <Link to="/tramessy/account/PaymentReceiveForm">
-              <button className="bg-gradient-to-r from-[#11375B] to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
-                <FaPlus /> payment
+              <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
+                <FaPlus /> Add
               </button>
             </Link>
           </div>
         </div>
         <div className="mt-5 overflow-x-auto rounded-xl">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white capitalize text-sm">
+            <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="px-2 py-3">SL.</th>
                 <th className="px-2 py-3">Date</th>
-                <th className="px-2 py-3">CustomerName</th>
-                <th className="px-2 py-3">BranchName</th>
+                <th className="px-2 py-3">Customer Name</th>
+                <th className="px-2 py-3">Branch Name</th>
                 <th className="px-2 py-3">BillRef</th>
                 <th className="px-2 py-3">Amount</th>
-                <th className="px-2 py-3">CashType</th>
+                <th className="px-2 py-3">Cash Type</th>
                 <th className="px-2 py-3">Note</th>
-                <th className="px-2 py-3">CreatedBy</th>
+                <th className="px-2 py-3">Created By</th>
                 <th className="px-2 py-3">Status</th>
                 <th className="px-2 py-3">Action</th>
               </tr>
             </thead>
-            <tbody className="text-[#11375B] font-semibold bg-gray-100">
+            <tbody className="text-gray-700">
               {
                 payment.length === 0 ? (
     <tr>

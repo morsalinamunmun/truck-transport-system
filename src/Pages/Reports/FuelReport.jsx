@@ -127,6 +127,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { User2Icon } from "lucide-react";
 
 const FuelReport = () => {
   const [fuel, setFuel] = useState([]);
@@ -194,11 +195,14 @@ const FuelReport = () => {
   if (loading) return <p className="text-center mt-10">Loading Fuel Report...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-5 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-[#11375B]">Fuel Usage Report by Driver</h2>
+    <div className="max-w-6xl mx-auto p-5 bg-white shadow-md rounded-xl border border-gray-200">
+      <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
+                <User2Icon className="text-lg" />
+                Fuel Usage Report by Driver
+              </h2>
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table className="min-w-full border border-gray-300 text-sm text-left">
-          <thead className="bg-[#11375B] text-white capitalize text-sm">
+          <thead className="bg-[#11375B] text-white capitalize text-xs">
             <tr>
               <th className="px-3 py-2">SL</th>
               <th className="px-3 py-2">Driver Name</th>

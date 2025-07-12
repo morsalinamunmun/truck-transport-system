@@ -236,7 +236,7 @@ const CarList = () => {
   return (
     <main className=" md:p-4">
       <Toaster />
-      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-6 border border-gray-200">
+      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
@@ -384,7 +384,9 @@ const CarList = () => {
           </table>
         </div>
          {/* pagination */}
-      <div className="mt-10 flex justify-center">
+      {
+        currentVehicles.length === 0 ? ("")
+      :(<div className="mt-10 flex justify-center">
         <div className="space-x-2 flex items-center">
           <button
             onClick={handlePrevPage}
@@ -420,7 +422,7 @@ const CarList = () => {
             <GrFormNext />
           </button>
         </div>
-      </div>
+      </div>)}
       </div>
       {/* Delete modal */}
       <div className="flex justify-center items-center">

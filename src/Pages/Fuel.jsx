@@ -279,7 +279,7 @@ const Fuel = () => {
         {/* Conditional Filter Section */}
         {showFilter && (
           <div className="md:flex gap-5 border border-gray-300 rounded-md p-5 my-5 transition-all duration-300 pb-5">
-            <div className="relative md:w-[40%]">
+            <div className="relative w-full">
               <input
                 type="date"
                 value={startDate}
@@ -289,7 +289,7 @@ const Fuel = () => {
               />
             </div>
 
-            <div className="relative md:w-[40%]">
+            <div className="relative w-full">
               <input
                 type="date"
                 value={endDate}

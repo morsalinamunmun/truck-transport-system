@@ -189,9 +189,9 @@ const Maintenance = () => {
     setCurrentPage(number);
   };
   return (
-    <main className="md:p-6">
+    <main className="md:p-4">
       <Toaster />
-      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-8 border border-gray-200">
+      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
@@ -214,7 +214,7 @@ const Maintenance = () => {
         </div>
         {/* Export */}
         <div className="md:flex justify-between mb-4">
-          <div className="flex gap-1 md:gap-3 flex-wrap">
+          <div className="flex flex-wrap md:flex-row gap-1 md:gap-3 ">
             <CSVLink
               data={csvData}
               headers={headers}
@@ -284,6 +284,14 @@ const Maintenance = () => {
                 className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
               />
             </div>
+            <div className="mt-3 md:mt-0 flex gap-2">
+                          <button
+                            onClick={() => setCurrentPage(1)}
+                            className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                          >
+                            <FaFilter /> Filter
+                          </button>
+                        </div>
           </div>
         )}
         {/* Table */}
