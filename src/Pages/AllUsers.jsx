@@ -176,7 +176,7 @@ const AllUsers = () => {
           </h1>
           <div className="mt-3 md:mt-0">
             <Link to="/tramessy/AddUserForm">
-              <button className="bg-gradient-to-r from-[#11375B] to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
+              <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
                 <FaPlus /> User
               </button>
             </Link>
@@ -184,7 +184,7 @@ const AllUsers = () => {
         </div>
         {/* Export */}
         <div className="md:flex justify-between items-center">
-          <div className="flex gap-1 md:gap-3 text-primary font-semibold rounded-md">
+          <div className="flex flex-wrap md:flex-row gap-1 md:gap-3 text-primary font-semibold rounded-md">
            <CSVLink
                          data={csvData}
                          headers={headers}
@@ -234,7 +234,7 @@ const AllUsers = () => {
         {/* Table */}
         <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white capitalize text-sm">
+            <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Name</th>
@@ -245,8 +245,31 @@ const AllUsers = () => {
                 <th className="px-4 py-3 action_column">Action</th>
               </tr>
             </thead>
-            <tbody className="text-[#11375B] font-semibold bg-gray-100">
-              {currentUsers?.map((user, index) => (
+            <tbody className="text-gray-700">
+              {
+                 currentUsers.length === 0 ? (
+    <tr>
+      <td colSpan="8" className="text-center py-10 text-gray-500 italic">
+        <div className="flex flex-col items-center">
+          <svg
+            className="w-12 h-12 text-gray-300 mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.75 9.75L14.25 14.25M9.75 14.25L14.25 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          No vehicle data found.
+        </div>
+      </td>
+    </tr>
+  )  
+              :(currentUsers?.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50 transition-all">
                   <td className="px-4 py-4 font-bold">
                     {indexOfFirstItem + index + 1}
@@ -275,13 +298,17 @@ const AllUsers = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )))
+              }
             </tbody>
           </table>
         </div>
-      </div>
-      {/* Pagination */}
-      <div className="mt-10 flex justify-center">
+        {/* Pagination */}
+      {
+        currentUsers.length === 0 ? (
+          ""
+        )
+      :(<div className="mt-10 flex justify-center">
         <div className="space-x-2 flex items-center">
           <button
             onClick={handlePrevPage}
@@ -317,6 +344,7 @@ const AllUsers = () => {
             <GrFormNext />
           </button>
         </div>
+      </div>)}
       </div>
       {/* Delete Modal */}
       <div className="flex justify-center items-center">

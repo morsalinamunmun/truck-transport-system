@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFilter } from "react-icons/fa6";
+import { FaFileExcel, FaFilePdf, FaFilter, FaPrint } from "react-icons/fa6";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import axios from "axios";
@@ -51,8 +51,8 @@ const YamahaLedger = () => {
   }, 0);
   if (loading) return <p className="text-center mt-16">Loading Yamaha...</p>;
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-white md:p-4">
-      <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-gradient-to-br from-gray-100 to-white">
+    <div className=" md:p-4">
+      <div className="w-xs md:w-full overflow-hidden overflow-x-auto">
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
             Yamaha Ledger
@@ -60,7 +60,7 @@ const YamahaLedger = () => {
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
               onClick={() => setShowFilter((prev) => !prev)}
-              className="bg-gradient-to-r from-[#11375B] to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="border border-primary text-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
             >
               <FaFilter /> Filter
             </button>
@@ -69,15 +69,29 @@ const YamahaLedger = () => {
         {/* export */}
         <div className="md:flex justify-between items-center">
           <div className="flex gap-1 md:gap-3 text-primary font-semibold rounded-md">
-            <button className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer">
-              Excel
-            </button>
-            <button className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer">
-              PDF
-            </button>
-            <button className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer">
-              Print
-            </button>
+             <button
+                            // onClick={exportToExcel}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFileExcel className="" />
+                            Excel
+                          </button>
+                        
+                          <button
+                            // onClick={exportToPDF}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-amber-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFilePdf className="" />
+                            PDF
+                          </button>
+                        
+                          <button
+                            // onClick={handlePrint}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-blue-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaPrint className="" />
+                            Print
+                          </button>
           </div>
         </div>
 

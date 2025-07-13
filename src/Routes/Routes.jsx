@@ -87,6 +87,7 @@ import UpdateVendorForm from "../Pages/UpdateVendorForm";
 import UpdateLeaveForm from "../Pages/HR/UpdateLeaveForm";
 import MonthlyStatement from "../Pages/MontlyStatement";
 import VehicleReport from "../Pages/Reports/VehicleReport";
+import Bill from "../Pages/Billing/Bill";
 export const router = createBrowserRouter([
   {
     path: "/tramessy",
@@ -592,6 +593,10 @@ export const router = createBrowserRouter([
         element: <TripReport />,
       },
       // billing
+      {
+        path: "/tramessy/billing",
+        element: <Bill />,
+      },
       {
         path: "/tramessy/billing/Yamaha",
         element: <Yamaha />,

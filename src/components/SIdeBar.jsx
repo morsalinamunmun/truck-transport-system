@@ -70,7 +70,7 @@ const Sidebar = () => {
 
         {/* Navigation */}
         <div className="mt-3 px-2">
-          <ul className="space-y-3">
+          <ul className="space-y-3 list-none">
             {/* Dashboard */}
             <li
               className={`py-3 px-2 rounded-sm cursor-pointer ${
@@ -116,7 +116,7 @@ const Sidebar = () => {
                       openMenu.fleet ? "max-h-[200px]" : "max-h-0"
                     }`}
                   >
-                    <ul className="px-2 text-sm mt-2">
+                    <ul className="px-2 text-sm mt-2 list-none">
                       <li>
                         <Link
                           to="/tramessy/CarList"
@@ -216,7 +216,7 @@ const Sidebar = () => {
                   </div>
                 </li>
                 {/* Vendor management */}
-                <li className="text-primary font-medium rounded-sm">
+                <li className="text-primary font-medium rounded-sm list-none">
                   <div
                     onClick={() => toggleMenu("vendor")}
                     className="flex justify-between items-center py-3 px-2 cursor-pointer hover:bg-primary hover:text-white hover:rounded-sm duration-300"
@@ -239,7 +239,7 @@ const Sidebar = () => {
                       openMenu.vendor ? "max-h-[100px]" : "max-h-0"
                     }`}
                   >
-                    <ul className="space-y-3 px-2 text-sm mt-2">
+                    <ul className="space-y-3 px-2 text-sm mt-2 list-none">
                       <li>
                         <Link
                           to="/tramessy/VendorList"
@@ -286,7 +286,7 @@ const Sidebar = () => {
                       openMenu.rentVehicle ? "max-h-[100px]" : "max-h-0"
                     }`}
                   >
-                    <ul className="space-y-3 px-2 text-sm mt-2">
+                    <ul className="space-y-3 px-2 text-sm mt-2 list-none">
                       <li>
                         <Link
                           to="/tramessy/RentList"
@@ -1272,7 +1272,7 @@ const Sidebar = () => {
                   </div>
                 </li>
                 {/* Billing Control */}
-                {/* <li className="text-primary font-medium rounded-sm">
+                <li className="text-primary font-medium rounded-sm">
                   <div
                     onClick={() => toggleMenu("billing")}
                     className="flex justify-between items-center py-3 px-2 cursor-pointer hover:bg-primary hover:text-white hover:rounded-sm duration-300"
@@ -1294,7 +1294,7 @@ const Sidebar = () => {
                       openMenu.billing ? "max-h-[300px]" : "max-h-0"
                     }`}
                   >
-                    <ul className="space-y-3 px-2 text-sm mt-2">
+                    {/* <ul className="space-y-3 px-2 text-sm mt-2">
                       <li>
                         <Link
                           to="/tramessy/billing/Yamaha"
@@ -1462,9 +1462,28 @@ const Sidebar = () => {
                           <span>Meghdona</span>
                         </Link>
                       </li>
-                    </ul>
+                    </ul> */}
+                    <li>
+                        <Link
+                          to="/tramessy/billing"
+                          className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
+                            isActive("/tramessy/billing")
+                              ? "text-white bg-primary"
+                              : "text-gray-500 hover:text-primary"
+                          }`}
+                        >
+                          <div
+                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
+                              isActive("/tramessy/billing")
+                                ? "bg-white"
+                                : "bg-primary"
+                            }`}
+                          ></div>
+                          <span>Bill</span>
+                        </Link>
+                      </li>
                   </div>
-                </li> */}
+                </li>
                 {/* User Control */}
                 <li className="text-primary font-medium rounded-sm mb-10">
                   <div

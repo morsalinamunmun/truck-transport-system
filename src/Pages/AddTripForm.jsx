@@ -390,8 +390,9 @@ export default function AddTripForm() {
           <div className="bg-white rounded-lg border border-gray-300 p-4">
             <h3 className="text-orange-500 font-medium text-center mb-6">Customer & Payment Section!</h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <InputField name="customerName" label="Customer Name" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5">
+              <SelectField name="customerName" label="Customer Name" options={vehicleOptions} control={control} required />
+              <InputField name="customerNumber" label="Customer Number" />
               <InputField name="rentAmount" label="Rent Amount" />
               <InputField name="advancePayment" label="Advance Payment" />
             </div>

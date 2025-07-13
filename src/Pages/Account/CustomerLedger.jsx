@@ -5,6 +5,7 @@ import HatimLedger from "./HatimLedger";
 import { useState } from "react";
 import SuzukiLedger from "./SuzukiLedger";
 import HondaLedger from "./HondaLedger";
+import SelectCustomerLedger from "./SelectCustomerLadger";
 
 const CustomerLedger = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("Yamaha");
@@ -44,14 +45,15 @@ const CustomerLedger = () => {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="w-[1030px] mt-5 overflow-x-auto border border-gray-200">
+        {/*select customer Table */}
+        {/* <div className="w-[1030px] mt-5 overflow-x-auto border border-gray-200">
           <div>{selectedCustomer === "Yamaha" && <YamahaLedger />}</div>
           <div>{selectedCustomer === "Hatim Rupgonj" && <HatimLedger />}</div>
           <div>{selectedCustomer === "Hatim Pubail" && <HondaLedger />}</div>
           <div>{selectedCustomer === "Suzuki" && <SuzukiLedger />}</div>
           <div>{selectedCustomer === "Honda" && <HondaLedger />}</div>
-        </div>
+        </div> */}
+        <SelectCustomerLedger  customerName={selectedCustomer}/>
       </div>
     </main>
   );
