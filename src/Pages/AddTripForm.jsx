@@ -279,6 +279,7 @@ import { useForm, FormProvider } from "react-hook-form";
 
 import { Calendar, ChevronDown, Menu, X, User } from "lucide-react";
 import { InputField, SelectField } from "../components/Form/FormFields";
+import { FiCalendar } from "react-icons/fi";
 
 export default function AddTripForm() {
   const methods = useForm({
@@ -317,29 +318,35 @@ export default function AddTripForm() {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen bg-gray-50 rounded">
+      <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen mt-10">
         {/* Header */}
-        <div className="bg-white px-4 py-3 flex items-center justify-between ">
+        {/* <div className="bg-white px-4 py-3 flex items-center justify-between ">
           <h1 className="text-xl font-semibold text-gray-800">Trip Create</h1>
           <div className="flex items-center text-sm text-gray-600">
             <span className="text-primary hover:underline cursor-pointer">Home</span>
             <span className="mx-2">/</span>
             <span>Trip Report</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Form Header */}
-        <div className="bg-primary text-white px-4 py-3 rounded-t-lg">
+        <div className="bg-primary text-white px-4 py-2 rounded-t-md">
           <h2 className="text-lg font-medium">Trip Create Form</h2>
         </div>
 
-        <div className="p-4 space-y-2">
+        <div className="rounded-b-md shadow border border-gray-200">
+          <div className="p-4 space-y-2">
           {/* Trip & Destination Section */}
           <div className="bg-white rounded-lg border border-gray-300 p-4">
             <h3 className="text-orange-500 font-medium text-center mb-6">Trip & Destination Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-              <InputField name="date" label="Date" required icon={<Calendar className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />} />
+              <InputField name="date" label="Date" required icon={<span
+                                  className="py-[11px] absolute right-0 px-3 top-[22px] transform -translate-y-1/2 bg-primary rounded-r"
+                                  onClick={() => registrationDateRef.current?.showPicker?.()}
+                                >
+                                  <FiCalendar className="text-white cursor-pointer" />
+                                </span>} />
               <InputField name="tripTime" label="Trip Time" placeholder="Trip Time" />
               <InputField name="loadPoint" label="Load Point" placeholder="Load Point" />
               <InputField name="unloadPoint" label="Unload Point" placeholder="Unload Point" />
@@ -418,6 +425,7 @@ export default function AddTripForm() {
               <User className="h-5 w-5 text-white" />
             </div>
           </div>
+        </div>
         </div>
       </form>
     </FormProvider>

@@ -8,6 +8,7 @@ import { saveAs } from "file-saver";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { toWords } from "number-to-words";
+import { MdOutlineArrowDropDown } from "react-icons/md";
 pdfMake.vfs = pdfFonts.vfs;
 
 const Bill = () => {
@@ -17,6 +18,7 @@ const Bill = () => {
   const [selectedRows, setSelectedRows] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedCustomer, setSelectedCustomer] = useState("");
   // fetch data from server
   useEffect(() => {
     axios
@@ -244,19 +246,36 @@ const Bill = () => {
   };
 
   // Filter by date
-  const filteredTrips = yamahaTrip.filter((trip) => {
-    const tripDate = new Date(trip.date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
+  // const filteredTrips = yamahaTrip.filter((trip) => {
+  //   const tripDate = new Date(trip.date);
+  //   const start = startDate ? new Date(startDate) : null;
+  //   const end = endDate ? new Date(endDate) : null;
 
-    if (start && end) {
-      return tripDate >= start && tripDate <= end;
-    } else if (start) {
-      return tripDate.toDateString() === start.toDateString();
-    } else {
-      return true; // no filter applied
-    }
-  });
+  //   if (start && end) {
+  //     return tripDate >= start && tripDate <= end;
+  //   } else if (start) {
+  //     return tripDate.toDateString() === start.toDateString();
+  //   } else {
+  //     return true; // no filter applied
+  //   }
+  // });
+
+  const filteredTrips = yamahaTrip.filter((trip) => {
+  const tripDate = new Date(trip.date);
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
+
+  const matchDate =
+    (start && end && tripDate >= start && tripDate <= end) ||
+    (start && !end && tripDate.toDateString() === start.toDateString()) ||
+    (!start && !end);
+
+  const matchCustomer =
+    !selectedCustomer || trip.customer === selectedCustomer;
+
+  return matchDate && matchCustomer;
+});
+
 
   // number to words
   const numberToWords = (num) => {
@@ -330,7 +349,7 @@ const Bill = () => {
   if (loading) return <p className="text-center mt-16">Loading Yamaha...</p>;
 
   return (
-    <div className=" to-white md:p-4">
+    <div className="">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-6 border border-gray-200">
         <div className="md:flex items-center justify-between mb-6">
@@ -374,6 +393,25 @@ const Bill = () => {
                           Print
                         </button>
           </div>
+          <div className="mt-3 md:mt-0">
+                      <div className="relative w-full">
+                        <label className="text-primary text-sm font-semibold">
+                          Select Customer Ledger
+                        </label>
+                        <select
+                          value={selectedCustomer}
+                          onChange={(e) => setSelectedCustomer(e.target.value)}
+                          className="mt-1 w-full text-gray-500 text-sm border border-gray-300 bg-white p-2 rounded appearance-none outline-none"
+                        >
+                          <option value="">Select customer</option>
+                          <option value="Yamaha">Yamaha</option>
+                          <option value="Hatim Rupgonj">Hatim Rupgonj</option>
+                          <option value="Suzuki">Suzuki</option>
+                          <option value="Honda">Honda</option>
+                        </select>
+                        <MdOutlineArrowDropDown className="absolute top-[35px] right-2 pointer-events-none text-xl text-gray-500" />
+                      </div>
+                    </div>
         </div>
 
         {showFilter && (

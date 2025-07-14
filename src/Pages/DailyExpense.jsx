@@ -163,7 +163,7 @@ const DailyExpense = () => {
     setCurrentPage(number);
   };
   return (
-    <main className="md:p-4">
+    <main className="">
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
         <div className="md:flex items-center justify-between mb-6">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaFileExcel, FaFilePdf, FaPrint } from "react-icons/fa6";
+import { FaFileExcel, FaFilePdf, FaFilter, FaPrint } from "react-icons/fa6";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -13,6 +13,10 @@ const VehicleReport = () => {
   const [filterMonth, setFilterMonth] = useState("");
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
+   // Date filter state
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+     const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     axios.get("https://api.tramessy.com/mstrading/api/vehicle/list")
@@ -26,13 +30,22 @@ const VehicleReport = () => {
 
   const tripsFiltered = trips.filter(t => !filterMonth || new Date(t.date).toISOString().slice(0,7) === filterMonth);
 
-  const vehicleStats = vehicles.map(v => {
+
+  const vehicleStats = vehicles
+  .map(v => {
     const vt = tripsFiltered.filter(t => t.vehicle_no === v.vehicle_no);
     const tripsCount = vt.length;
-    const rentSum = vt.reduce((s, t) => s + Number(t.total_rent||0), 0);
-    const expSum = vt.reduce((s, t) => s + Number(t.total_exp||0), 0);
-    return { number: v.vehicle_no, tripsCount, rentSum, expSum, profit: rentSum - expSum };
-  });
+    const rentSum = vt.reduce((s, t) => s + Number(t.total_rent || 0), 0);
+    const expSum = vt.reduce((s, t) => s + Number(t.total_exp || 0), 0);
+    return {
+      number: v.vehicle_no,
+      tripsCount,
+      rentSum,
+      expSum,
+      profit: rentSum - expSum
+    };
+  })
+  .filter(v => v.tripsCount > 0);
 
   const exportExcel = () => {
     const data = vehicleStats.map((v,i)=>({
@@ -114,13 +127,58 @@ const VehicleReport = () => {
               Print
             </button>
         </div>
-        <input type="month" value={filterMonth} onChange={e=>setFilterMonth(e.target.value)} className="border px-3 py-1 rounded"/>
-
+         <button
+                              onClick={() => setShowFilter((prev) => !prev)}
+                              className="border border-primary  text-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                            >
+                              <FaFilter /> Filter
+                            </button>
       </div>
+
+      {/* Conditional Filter Section */}
+                          {showFilter && (
+                            <div className="md:flex gap-5 border border-gray-300 rounded-md p-5 my-5 transition-all duration-300 pb-5">
+                              <div className="relative w-full">
+                                <input
+                                  type="date"
+                                  value={startDate}
+                                  onChange={(e) => setStartDate(e.target.value)}
+                                  placeholder="Start date"
+                                  className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+                                />
+                              </div>
+                  
+                              <div className="relative w-full">
+                                <input
+                                  type="date"
+                                  value={endDate}
+                                  onChange={(e) => setEndDate(e.target.value)}
+                                  placeholder="End date"
+                                  className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+                                />
+                              </div>
+                              <div className="mt-3 md:mt-0 flex gap-2">
+                                            <button
+                                              onClick={() => setCurrentPage(1)}
+                                              className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                                            >
+                                              <FaFilter /> Filter
+                                            </button>
+                                          </div>
+                            </div>
+                          )}
+                          
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table id="vehicle-report" className="min-w-full text-sm text-left">
           <thead className="bg-[#11375B] text-white capitalize text-xs">
-            <tr className="px-2 py-3"><th>SL</th><th className="px-2 py-3">Vehicle No</th><th className="px-2 py-3">Trips</th><th className="px-2 py-3">Rent</th><th className="px-2 py-3">Expense</th><th className="px-2 py-3">Profit</th></tr></thead>
+            <tr className="px-2 py-3"><th>SL</th>
+            <th className="px-2 py-3">Vehicle No</th>
+            <th className="px-2 py-3">Trips</th>
+            <th className="px-2 py-3">Rent</th>
+            <th className="px-2 py-3">Expense</th>
+            <th className="px-2 py-3">Profit</th>
+            </tr>
+          </thead>
           <tbody>
             {
                currentVehiclesReport.length === 0 ? (
@@ -154,7 +212,11 @@ const VehicleReport = () => {
         </table>
       </div>
       {/* pagination */}
-            <div className="mt-10 flex justify-center">
+            {
+              currentVehiclesReport.length === 0 ? (
+                ""
+              )
+            :(<div className="mt-10 flex justify-center">
               <div className="space-x-2 flex items-center">
                 <button
                   onClick={handlePrevPage}
@@ -190,7 +252,7 @@ const VehicleReport = () => {
                   <GrFormNext />
                 </button>
               </div>
-            </div>
+            </div>)}
     </div>
   );
 };

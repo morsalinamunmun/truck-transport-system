@@ -79,7 +79,7 @@ const Customer = () => {
 
   if (loading) return <p className="text-center mt-16">Loading customer...</p>;
   return (
-    <main className=" md:p-4">
+    <main className="">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
@@ -137,7 +137,7 @@ const Customer = () => {
     </tr>
   ) :
               (currentCustomer?.map((dt, index) => (
-                <tr key={index} className="hover:bg-gray-50 transition-all">
+                <tr key={index} className="hover:bg-gray-50 transition-all border border-gray-200">
                   <td className="px-4 py-4 font-bold">{index + 1}</td>
                   <td className="px-2 py-4">{dt.customer_name}</td>
                   <td className="px-2 py-4">{dt.mobile}</td>

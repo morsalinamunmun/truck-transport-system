@@ -293,9 +293,8 @@ const handlePrint = useReactToPrint({
 
    if (loading) return <p className="text-center mt-16">Loading trip...</p>;
 
-  console.log(trip, 'triplist')
   return (
-    <main className=" md:p-4">
+    <main className=" ">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-md p-2 py-10 md:p-4 border border-gray-200">
         {/* Header */}
@@ -394,7 +393,7 @@ const handlePrint = useReactToPrint({
           <table className="min-w-full text-sm text-left">
             <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
-                <th className="p-2">SL.</th>
+                <th className="p-2 ">SL.</th>
                 <th className="p-2">Date</th>
                 <th className="p-2">DriverInfo</th>
                 <th className="p-2">Load</th>

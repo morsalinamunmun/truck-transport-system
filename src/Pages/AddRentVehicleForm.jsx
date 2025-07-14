@@ -45,7 +45,7 @@ const AddRentVehicleForm = () => {
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
         Rent Vehicle Information
       </h3>
-      <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+      <div className="mx-auto p-6  rounded-b-md shadow border border-gray-300">
         <FormProvider {...methods} className="">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Trip & Destination Section */}

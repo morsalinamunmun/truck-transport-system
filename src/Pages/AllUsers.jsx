@@ -165,7 +165,7 @@ const AllUsers = () => {
     WinPrint.close();
   };
   return (
-    <main className="md:p-6">
+    <main className="">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-8 border border-gray-200">
         {/* Header */}
@@ -274,11 +274,11 @@ const AllUsers = () => {
                   <td className="px-4 py-4 font-bold">
                     {indexOfFirstItem + index + 1}
                   </td>
-                  <td className="px-4 py-4">{user.name}</td>
-                  <td className="px-4 py-4">{user.phone}</td>
-                  <td className="px-4 py-4">{user.email}</td>
-                  <td className="px-4 py-4">{user.role}</td>
-                  <td className="px-4 py-4">{user.status}</td>
+                  <td className="p-2">{user.name}</td>
+                  <td className="p-2">{user.phone}</td>
+                  <td className="p-2">{user.email}</td>
+                  <td className="p-2">{user.role}</td>
+                  <td className="p-2">{user.status}</td>
                   <td className="action_column">
                     <div className="flex gap-1 justify-center">
                       <Link to={`/UpdateUsersForm/${user.id}`}>

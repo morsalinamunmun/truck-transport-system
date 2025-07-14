@@ -387,7 +387,7 @@ const OverViewCard = () => {
   }, []);
 
   return (
-    <div className="px-4">
+    <div className="">
       <div className="bg-white rounded-xl shadow-md p-5 border border-gray-200 lg:h-[350px]">
         <h3 className="text-xl font-bold text-primary border-b border-gray-200 pb-2 mb-4">
           Document Reminder

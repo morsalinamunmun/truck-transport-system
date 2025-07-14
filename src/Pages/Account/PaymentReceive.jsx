@@ -47,7 +47,7 @@ const PaymentReceive = () => {
 
   if (loading) return <p className="text-center mt-16">Loading payment...</p>;
   return (
-    <div className=" md:p-4">
+    <div className=" ">
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-6 border border-gray-200">
         <div className="md:flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
@@ -105,23 +105,23 @@ const PaymentReceive = () => {
   )  :
               (currentPayment?.map((dt, index) => (
                 <tr className="hover:bg-gray-50 transition-all border border-gray-200">
-                  <td className="px-2 py-1 font-bold">{index + 1}.</td>
-                  <td className="px-2 py-1">{dt.date}</td>
-                  <td className="px-2 py-1">{dt.customer_name}</td>
-                  <td className="px-2 py-1">{dt.branch_name}</td>
-                  <td className="px-2 py-1">{dt.bill_ref}</td>
-                  <td className="px-2 py-1">{dt.amount}</td>
-                  <td className="px-2 py-1">{dt.cash_type}</td>
-                  <td className="px-2 py-1">{dt.note}</td>
-                  <td className="px-2 py-1">{dt.created_by}</td>
-                  <td className="px-2 py-1">{dt.status}</td>
+                  <td className="p-2 font-bold">{index + 1}.</td>
+                  <td className="p-2">{dt.date}</td>
+                  <td className="p-2">{dt.customer_name}</td>
+                  <td className="p-2">{dt.branch_name}</td>
+                  <td className="p-2">{dt.bill_ref}</td>
+                  <td className="p-2">{dt.amount}</td>
+                  <td className="p-2">{dt.cash_type}</td>
+                  <td className="p-2">{dt.note}</td>
+                  <td className="p-2">{dt.created_by}</td>
+                  <td className="p-2">{dt.status}</td>
                   <td className="px-2 action_column">
                     <div className="flex gap-1">
-                      <Link to={`/tramessy/UpdatepaymentForm/${dt.id}`}>
+                      {/* <Link to={`/tramessy/UpdatepaymentForm/${dt.id}`}>
                         <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>
-                      </Link>
+                      </Link> */}
                       <button
                         // onClick={() => {
                         //   setSelectedEmployeeId(dt.id);

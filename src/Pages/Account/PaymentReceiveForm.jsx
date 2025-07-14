@@ -107,7 +107,7 @@ const PaymentReceiveForm = () => {
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-3 mx-auto bg-gray-100 rounded-md shadow"
+          className="space-y-3 mx-auto rounded-b-md shadow"
         >
           {/* Trip & Destination Section */}
           <div className="border border-gray-300 p-3 md:p-5 rounded-b-md">

@@ -10,7 +10,7 @@ import SelectCustomerLedger from "./SelectCustomerLadger";
 const CustomerLedger = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("Yamaha");
   return (
-    <main className=" md:p-2 overflow-hidden">
+    <main className="overflow-hidden">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 border border-gray-200">
         {/* Header */}

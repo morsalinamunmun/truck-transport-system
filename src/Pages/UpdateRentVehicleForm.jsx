@@ -61,11 +61,11 @@ const UpdateRentVehicleForm = () => {
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
         Update Rent Vehicle Information
       </h3>
-      <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+      <div className="mx-auto p-6 rounded-b-md shadow border border-gray-300">
         <FormProvider {...methods} className="">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Trip & Destination Section */}
-            <div className="border border-gray-300 p-3 md:p-5 rounded-md">
+            <div className=" p-3 md:p-5 rounded-b-md border border-gray-300">
               <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
                 <div className="mt-2 md:mt-0 w-full relative">
                   <InputField

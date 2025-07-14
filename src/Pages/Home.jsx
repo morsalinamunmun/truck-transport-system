@@ -7,10 +7,10 @@ import SalesChart from "../components/SalesChart";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="p-4 md:p-0">
       <DailyCardOverview/>
       <StatisticsCard />
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <OverViewCard />
       <MonthlyCustomerPieChart/>
       </div>

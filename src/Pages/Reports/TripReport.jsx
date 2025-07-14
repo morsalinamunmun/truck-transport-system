@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaFileExcel, FaFilePdf, FaPrint } from "react-icons/fa6";
+import { FaFileExcel, FaFilePdf, FaFilter, FaPrint } from "react-icons/fa6";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -11,6 +11,10 @@ import { BiTrip } from "react-icons/bi";
 const TripReport = () => {
   const [trips, setTrips] = useState([]);
   const [filterMonth, setFilterMonth] = useState("");
+  // Date filter state
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -156,14 +160,46 @@ const TripReport = () => {
                            Print
                          </button>
         </div>
-        <input
-          type="month"
-          value={filterMonth}
-          onChange={(e) => setFilterMonth(e.target.value)}
-          placeholder="date"
-          className="border border-gray-300 px-3 py-1 rounded"
-        />
+         <button
+                      onClick={() => setShowFilter((prev) => !prev)}
+                      className="border border-primary  text-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                    >
+                      <FaFilter /> Filter
+                    </button>
       </div>
+
+      {/* Conditional Filter Section */}
+              {showFilter && (
+                <div className="md:flex gap-5 border border-gray-300 rounded-md p-5 my-5 transition-all duration-300 pb-5">
+                  <div className="relative w-full">
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      placeholder="Start date"
+                      className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+                    />
+                  </div>
+      
+                  <div className="relative w-full">
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      placeholder="End date"
+                      className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+                    />
+                  </div>
+                  <div className="mt-3 md:mt-0 flex gap-2">
+                                <button
+                                  onClick={() => setCurrentPage(1)}
+                                  className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+                                >
+                                  <FaFilter /> Filter
+                                </button>
+                              </div>
+                </div>
+              )}
 
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
         <table id="trip-table" className="min-w-full text-sm text-left">

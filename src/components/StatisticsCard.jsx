@@ -91,7 +91,7 @@ const StatisticsCard = () => {
   }, [today])
 
   return (
-    <div className="md:p-5">
+    <div className="">
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
             <div className="flex items-center justify-between">

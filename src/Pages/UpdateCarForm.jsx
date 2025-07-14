@@ -94,7 +94,7 @@ const UpdateCarForm = () => {
           Add Vehicle Information
         </h3>
 
-        <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+        <div className="mx-auto p-6 rounded-b-md shadow border border-gray-200">
           {/* Vehicle & Driver Name */}
           <div className="md:flex justify-between gap-3">
             <div className="w-full">

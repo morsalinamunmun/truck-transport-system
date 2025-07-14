@@ -56,7 +56,7 @@ const AddVendorForm = () => {
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
         Vendor Form
       </h3>
-      <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+      <div className="mx-auto p-6 rounded-b-md shadow border border-gray-300">
         <FormProvider {...methods} className="">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Toaster position="top-center" reverseOrder={false} />

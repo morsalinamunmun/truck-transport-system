@@ -103,8 +103,8 @@ const MonthlyStatement = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="bg-white md:p-4 shadow rounded-lg">
+    <div className="">
+      <div className="bg-white md:p-4 shadow rounded-lg border border-gray-200">
         <h2 className="text-xl font-bold text-primary flex items-center gap-2">
           <SlCalender className="text-lg" />
           Monthly Statement
@@ -117,13 +117,13 @@ const MonthlyStatement = () => {
             <table className="min-w-full text-sm text-left">
               <thead className="bg-primary text-white capitalize text-xs">
                 <tr>
-                  <th className="px-3 py-2 border">#</th>
-                  <th className="px-3 py-2 border">Month</th>
-                  <th className="px-3 py-2 border">Income</th>
-                  <th className="px-3 py-2 border">Trip Cost</th>
-                  <th className="px-3 py-2 border">Maintenance</th>
-                  <th className="px-3 py-2 border">Total Expense</th>
-                  <th className="px-3 py-2 border">Net Profit</th>
+                  <th className="px-3 py-2 ">#</th>
+                  <th className="px-3 py-2 ">Month</th>
+                  <th className="px-3 py-2 ">Income</th>
+                  <th className="px-3 py-2 ">Trip Cost</th>
+                  <th className="px-3 py-2 ">Maintenance</th>
+                  <th className="px-3 py-2 ">Total Expense</th>
+                  <th className="px-3 py-2 ">Net Profit</th>
                 </tr>
               </thead>
               <tbody>
