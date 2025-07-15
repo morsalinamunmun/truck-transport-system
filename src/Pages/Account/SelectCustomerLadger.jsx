@@ -15,7 +15,7 @@
 //   // load data from server
 //   useEffect(() => {
 //     axios
-//       .get("https://api.tramessy.com/mstrading/api/customerLedger/list")
+//       .get(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/list`)
 //       .then((response) => {
 //         if (response.data.status === "Success") {
 //           setYamaha(response.data.data);
@@ -268,7 +268,7 @@ const SelectCustomerLedger = ({ customerName }) => {
 
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/customerLedger/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/list`)
       .then((res) => {
         if (res.data.status === "Success") {
           setData(res.data.data);
@@ -375,17 +375,10 @@ const SelectCustomerLedger = ({ customerName }) => {
           <h1 className="text-xl font-extrabold text-[#11375B]">
             {customerName} Ledger
           </h1>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setShowFilter((prev) => !prev)}
-              className="border border-primary text-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 hover:scale-105 transition-all duration-300"
-            >
-              <FaFilter /> Filter
-            </button>
-          </div>
         </div>
 
-        <div className="flex gap-2 mb-4">
+        <div className="flex justify-between mb-4">
+          <div className="flex gap-2 ">
           <button
             onClick={exportToExcel}
             className="flex items-center gap-2 py-2 px-5 bg-gray-50 hover:bg-primary text-primary hover:text-white rounded-md shadow-md shadow-green-200 transition-all duration-300"
@@ -404,6 +397,15 @@ const SelectCustomerLedger = ({ customerName }) => {
           >
             <FaPrint /> Print
           </button>
+        </div>
+        <div className="flex gap-2">
+            <button
+              onClick={() => setShowFilter((prev) => !prev)}
+              className="border border-primary text-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 hover:scale-105 transition-all duration-300"
+            >
+              <FaFilter /> Filter
+            </button>
+          </div>
         </div>
 
         {showFilter && (

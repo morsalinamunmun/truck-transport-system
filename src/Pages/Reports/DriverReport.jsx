@@ -132,11 +132,11 @@ const DriverReport = () => {
    const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
-    axios.get("https://api.tramessy.com/mstrading/api/driver/list")
+    axios.get(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then(res => setDrivers(res.data.data))
       .catch(console.error);
 
-    axios.get("https://api.tramessy.com/mstrading/api/trip/list")
+    axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then(res => setTrips(res.data.data))
       .catch(console.error);
   }, []);

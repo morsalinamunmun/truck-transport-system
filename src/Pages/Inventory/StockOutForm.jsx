@@ -20,7 +20,7 @@ const StockOutForm = () => {
       }
       formData.append("ref_id", generateRefId());
       const response = await axios.post(
-        "https://api.tramessy.com/mstrading/api/stockOutProduct/create",
+        `${import.meta.env.VITE_BASE_URL}/api/stockOutProduct/create`,
         formData
       );
       const resData = response.data;

@@ -11,7 +11,7 @@ const Stockin = () => {
   // fetch data from server
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/stockProduct/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/stockProduct/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setStockIn(response.data.data);

@@ -115,9 +115,6 @@ const InvoicePrint = forwardRef(({ data }, ref) => {
     others,
   } = data;
 
-  useEffect(() => {
-    console.log("Rendered InvoicePrint", data);
-  }, []);
 
   return (
     <div ref={ref} className="text-sm p-8 bg-pink-100 w-[810px] h-[1000px] text-black font-sans mx-auto">

@@ -6,8 +6,10 @@ import { FiCalendar } from "react-icons/fi";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import Select from "react-select";
 import BtnSubmit from "../components/Button/BtnSubmit";
+import { useNavigate } from "react-router-dom";
 
 const FuelForm = () => {
+  const navigate = useNavigate()
   const fuelDateRef = useRef(null);
   const {
     register,
@@ -25,7 +27,7 @@ const FuelForm = () => {
   const [vehicles, setVehicles] = useState([]);
 
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/vehicle")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
       .then((response) => response.json())
       .then((data) => setVehicles(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -37,15 +39,15 @@ const FuelForm = () => {
   }));
 
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/driver")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
   }, []);
 
   const driverOptions = drivers.map((driver) => ({
-    value: driver.name,
-    label: driver.name,
+    value: driver.driver_name,
+    label: driver.driver_name,
   }));
 
   const onSubmit = async (data) => {
@@ -57,7 +59,7 @@ const FuelForm = () => {
         formData.append(key, data[key]);
       }
       const response = await axios.post(
-        "https://api.tramessy.com/api/fuel",
+        "${import.meta.env.VITE_BASE_URL}/api/fuel",
         formData
       );
       const resData = response.data;
@@ -67,6 +69,7 @@ const FuelForm = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/Fuel")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }

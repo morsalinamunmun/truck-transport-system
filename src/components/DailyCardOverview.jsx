@@ -12,7 +12,7 @@
 //     const fetchTodayExpenses = async () => {
 //       try {
 //         const purchaseRes = await axios.get(
-//           "https://api.tramessy.com/mstrading/api/purchase/list"
+//           `${import.meta.env.VITE_BASE_URL}/api/purchase/list`
 //         );
 //         const purchases = purchaseRes.data?.data || [];
 
@@ -23,7 +23,7 @@
 //           return sum + (isNaN(qty) || isNaN(price) ? 0 : qty * price);
 //         }, 0);
 //         const tripRes = await axios.get(
-//           "https://api.tramessy.com/mstrading/api/trip/list"
+//           `${import.meta.env.VITE_BASE_URL}/api/trip/list`
 //         );
 //         const trips = tripRes.data?.data || [];
 //         const todayTrips = trips.filter((item) => item.date === today);
@@ -71,7 +71,7 @@
 
 //   useEffect(() => {
 //     axios
-//       .get("https://api.tramessy.com/mstrading/api/trip/list")
+//       .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
 //       .then((response) => {
 //         const data = response.data.data;
 //         const today = new Date().toISOString().split("T")[0];
@@ -87,7 +87,7 @@
 //   }, []);
 //   useEffect(() => {
 //     axios
-//       .get("https://api.tramessy.com/mstrading/api/trip/list")
+//       .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
 //       .then((res) => {
 //         const allTrips = res.data.data;
 //         // Get today's date in YYYY-MM-DD format
@@ -166,7 +166,7 @@ const DailyCardOverview = () => {
     const fetchTodayExpenses = async () => {
       try {
         const purchaseRes = await axios.get(
-          "https://api.tramessy.com/mstrading/api/purchase/list"
+          `${import.meta.env.VITE_BASE_URL}/api/purchase/list`
         );
         const purchases = purchaseRes.data?.data || [];
 
@@ -177,7 +177,7 @@ const DailyCardOverview = () => {
           return sum + (isNaN(qty) || isNaN(price) ? 0 : qty * price);
         }, 0);
         const tripRes = await axios.get(
-          "https://api.tramessy.com/mstrading/api/trip/list"
+          `${import.meta.env.VITE_BASE_URL}/api/trip/list`
         );
         const trips = tripRes.data?.data || [];
         const todayTrips = trips.filter((item) => item.date === today);
@@ -225,7 +225,7 @@ const DailyCardOverview = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/trip/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then((response) => {
         const data = response.data.data;
         const today = new Date().toISOString().split("T")[0];
@@ -241,7 +241,7 @@ const DailyCardOverview = () => {
   }, []);
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/trip/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then((res) => {
         const allTrips = res.data.data;
         // Get today's date in YYYY-MM-DD format

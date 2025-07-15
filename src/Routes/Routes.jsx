@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/CarList",
+        path: "/tramessy/vehicel",
         element: (
           <PrivateRoute>
             <CarList />
@@ -110,7 +110,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/AddCarForm",
+        path: "/tramessy/add-vehicel-form",
         element: (
           <PrivateRoute>
             <AddCarForm />
@@ -118,7 +118,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/UpdateCarForm/:id",
+        path: "/tramessy/update-vehicel-form/:id",
         element: (
           <PrivateRoute>
             <UpdateCarForm />
@@ -126,7 +126,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/vehicle/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/vehicle/show/${params.id}`
           ),
       },
       {
@@ -154,7 +154,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/driver/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/driver/show/${params.id}`
           ),
       },
       {
@@ -182,7 +182,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/trip/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/trip/show/${params.id}`
           ),
       },
       {
@@ -280,7 +280,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/vendor/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/vendor/show/${params.id}`
           ),
       },
       {
@@ -308,7 +308,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/rent/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/rent/show/${params.id}`
           ),
       },
       {
@@ -420,7 +420,7 @@ export const router = createBrowserRouter([
       //   ),
       //   loader: ({ params }) =>
       //     fetch(
-      //       `https://api.tramessy.com/mstrading/api/office/show/${params.id}`
+      //       `${import.meta.env.VITE_BASE_URL}/api/office/show/${params.id}`
       //     ),
       // },
       // {
@@ -436,7 +436,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/employee/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/employee/show/${params.id}`
           ),
       },
       // {
@@ -482,7 +482,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/leave/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/leave/show/${params.id}`
           ),
       },
       // {
@@ -498,7 +498,7 @@ export const router = createBrowserRouter([
       //   element: <UpdatePurchaseForm />,
       //   loader: ({ params }) =>
       //     fetch(
-      //       `https://api.tramessy.com/mstrading/api/purchase/show/${params.id}`
+      //       `${import.meta.env.VITE_BASE_URL}/api/purchase/show/${params.id}`
       //     ),
       // },
       // {
@@ -518,7 +518,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/supply/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/supply/show/${params.id}`
           ),
       },
       // Inventory
@@ -560,7 +560,7 @@ export const router = createBrowserRouter([
         element: <UpdateCustomerForm />,
         loader: ({ params }) =>
           fetch(
-            `https://api.tramessy.com/mstrading/api/customer/show/${params.id}`
+            `${import.meta.env.VITE_BASE_URL}/api/customer/show/${params.id}`
           ),
       },
       // Reports

@@ -22,7 +22,7 @@ const OfficeForm = () => {
       }
       formData.append("ref_id", generateRefId());
       const response = await axios.post(
-        "https://api.tramessy.com/mstrading/api/office/create",
+        `${import.meta.env.VITE_BASE_URL}/api/office/create`,
         formData
       );
       const resData = response.data;

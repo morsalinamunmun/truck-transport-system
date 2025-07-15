@@ -9,7 +9,7 @@ const PurchaseList = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/purchase/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/purchase/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setPurchase(response.data.data);
@@ -69,7 +69,7 @@ const PurchaseList = () => {
                   <td className="px-2 py-2">{dt.total}</td>
                   <td className="px-2 py-2">
                     <img
-                      src={`https://api.tramessy.com/mstrading/public/uploads/purchase/${dt.bill_image}`}
+                      src={`${import.meta.env.VITE_BASE_URL}/public/uploads/purchase/${dt.bill_image}`}
                       alt=""
                       className="w-20 h-20 rounded-full"
                     />

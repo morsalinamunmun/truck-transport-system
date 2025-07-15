@@ -16,7 +16,7 @@ const SuzukiLedger = () => {
   // load data from server
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/customerLedger/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setSuzuki(response.data.data);

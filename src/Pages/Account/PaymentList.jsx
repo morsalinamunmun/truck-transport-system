@@ -29,7 +29,7 @@ const PaymentList = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/payment/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/payment/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setPayment(response.data.data);
@@ -246,7 +246,7 @@ const PaymentList = () => {
 
     try {
       const response = await axios.post(
-        `https://api.tramessy.com/mstrading/api/payment/update/${selectedPayment.id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/payment/update/${selectedPayment.id}`,
         {
           pay_amount: updatedAmount,
         }
@@ -260,7 +260,7 @@ const PaymentList = () => {
         supplierFormData.append("remarks", data.note);
         supplierFormData.append("pay_amount", data.pay_amount);
         await axios.post(
-          "https://api.tramessy.com/mstrading/api/supplierLedger/create",
+          `${import.meta.env.VITE_BASE_URL}/api/supplierLedger/create`,
           supplierFormData
         );
 
@@ -275,7 +275,7 @@ const PaymentList = () => {
         branchLedgerFormData.append("cash_out", data.pay_amount);
         branchLedgerFormData.append("ref_id", refId);
         await axios.post(
-          "https://api.tramessy.com/mstrading/api/branch/create",
+          `${import.meta.env.VITE_BASE_URL}/api/branch/create`,
           branchLedgerFormData
         );
 

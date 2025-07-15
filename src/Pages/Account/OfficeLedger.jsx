@@ -15,7 +15,7 @@ const OfficeLedger = () => {
   const [selectedBranch, setselectedBranch] = useState("");
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/branch/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/branch/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           const data = response.data.data;
@@ -32,7 +32,7 @@ const OfficeLedger = () => {
   const [officeList, setOfficeList] = useState([]);
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/office/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/office/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           const data = response.data.data;

@@ -12,7 +12,7 @@ const MonthlyCustomerPieChart = () => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/trip/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then((res) => res.json())
       .then((response) => {
         const trips = response.data;

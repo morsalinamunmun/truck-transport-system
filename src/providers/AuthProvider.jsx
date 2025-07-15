@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await fetch("https://api.tramessy.com/mstrading/api/login", {
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

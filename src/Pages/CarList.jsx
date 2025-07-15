@@ -27,7 +27,7 @@ const CarList = () => {
   const toggleModal = () => setIsOpen(!isOpen);
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/vehicle/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setVehicle(response.data.data);
@@ -43,7 +43,7 @@ const CarList = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://api.tramessy.com/mstrading/api/vehicle/delete/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/vehicle/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -183,7 +183,7 @@ const CarList = () => {
   const handleViewCar = async (id) => {
     try {
       const response = await axios.get(
-        `https://api.tramessy.com/mstrading/api/vehicle/show/${id}`
+        `${import.meta.env.VITE_BASE_URL}/api/vehicle/show/${id}`
       );
       if (response.data.status === "Success") {
         setselectedCar(response.data.data);
@@ -244,7 +244,7 @@ const CarList = () => {
             Vehicle List
           </h1>
           <div className="mt-3 md:mt-0 flex gap-2">
-            <Link to="/tramessy/AddCarForm">
+            <Link to="/tramessy/add-vehicel-form">
               <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
                 <FaPlus /> Vehicle
               </button>
@@ -344,18 +344,14 @@ const CarList = () => {
                   <td className="px-2 py-4">{vehicle.vehicle_category}</td>
                   <td className="px-2 py-4">{vehicle.vehicle_size}</td>
                   <td className="px-2 py-4">
-                    {vehicle.registration_zone} {vehicle.registration_number}
+                    {vehicle.registration_serial}-{vehicle.registration_zone} {vehicle.registration_number}
                   </td>
                   {/* <td className="px-2 py-4">0</td> */}
                   {/* <td className="px-2 py-4">{vehicle.registration_number}</td> */}
-                  <td className="px-2 py-4">
-                    <span className="text-white bg-green-700 px-3 py-1 rounded-md text-xs font-semibold">
-                      Active
-                    </span>
-                  </td>
+                  <td className="px-2 py-4">{status}</td>
                   <td className="px-2 py-4 action_column">
                     <div className="flex gap-1">
-                      <Link to={`/tramessy/UpdateCarForm/${vehicle.id}`}>
+                      <Link to={`/tramessy/update-vehicel-form/${vehicle.id}`}>
                         <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>

@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
 import useRefId from "../hooks/useRef";
+import { useNavigate } from "react-router-dom";
 const AddCarForm = () => {
   const methods = useForm();
   const { handleSubmit, register, reset, control } = methods;
@@ -14,10 +15,11 @@ const AddCarForm = () => {
   const roadPermitRef = useRef(null);
   const fitnessDateRef = useRef(null);
   const insuranceDateRef = useRef(null);
+  const navigate = useNavigate();
   // select driver from api
   const [drivers, setDrivers] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/driver/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -39,7 +41,7 @@ const AddCarForm = () => {
       }
       formData.append("ref_id", generateRefId());
       const response = await axios.post(
-        "https://api.tramessy.com/mstrading/api/vehicle/create",
+        `${import.meta.env.VITE_BASE_URL}/api/vehicle/create`,
         formData
       );
       const resData = response.data;
@@ -47,6 +49,7 @@ const AddCarForm = () => {
       if (resData.status === "Success") {
         toast.success("Vehicle saved successfully!", { position: "top-right" });
         reset();
+        navigate("/tramessy/vehicel")
       } else {
         toast.error("Server error: " + (resData.message || "Unknown issue"));
       }

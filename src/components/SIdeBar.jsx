@@ -119,16 +119,16 @@ const Sidebar = () => {
                     <ul className="px-2 text-sm mt-2 list-none">
                       <li>
                         <Link
-                          to="/tramessy/CarList"
+                          to="/tramessy/vehicel"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
-                            isActive("/tramessy/CarList")
+                            isActive("/tramessy/vehicel")
                               ? "text-white bg-primary"
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
                           <div
                             className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/CarList")
+                              isActive("/tramessy/vehicel")
                                 ? "bg-white"
                                 : "bg-primary"
                             }`}

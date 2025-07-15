@@ -14,7 +14,7 @@ const SupplierLedger = () => {
   // Fetch supplies once, no loading state here
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/supply/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/supply/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setSupplies(response.data.data);
@@ -29,7 +29,7 @@ const SupplierLedger = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("https://api.tramessy.com/mstrading/api/supplierLedger/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/supplierLedger/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setSupplierLedger(response.data.data);
@@ -47,7 +47,7 @@ const SupplierLedger = () => {
     if (!selectedSupplier) {
       // Show all ledger data when no supplier is selected
       axios
-        .get("https://api.tramessy.com/mstrading/api/supplierLedger/list")
+        .get(`${import.meta.env.VITE_BASE_URL}/api/supplierLedger/list`)
         .then((response) => {
           if (response.data.status === "Success") {
             setSupplierLedger(response.data.data);
@@ -59,7 +59,7 @@ const SupplierLedger = () => {
     } else {
       // Filter ledger data by selected supplier
       axios
-        .get("https://api.tramessy.com/mstrading/api/supplierLedger/list")
+        .get(`${import.meta.env.VITE_BASE_URL}/api/supplierLedger/list`)
         .then((response) => {
           if (response.data.status === "Success") {
             const filtered = response.data.data.filter(

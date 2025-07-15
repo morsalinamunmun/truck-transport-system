@@ -17,7 +17,7 @@ const Customer = () => {
   // Fetch customer data
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/customer/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/customer/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setCustomer(response.data.data);
@@ -33,7 +33,7 @@ const Customer = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://api.tramessy.com/mstrading/api/customer/delete/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/customer/delete/${id}`,
         {
           method: "DELETE",
         }

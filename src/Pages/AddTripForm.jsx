@@ -275,16 +275,21 @@
 // }
 
 
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 
 import { Calendar, ChevronDown, Menu, X, User } from "lucide-react";
 import { InputField, SelectField } from "../components/Form/FormFields";
 import { FiCalendar } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import toast, { ToastBar, Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 export default function AddTripForm() {
+  const navigate = useNavigate();
+
   const methods = useForm({
     defaultValues: {
-      date: "09-07-2025",
+      date: "",
       tripTime: "",
       loadPoint: "",
       unloadPoint: "",
@@ -304,20 +309,143 @@ export default function AddTripForm() {
       advancePayment: ""
     },
   });
+   
+  const { handleSubmit, control,  watch } = methods;
 
-  const { handleSubmit, control } = methods;
+  const watchFields = watch([
+    "fuelCost",
+    "tollCost",
+    "policeCost",
+    "commission",
+    "labour",
+    "others",
+    "damarageDay",
+    "damarageRate",
+  ]);
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-  };
+  // total cost
+  useEffect(() => {
+      const keys = [
+        "fuelCost",
+        "tollCost",
+        "policeCost",
+        "commission",
+        "labour",
+        "others",
+        "damarageDay",
+        "damarageRate",
+      ];
+const values = watchFields.reduce((acc, val, i) => {
+      acc[keys[i]] = Number(val || 0);
+      return acc;
+    }, {});
 
-  const vehicleOptions = [
-    { label: "Vehicle 1", value: "vehicle1" },
-    { label: "Vehicle 2", value: "vehicle2" },
-  ];
+    const total =
+      values.fuelCost +
+      values.tollCost +
+      values.policeCost +
+      values.commission +
+      values.labour +
+      values.others;
+
+    const damarageTotal = values.damarageDay * values.damarageRate;
+
+    methods.setValue("total", total);
+    methods.setValue("damarageTotal", damarageTotal);
+  }, [watchFields, methods]);
+
+   const onSubmit = async (data) => {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/${data.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      toast.success("Trip Added successfully!"); 
+      navigate("/tramessy/tripList"); 
+    } else {
+      toast.error("Failed to Added the trip.");
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong.");
+  }
+};
+
+// select vehicle from api
+const [vehicle, setVehicle] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
+      .then((response) => response.json())
+      .then((data) => setVehicle(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const vehicleOptions = vehicle.map((vehicle) => ({
+    value: vehicle.vehicle_name,
+    label: vehicle.vehicle_name,
+  }));
+  // driver
+  const [driver, setDriver] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
+      .then((response) => response.json())
+      .then((data) => setDriver(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const driverOptions = driver.map((driver) => ({
+    value: driver.driver_name,
+    label: driver.driver_name,
+     mobile: driver.driver_mobile,
+  }));
+
+   // Driver name এর পরিবর্তন দেখুন
+const selectedDriverName = useWatch({
+  control,
+  name: "driverName",
+});
+
+useEffect(() => {
+  const selectedDriver = driverOptions.find(d => d.value === selectedDriverName);
+  if (selectedDriver) {
+    methods.setValue("driverMobile", selectedDriver.mobile || "");
+  }
+}, [selectedDriverName, driverOptions, methods]);
+
+// customer
+  const [customer, setCustomer] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/customer/list`)
+      .then((response) => response.json())
+      .then((data) => setCustomer(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const customerOptions = customer.map((customer) => ({
+    value: customer.customer_name,
+    label: customer.customer_name,
+     mobile: customer.mobile,
+  }));
+  console.log(customer, "c")
+   // Driver name এর পরিবর্তন দেখুন
+const selectedCustomerName = useWatch({
+  control,
+  name: "customerName",
+});
+
+useEffect(() => {
+  const selectedCustomer = customerOptions.find(d => d.value === selectedCustomerName);
+  if (selectedCustomer) {
+    methods.setValue("mobile", selectedCustomer.mobile || "");
+  }
+}, [selectedCustomerName, customerOptions, methods]);
 
   return (
     <FormProvider {...methods}>
+      <Toaster/>
       <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen mt-10">
         {/* Header */}
         {/* <div className="bg-white px-4 py-3 flex items-center justify-between ">
@@ -359,7 +487,7 @@ export default function AddTripForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
               <SelectField name="vehicleNo" label="Vehicle No" options={vehicleOptions} control={control} required />
-              <InputField name="driverName" label="Driver Name" readOnly />
+              <SelectField name="driverName" label="Driver Name" options={driverOptions} control={control} required />
               <InputField name="driverMobile" label="Driver Mobile" readOnly />
             </div>
           </div>
@@ -384,12 +512,12 @@ export default function AddTripForm() {
 
           {/* Damage Section */}
           <div className="bg-white rounded-lg border border-gray-300 p-4">
-            <h3 className="text-orange-500 font-medium text-center mb-6">Damage Section!</h3>
+            <h3 className="text-orange-500 font-medium text-center mb-6">Damarage Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
-              <InputField name="damageDay" label="Damage Day" />
-              <InputField name="damageRate" label="Damage Rate" />
-              <InputField name="damageTotal" label="Damage Total" readOnly />
+              <InputField name="damarageDay" label="Damarage Day" />
+              <InputField name="damarageRate" label="Damarage Rate" />
+              <InputField name="damarageTotal" label="Damarage Total" readOnly />
             </div>
           </div>
 
@@ -398,8 +526,8 @@ export default function AddTripForm() {
             <h3 className="text-orange-500 font-medium text-center mb-6">Customer & Payment Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5">
-              <SelectField name="customerName" label="Customer Name" options={vehicleOptions} control={control} required />
-              <InputField name="customerNumber" label="Customer Number" />
+              <SelectField name="customerName" label="Customer Name" options={customerOptions} control={control} required />
+              <InputField name="mobile" label="Customer Number" />
               <InputField name="rentAmount" label="Rent Amount" />
               <InputField name="advancePayment" label="Advance Payment" />
             </div>

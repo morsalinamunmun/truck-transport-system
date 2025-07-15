@@ -26,7 +26,7 @@ const CarList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/driver/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setDrivers(response.data.data);
@@ -46,7 +46,7 @@ const CarList = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://api.tramessy.com/mstrading/api/driver/delete/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/driver/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -76,7 +76,7 @@ const CarList = () => {
   const handleView = async (id) => {
     try {
       const response = await axios.get(
-        `https://api.tramessy.com/mstrading/api/driver/show/${id}`
+        `${import.meta.env.VITE_BASE_URL}/api/driver/show/${id}`
       );
       if (response.data.status === "Success") {
         setSelectedDriver(response.data.data);

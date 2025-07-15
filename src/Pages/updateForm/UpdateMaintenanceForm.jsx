@@ -6,11 +6,12 @@ import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { FiCalendar } from "react-icons/fi";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import BtnSubmit from "../../components/Button/BtnSubmit";
 
 const UpdateMaintenanceForm = () => {
+  const navigate = useNavigate()
   // load data
   const updateMaintenanceLoaderData = useLoaderData();
   const {
@@ -35,7 +36,7 @@ const UpdateMaintenanceForm = () => {
   // car name / registration number
   const [vehicles, setVehicles] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/vehicle")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle`)
       .then((response) => response.json())
       .then((data) => setVehicles(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -48,15 +49,15 @@ const UpdateMaintenanceForm = () => {
   // select driver
   const [drivers, setDrivers] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/driver")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
   }, []);
 
   const driverOptions = drivers.map((driver) => ({
-    value: driver.name,
-    label: driver.name,
+    value: driver.driver_name,
+    label: driver.driver_name,
   }));
   const { register, handleSubmit, setValue, control } = useForm({
     defaultValues: {
@@ -84,7 +85,7 @@ const UpdateMaintenanceForm = () => {
       }
 
       const response = await axios.post(
-        `https://api.tramessy.com/api/maintenance/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/maintenance/${id}`,
         formData
       );
 
@@ -94,6 +95,7 @@ const UpdateMaintenanceForm = () => {
           position: "top-right",
         });
         setPreviewImage(null);
+        navigate("/tramessy/Maintenance")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }

@@ -20,7 +20,7 @@ const TripReport = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/trip/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then((res) => {
         if (res.data.status === "Success") {
           setTrips(res.data.data);

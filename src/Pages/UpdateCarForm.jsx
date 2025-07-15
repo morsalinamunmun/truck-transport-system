@@ -46,7 +46,7 @@ const UpdateCarForm = () => {
   // select driver from api
   const [drivers, setDrivers] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/driver/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -61,7 +61,7 @@ const UpdateCarForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        `https://api.tramessy.com/mstrading/api/vehicle/edit/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/vehicle/edit/${id}`,
         data,
         {
           headers: {

@@ -21,7 +21,7 @@ const UpdateCustomerForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        `https://api.tramessy.com/mstrading/api/customer/update/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/customer/update/${id}`,
         data,
         {
           headers: {

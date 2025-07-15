@@ -48,7 +48,7 @@ const UpdateDriverForm = () => {
         }
       }
       const response = await axios.post(
-        `https://api.tramessy.com/mstrading/api/driver/edit/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/driver/edit/${id}`,
         formData
       );
       const resData = response.data;
@@ -223,7 +223,7 @@ const UpdateDriverForm = () => {
                   src={
                     previewImage?.startsWith("blob:")
                       ? previewImage
-                      : `https://api.tramessy.com/mstrading/public/uploads/driver/${previewImage}`
+                      : `${import.meta.env.VITE_BASE_URL}/public/uploads/driver/${previewImage}`
                   }
                   alt="License Preview"
                   className="max-w-xs h-auto rounded border border-gray-300"

@@ -14,7 +14,7 @@ const AttendanceForm = () => {
 
   const [employee, setEmployee] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/employee/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/employee/list`)
       .then((response) => response.json())
       .then((data) => setEmployee(data.data))
       .catch((error) => console.error("Error fetching employee data:", error));
@@ -35,7 +35,7 @@ const AttendanceForm = () => {
         formData.append(key, data[key]);
       }
       const response = await axios.post(
-        "https://api.tramessy.com/mstrading/api/attendance/create",
+        `${import.meta.env.VITE_BASE_URL}/api/attendance/create`,
         formData
       );
       const resData = response.data;

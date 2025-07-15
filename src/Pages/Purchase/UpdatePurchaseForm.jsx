@@ -48,7 +48,7 @@ const UpdatePurchaseForm = () => {
 
   // select driver from api
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/driver/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -59,7 +59,7 @@ const UpdatePurchaseForm = () => {
   }));
   // select Vehicle No. from api
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/vehicle/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
       .then((response) => response.json())
       .then((data) => setVehicle(data.data))
       .catch((error) => console.error("Error fetching vehicle data:", error));
@@ -71,7 +71,7 @@ const UpdatePurchaseForm = () => {
   }));
   // select branch from api
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/office/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/office/list`)
       .then((response) => response.json())
       .then((data) => setBranch(data.data))
       .catch((error) => console.error("Error fetching branch data:", error));
@@ -82,7 +82,7 @@ const UpdatePurchaseForm = () => {
   }));
   // select supplier from api
   useEffect(() => {
-    fetch("https://api.tramessy.com/mstrading/api/supply/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/supply/list`)
       .then((response) => response.json())
       .then((data) => setSupplier(data.data))
       .catch((error) => console.error("Error fetching supply data:", error));
@@ -111,7 +111,7 @@ const UpdatePurchaseForm = () => {
         purchaseFormData.append(key, data[key]);
       }
       await axios.post(
-        `https://api.tramessy.com/mstrading/api/purchase/update/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/purchase/update/${id}`,
         purchaseFormData,
         {
           headers: {
@@ -318,7 +318,7 @@ const UpdatePurchaseForm = () => {
                 src={
                   previewImage?.startsWith("blob:")
                     ? previewImage
-                    : `https://api.tramessy.com/mstrading/public/uploads/purchase/${previewImage}`
+                    : `${import.meta.env.VITE_BASE_URL}/public/uploads/purchase/${previewImage}`
                 }
                 alt="License Preview"
                 className="max-w-xs h-auto rounded border border-gray-300"

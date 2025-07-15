@@ -5,9 +5,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { FiCalendar } from "react-icons/fi";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateVendorForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateVendorLoaderData = useLoaderData();
   const {
@@ -32,15 +33,15 @@ const UpdateVendorForm = () => {
         formData.append(key, data[key]);
       }
       const response = await axios.post(
-        `https://api.tramessy.com/mstrading/api/vendor/update/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/vendor/update/${id}`,
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Vendor Updated successfully!", {
           position: "top-right",
         });
+        navigate("/tramessy/VendorList")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }

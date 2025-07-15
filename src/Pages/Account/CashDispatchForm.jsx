@@ -30,7 +30,7 @@ const CashDispatchForm = () => {
       }
       tripFormData.append("ref_id", refId);
       const tripResponse = await axios.post(
-        "https://api.tramessy.com/mstrading/api/account/create",
+        `${import.meta.env.VITE_BASE_URL}/api/account/create`,
         tripFormData
       );
 
@@ -51,7 +51,7 @@ const CashDispatchForm = () => {
         branchFormData.append("ref_id", refId);
 
         await axios.post(
-          "https://api.tramessy.com/mstrading/api/branch/create",
+          `${import.meta.env.VITE_BASE_URL}/api/branch/create`,
           branchFormData
         );
 

@@ -19,7 +19,7 @@ const Suzuki = () => {
   // Fetch trips data
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/trip/list")
+      .get(`${import.meta.env.VITE_BASE_URL}ng/api/trip/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setSuzuki(response.data.data);
@@ -398,12 +398,12 @@ const Suzuki = () => {
         fd.append("total_amount", dt.total_rent);
         // Step 1: Create ledger entry
         await axios.post(
-          "https://api.tramessy.com/mstrading/api/customerLedger/create",
+          `${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`,
           fd
         );
         // Step 2: Update trip status to Approved
         await axios.post(
-          `https://api.tramessy.com/mstrading/api/trip/update/${dt.id}`,
+          `${import.meta.env.VITE_BASE_URL}/api/trip/update/${dt.id}`,
           { status: "Approved" }
         );
       }
@@ -415,7 +415,7 @@ const Suzuki = () => {
 
       // Optional: refetch trips to refresh data
       const refreshed = await axios.get(
-        "https://api.tramessy.com/mstrading/api/trip/list"
+        `${import.meta.env.VITE_BASE_URL}/api/trip/list`
       );
       if (refreshed.data.status === "Success") {
         setSuzuki(refreshed.data.data);

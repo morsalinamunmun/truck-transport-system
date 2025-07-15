@@ -85,7 +85,7 @@ const handlePrint = useReactToPrint({
   // Fetch trips data
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/trip/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setTrip(response.data.data);
@@ -214,7 +214,7 @@ const handlePrint = useReactToPrint({
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://api.tramessy.com/mstrading/api/trip/delete/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/trip/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -244,7 +244,7 @@ const handlePrint = useReactToPrint({
   const handleView = async (id) => {
     try {
       const response = await axios.get(
-        `https://api.tramessy.com/mstrading/api/trip/show/${id}`
+        `${import.meta.env.VITE_BASE_URL}/api/trip/show/${id}`
       );
       if (response.data.status === "Success") {
         setselectedTrip(response.data.data);
@@ -401,7 +401,7 @@ const handlePrint = useReactToPrint({
                 <th className="p-2">Trip Cost</th>
                 <th className="p-2">Trip Rent</th>
                 <th className="p-2">Total Profit</th>
-                <th className="p-2">Status</th>
+                {/* <th className="p-2">Status</th> */}
                 <th className="p-2 action_column">Action</th>
               </tr>
             </thead>
@@ -452,7 +452,7 @@ const handlePrint = useReactToPrint({
                       {parseFloat(dt.total_rent || 0) -
                         parseFloat(dt.total_exp || 0)}{" "}
                     </td>
-                    <td className="p-2">{status}</td>
+                    {/* <td className="p-2">{status}</td> */}
                     <td className="p-2 action_column">
                       <div className="flex gap-1 items-center">
                         <Link to={`/tramessy/UpdateTripForm/${dt.id}`}>

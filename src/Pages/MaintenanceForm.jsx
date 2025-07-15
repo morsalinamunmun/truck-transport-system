@@ -8,7 +8,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { FiCalendar } from "react-icons/fi";
 import Select from "react-select";
 import BtnSubmit from "../components/Button/BtnSubmit";
+import { useNavigate } from "react-router-dom";
 const MaintenanceForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,7 +24,7 @@ const MaintenanceForm = () => {
   // car name / registration number
   const [vehicles, setVehicles] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/vehicle")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle`)
       .then((response) => response.json())
       .then((data) => setVehicles(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -35,15 +37,15 @@ const MaintenanceForm = () => {
   // select driver
   const [drivers, setDrivers] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/driver")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
   }, []);
 
   const driverOptions = drivers.map((driver) => ({
-    value: driver.name,
-    label: driver.name,
+    value: driver.driver_name,
+    label: driver.driver_name,
   }));
 
   // post data on server
@@ -57,7 +59,7 @@ const MaintenanceForm = () => {
         }
       }
       const response = await axios.post(
-        "https://api.tramessy.com/api/maintenance",
+        `${import.meta.env.VITE_BASE_URL}/api/maintenance`,
         formData
       );
       const resData = response.data;
@@ -67,6 +69,7 @@ const MaintenanceForm = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/Maintenance")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown error"));
       }

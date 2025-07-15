@@ -12,7 +12,7 @@ const AttendanceForm = () => {
     const formattedDate = today.toISOString().split("T")[0];
     setCurrentDate(formattedDate);
 
-    fetch("https://api.tramessy.com/mstrading/api/employee/list")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/employee/list`)
       .then((res) => res.json())
       .then((data) => setEmployee(data.data))
       .catch((err) => console.error("Error loading employees:", err));
@@ -35,7 +35,7 @@ const AttendanceForm = () => {
 
     try {
       const existingRes = await fetch(
-        "https://api.tramessy.com/mstrading/api/attendance/list"
+        `${import.meta.env.VITE_BASE_URL}/api/attendance/list`
       );
       const existingData = await existingRes.json();
 
@@ -65,7 +65,7 @@ const AttendanceForm = () => {
         };
 
         const res = await fetch(
-          "https://api.tramessy.com/mstrading/api/attendance/create",
+          `${import.meta.env.VITE_BASE_URL}/api/attendance/create`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

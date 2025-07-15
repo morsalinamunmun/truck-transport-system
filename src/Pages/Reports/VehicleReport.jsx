@@ -19,11 +19,11 @@ const VehicleReport = () => {
      const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
-    axios.get("https://api.tramessy.com/mstrading/api/vehicle/list")
+    axios.get(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
       .then(res => setVehicles(res.data.data))
       .catch(console.error);
 
-    axios.get("https://api.tramessy.com/mstrading/api/trip/list")
+    axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
       .then(res => setTrips(res.data.data))
       .catch(console.error);
   }, []);

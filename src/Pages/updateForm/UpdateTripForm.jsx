@@ -73,7 +73,7 @@
 //   // select customer from api
 //   const [customers, setCustomers] = useState([]);
 //   useEffect(() => {
-//     fetch("https://api.tramessy.com/mstrading/api/customer/list")
+//     fetch(`${import.meta.env.VITE_BASE_URL}/api/customer/list`)
 //       .then((response) => response.json())
 //       .then((data) => setCustomers(data.data))
 //       .catch((error) => console.error("Error fetching customer data:", error));
@@ -87,7 +87,7 @@
 //   const [vehicle, setVehicle] = useState([]);
 //   const [selectedVehicle, setSelectedVehicle] = useState(null);
 //   useEffect(() => {
-//     fetch("https://api.tramessy.com/mstrading/api/vehicle/list")
+//     fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
 //       .then((response) => response.json())
 //       .then((data) => {
 //         const options = data.data.map((dt) => ({
@@ -107,7 +107,7 @@
 //   // select driver from api
 //   const [drivers, setDrivers] = useState([]);
 //   useEffect(() => {
-//     fetch("https://api.tramessy.com/mstrading/api/driver/list")
+//     fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
 //       .then((response) => response.json())
 //       .then((data) => setDrivers(data.data))
 //       .catch((error) => console.error("Error fetching driver data:", error));
@@ -190,7 +190,7 @@
 //       // Additional fields
 //       tripFormData.append("ref_id", refId);
 //       await axios.post(
-//         `https://api.tramessy.com/mstrading/api/trip/update/${id}`,
+//         `${import.meta.env.VITE_BASE_URL}/api/trip/update/${id}`,
 //         tripFormData,
 //         {
 //           headers: {
@@ -894,13 +894,16 @@
 // export default AddTripForm;
 
 
-import { useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { Menu, X, User } from "lucide-react";
 import { FiCalendar } from "react-icons/fi";
 import { InputField, SelectField } from "../../components/Form/FormFields";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function UpdateTripForm({ onSubmitForm }) {
+export default function UpdateTripForm() {
+  const navigate = useNavigate();
   const initialValues = useLoaderData(); 
 
   const methods = useForm({
@@ -918,14 +921,14 @@ export default function UpdateTripForm({ onSubmitForm }) {
     commission: initialValues?.commission || "",
     labour: initialValues?.labour || "",
     others: initialValues?.others || "",
-    damageDay: initialValues?.damageDay || "",
-    damageRate: initialValues?.damageRate || "",
+    damarageDay: initialValues?.damarageDay || "",
+    damarageRate: initialValues?.damarageRate || "",
     customerName: initialValues?.customerName || "",
-    customerNumber: initialValues?.customerNumber || "",
+    customerNumber: initialValues?.mobile || "",
     rentAmount: initialValues?.rentAmount || "",
     advancePayment: initialValues?.advancePayment || "",
     total: initialValues?.total || "",
-    damageTotal: initialValues?.damageTotal || "",
+    damarageTotal: initialValues?.damarageTotal || "",
   },
 });
 
@@ -945,8 +948,8 @@ export default function UpdateTripForm({ onSubmitForm }) {
     "commission",
     "labour",
     "others",
-    "damageDay",
-    "damageRate",
+    "damarageDay",
+    "damarageRate",
   ]);
 
   useEffect(() => {
@@ -957,8 +960,8 @@ export default function UpdateTripForm({ onSubmitForm }) {
       "commission",
       "labour",
       "others",
-      "damageDay",
-      "damageRate",
+      "damarageDay",
+      "damarageRate",
     ];
 
     const values = watchFields.reduce((acc, val, i) => {
@@ -974,24 +977,104 @@ export default function UpdateTripForm({ onSubmitForm }) {
       values.labour +
       values.others;
 
-    const damageTotal = values.damageDay * values.damageRate;
+    const damarageTotal = values.damarageDay * values.damarageRate;
 
     methods.setValue("total", total);
-    methods.setValue("damageTotal", damageTotal);
+    methods.setValue("damarageTotal", damarageTotal);
   }, [watchFields, methods]);
 
-  const vehicleOptions = [
-    { label: "Vehicle 1", value: "vehicle1" },
-    { label: "Vehicle 2", value: "vehicle2" },
-  ];
+  const onSubmitForm = async (data) => {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/update/${data.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-  const onSubmit = (data) => {
-    onSubmitForm?.(data);
-  };
+    if (res.ok) {
+      toast.success("Trip updated successfully!"); 
+      navigate("/tramessy/tripList"); 
+    } else {
+      toast.error("Failed to update the trip.");
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong.");
+  }
+};
+
+// select driver from api
+const [vehicle, setVehicle] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`)
+      .then((response) => response.json())
+      .then((data) => setVehicle(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const vehicleOptions = vehicle.map((vehicle) => ({
+    value: vehicle.vehicle_name,
+    label: vehicle.vehicle_name,
+  }));
+  // vehicel
+  const [driver, setDriver] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
+      .then((response) => response.json())
+      .then((data) => setDriver(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const driverOptions = driver.map((driver) => ({
+    value: driver.driver_name,
+    label: driver.driver_name,
+     mobile: driver.driver_mobile,
+  }));
+   // Driver name এর পরিবর্তন দেখুন
+const selectedDriverName = useWatch({
+  control,
+  name: "driverName",
+});
+
+useEffect(() => {
+  const selectedDriver = driverOptions.find(d => d.value === selectedDriverName);
+  if (selectedDriver) {
+    methods.setValue("driverMobile", selectedDriver.mobile || "");
+  }
+}, [selectedDriverName, driverOptions, methods]);
+
+// customer
+  const [customer, setCustomer] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/customer/list`)
+      .then((response) => response.json())
+      .then((data) => setCustomer(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+
+  const customerOptions = customer.map((customer) => ({
+    value: customer.customer_name,
+    label: customer.customer_name,
+     mobile: customer.mobile,
+  }));
+
+   // Driver name এর পরিবর্তন দেখুন
+const selectedCustomerName = useWatch({
+  control,
+  name: "customerName",
+});
+
+useEffect(() => {
+  const selectedCustomer = customerOptions.find(d => d.value === selectedCustomerName);
+  if (selectedCustomer) {
+    methods.setValue("mobile", selectedCustomer.mobile || "");
+  }
+}, [selectedCustomerName, customerOptions, methods]);
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen mt-10">
+      <Toaster/>
+      <form onSubmit={handleSubmit(onSubmitForm)} className="min-h-screen mt-10">
         {/* Header */}
         <div className="bg-primary text-white px-4 py-2 rounded-t-md">
           <h2 className="text-lg font-medium">Update Trip Form</h2>
@@ -1026,8 +1109,8 @@ export default function UpdateTripForm({ onSubmitForm }) {
               <h3 className="text-orange-500 font-medium text-center mb-6">Vehicle & Driver Information!</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
                 <SelectField name="vehicleNo" label="Vehicle No" options={vehicleOptions} control={control} required />
-                <InputField name="driverName" label="Driver Name" readOnly />
-                <InputField name="driverMobile" label="Driver Mobile" readOnly />
+              <SelectField name="driverName" label="Driver Name" options={driverOptions} control={control} required />
+              <InputField name="driverMobile" label="Driver Mobile" readOnly />
               </div>
             </div>
 
@@ -1049,11 +1132,11 @@ export default function UpdateTripForm({ onSubmitForm }) {
 
             {/* Damage Section */}
             <div className="bg-white rounded-lg border border-gray-300 p-4">
-              <h3 className="text-orange-500 font-medium text-center mb-6">Damage Section!</h3>
+              <h3 className="text-orange-500 font-medium text-center mb-6">Damarage Section!</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
-                <InputField name="damageDay" label="Damage Day" />
-                <InputField name="damageRate" label="Damage Rate" />
-                <InputField name="damageTotal" label="Damage Total" readOnly />
+                <InputField name="damarageDay" label="Damarage Day" />
+                <InputField name="damarageRate" label="Damarage Rate" />
+                <InputField name="damarageTotal" label="Damarage Total" readOnly />
               </div>
             </div>
 
@@ -1061,8 +1144,8 @@ export default function UpdateTripForm({ onSubmitForm }) {
             <div className="bg-white rounded-lg border border-gray-300 p-4">
               <h3 className="text-orange-500 font-medium text-center mb-6">Customer & Payment Section!</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5">
-                <SelectField name="customerName" label="Customer Name" options={vehicleOptions} control={control} required />
-                <InputField name="customerNumber" label="Customer Number" />
+                <SelectField name="customerName" label="Customer Name" options={customerOptions} control={control} required />
+                <InputField name="mobile" label="Customer Number" />
                 <InputField name="rentAmount" label="Rent Amount" />
                 <InputField name="advancePayment" label="Advance Payment" />
               </div>

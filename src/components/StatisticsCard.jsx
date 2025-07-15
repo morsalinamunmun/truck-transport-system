@@ -11,6 +11,8 @@ import dayjs from "dayjs"
 
 const StatisticsCard = () => {
   const [tripData, setTripData] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+const [activeVehicleList, setActiveVehicleList] = useState([])
 
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
@@ -26,12 +28,19 @@ const StatisticsCard = () => {
     peakHour: "",
   })
 
+  // activc gari
+  const handleActiveVehicleClick = () => {
+  const vehicles = [...new Set(tripData.map((trip) => trip.vehicle_number || trip.vehicle))].filter(Boolean)
+  setActiveVehicleList(vehicles)
+  setIsModalOpen(true)
+}
+
   const today = dayjs().format("YYYY-MM-DD")
 
   useEffect(() => {
     const fetchTripData = async () => {
       try {
-        const response = await axios.get("https://api.tramessy.com/mstrading/api/trip/list")
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
         const trips = response.data?.data || []
 
         setTripData(trips)
@@ -112,7 +121,7 @@ const StatisticsCard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+          <div  onClick={handleActiveVehicleClick} className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Active Vehicles</p>
@@ -175,6 +184,37 @@ const StatisticsCard = () => {
             </div>
           </div>
         </div>
+
+        {/* modal gari */}
+        {isModalOpen && (
+          <>
+             <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-40"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+      <button
+        className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-xl"
+        onClick={() => setIsModalOpen(false)}
+      >
+        &times;
+      </button>
+      <h2 className="text-xl font-semibold mb-4">Active Vehicles</h2>
+      {activeVehicleList.length > 0 ? (
+        <ul className="list-disc list-inside text-gray-800 space-y-1 max-h-60 overflow-y-auto">
+          {activeVehicleList.map((vehicle, idx) => (
+            <li key={idx}>{vehicle}</li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-500">কোনো Active গাড়ি নেই।</p>
+      )}
+    </div>
+  </div>
+          </>
+)}
+
     </div>
     
   );

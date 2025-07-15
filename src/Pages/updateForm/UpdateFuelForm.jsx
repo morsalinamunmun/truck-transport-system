@@ -4,11 +4,12 @@ import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { FiCalendar } from "react-icons/fi";
 import { MdOutlineArrowDropDown } from "react-icons/md";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import BtnSubmit from "../../components/Button/BtnSubmit";
 
 const UpdateFuelForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateFuelLoaderData = useLoaderData();
   const {
@@ -42,7 +43,7 @@ const UpdateFuelForm = () => {
   // car name / registration number
   const [vehicles, setVehicles] = useState([]);
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/vehicle")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle`)
       .then((response) => response.json())
       .then((data) => setVehicles(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
@@ -54,21 +55,21 @@ const UpdateFuelForm = () => {
   }));
   // driver name
   useEffect(() => {
-    fetch("https://api.tramessy.com/api/driver")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver`)
       .then((response) => response.json())
       .then((data) => setDrivers(data.data))
       .catch((error) => console.error("Error fetching driver data:", error));
   }, []);
 
   const driverOptions = drivers.map((driver) => ({
-    value: driver.name,
-    label: driver.name,
+    value: driver.driver_name,
+    label: driver.driver_name,
   }));
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.put(
-        `https://api.tramessy.com/api/fuel/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/fuel/${id}`,
         data,
         {
           headers: {
@@ -84,6 +85,7 @@ const UpdateFuelForm = () => {
         toast.success("Fuel updated successfully!", {
           position: "top-right",
         });
+        navigate("/tramessy/Fuel")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }

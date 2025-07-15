@@ -17,7 +17,7 @@ const DriverLedger = () => {
   // Fetch driver ledger data
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/mstrading/api/driverLedger/list")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/driverLedger/list`)
       .then((response) => {
         if (response.data.status === "Success") {
           setDriver(response.data.data);
