@@ -310,8 +310,8 @@ export default function AddTripForm() {
     },
   });
    
-  const { handleSubmit, control,  watch } = methods;
-
+  const { handleSubmit, control,  watch, setValue } = methods;
+ const selectedTransport = watch("transport_type");
   const watchFields = watch([
     "fuelCost",
     "tollCost",
@@ -321,6 +321,53 @@ export default function AddTripForm() {
     "others",
     "damarageDay",
     "damarageRate",
+  ]);
+
+  // calculate Total Expense
+  const driverCommision = parseFloat(watch("driver_commission") || 0);
+  const roadCost = parseFloat(watch("road_cost") || 0);
+  const labourCost = parseFloat(watch("labor") || 0);
+  const parkingCost = parseFloat(watch("parking_cost") || 0);
+  const guardCost = parseFloat(watch("night_guard") || 0);
+  const tollCost = parseFloat(watch("toll_cost") || 0);
+  const feriCost = parseFloat(watch("feri_cost") || 0);
+  const policeCost = parseFloat(watch("police_cost") || 0);
+  const chadaCost = parseFloat(watch("chada") || 0);
+
+  const totalExpense =
+    driverCommision +
+    roadCost +
+    labourCost +
+    parkingCost +
+    guardCost +
+    tollCost +
+    feriCost +
+    policeCost +
+    chadaCost;
+
+  useEffect(() => {
+    const total =
+      driverCommision +
+      roadCost +
+      labourCost +
+      parkingCost +
+      guardCost +
+      tollCost +
+      feriCost +
+      policeCost +
+      chadaCost;
+    setValue("total_exp", total);
+  }, [
+    driverCommision,
+    roadCost,
+    labourCost,
+    parkingCost,
+    guardCost,
+    tollCost,
+    feriCost,
+    policeCost,
+    chadaCost,
+    setValue,
   ]);
 
   // total cost
@@ -415,6 +462,47 @@ useEffect(() => {
   }
 }, [selectedDriverName, driverOptions, methods]);
 
+// select vendor Vehicle No. from api
+  const [vendorVehicle, setVendorVehicle] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/rent/list`)
+      .then((response) => response.json())
+      .then((data) => setVendorVehicle(data.data))
+      .catch((error) => console.error("Error fetching vehicle data:", error));
+  }, []);
+  const vendorVehicleOptions = vendorVehicle.map((dt) => ({
+    value: `${dt.registration_zone} ${dt.registration_serial} ${dt.registration_number} `,
+    label: `${dt.registration_zone} ${dt.registration_serial} ${dt.registration_number} `,
+  }));
+
+  // select own driver from api
+  const [vendor, setVendorDrivers] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/rent/list`)
+      .then((response) => response.json())
+      .then((data) => setVendorDrivers(data.data))
+      .catch((error) => console.error("Error fetching vendor data:", error));
+  }, []);
+  const vendorDriverOptions = vendor.map((dt) => ({
+    value: dt.vendor_name,
+    label: dt.vendor_name,
+    contact: dt.mobile,
+  }));
+
+   // select own driver from api
+  const [drivers, setDrivers] = useState([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`)
+      .then((response) => response.json())
+      .then((data) => setDrivers(data.data))
+      .catch((error) => console.error("Error fetching driver data:", error));
+  }, []);
+  const ownDriverOptions = drivers.map((driver) => ({
+    value: driver.driver_name,
+    label: driver.driver_name,
+    contact: driver.driver_mobile,
+  }));
+
 // customer
   const [customer, setCustomer] = useState([]);
   useEffect(() => {
@@ -486,11 +574,202 @@ useEffect(() => {
             <h3 className="text-orange-500 font-medium text-center mb-6">Vehicle & Driver Information!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
-              <SelectField name="vehicleNo" label="Vehicle No" options={vehicleOptions} control={control} required />
-              <SelectField name="driverName" label="Driver Name" options={driverOptions} control={control} required />
-              <InputField name="driverMobile" label="Driver Mobile" readOnly />
+                      <SelectField
+                        name="transport_type"
+                        label="Transport Type"
+                        required
+                        options={[
+                          { value: "own_transport", label: "Own Transport" },
+                          {
+                            value: "vendor_transport",
+                            label: "Vendor Transport",
+                          },
+                        ]}
+                      />
+                      {/* vehicle no transportn based */}
+              {selectedTransport === "own_transport" ? (
+                        <SelectField
+                          name="vehicle_no"
+                          label="Vehicle No."
+                          required={true}
+                          options={vehicleOptions}
+                          control={control}
+                        />
+                      ) : selectedTransport === "vendor_transport" ? (
+                        <SelectField
+                          name="vehicle_no"
+                          label="Vehicle No."
+                          required={true}
+                          options={vendorVehicleOptions}
+                          control={control}
+                        />
+                      ) : (
+                        <SelectField
+                          name="vehicle_no"
+                          label="Vehicle No."
+                          defaultValue={"Please select transport first"}
+                          required={true}
+                          options={[
+                            {
+                              label: "Please select transport first",
+                              value: "",
+                              disabled: true,
+                            },
+                          ]}
+                          control={control}
+                        />
+                      )}
+                      {/* vehicle no transportn based */}
+               {selectedTransport === "own_transport" ? (
+                        <SelectField
+                          name="driver_name"
+                          label="Driver Name"
+                          required
+                          control={control}
+                          options={ownDriverOptions}
+                          onSelectChange={(selectedOption) => {
+                            setValue(
+                              "driver_mobile",
+                              selectedOption?.contact || ""
+                            );
+                          }}
+                        />
+                      ) : selectedTransport === "vendor_transport" ? (
+                        <SelectField
+                          name="driver_name"
+                          label="Driver Name"
+                          required
+                          control={control}
+                          options={vendorDriverOptions}
+                        />
+                      ) : (
+                        <SelectField
+                          name="driver_name"
+                          label="Driver Name"
+                          required
+                          control={control}
+                          options={[
+                            {
+                              label: "Please select transport first",
+                              value: "",
+                              disabled: true,
+                            },
+                          ]}
+                        />
+                      )}
+              <InputField name="driverMobile" label="Driver Mobile" required />
+              <InputField
+                        name="total_rent"
+                        label="Total Rent/Bill Amount"
+                        type="number"
+                        required
+                      />
+                      <InputField name="challan" label="Challan" required />
             </div>
           </div>
+          {/* own transport */}
+          {selectedTransport === "own_transport" && (
+              <div className="border border-gray-300 p-5 rounded-md mt-5">
+                <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
+                  <div className="w-full">
+                    <InputField
+                      name="driver_adv"
+                      label="Driver Advance"
+                      required
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField
+                      name="driver_commission"
+                      label="Driver Commission"
+                      required
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField
+                      name="labor"
+                      label="Labour Cost"
+                      type="number"
+                    />
+                  </div>
+                </div>
+                <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
+                  <div className="w-full">
+                    <InputField
+                      name="parking_cost"
+                      label="Parking Cost"
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField
+                      name="night_guard"
+                      label="Night Guard Cost"
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField
+                      name="toll_cost"
+                      label="Toll Cost"
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField
+                      name="feri_cost"
+                      label="Feri Cost"
+                      type="number"
+                    />
+                  </div>
+                </div>
+                <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
+                  <div className="w-full">
+                    <InputField
+                      name="police_cost"
+                      label="Police Cost"
+                      type="number"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <InputField name="chada" label="Chada" type="number" />
+                  </div>
+
+                  <div className="w-full">
+                    <InputField
+                      name="total_exp"
+                      label="Total Expense"
+                      readOnly
+                      defaultValue={totalExpense}
+                      value={totalExpense}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* vendor transport */}
+            {selectedTransport === "vendor_transport" && (
+              <div className="border border-gray-300 p-5 rounded-md mt-5 md:mt-3 md:flex justify-between gap-3">
+                <div className="w-full">
+                  <InputField
+                    name="trip_rent"
+                    label="Trip Rent"
+                    required
+                    type="number"
+                  />
+                </div>
+                <div className="w-full">
+                  <InputField name="advance" label="Advance" required />
+                </div>
+                <div className="w-full">
+                  <InputField name="due_amount" label="Due Amount" required />
+                </div>
+              </div>
+            )}
 
           {/* Running Cost Section */}
           <div className="bg-white rounded-lg border border-gray-300 p-4">

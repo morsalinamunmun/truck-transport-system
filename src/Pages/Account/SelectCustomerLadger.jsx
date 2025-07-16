@@ -411,7 +411,7 @@ const SelectCustomerLedger = ({ customerName }) => {
         {showFilter && (
           <div className="flex gap-4 border border-gray-300 rounded-md p-5 mb-5">
             <div className="w-full">
-              <label className="block mb-1 text-sm font-medium">Start Date</label>
+              {/* <label className="block mb-1 text-sm font-medium">Start Date</label> */}
               <input
                 type="date"
                 value={startDate}
@@ -420,7 +420,7 @@ const SelectCustomerLedger = ({ customerName }) => {
               />
             </div>
             <div className="w-full">
-              <label className="block mb-1 text-sm font-medium">End Date</label>
+              {/* <label className="block mb-1 text-sm font-medium">End Date</label> */}
               <input
                 type="date"
                 value={endDate}
@@ -428,6 +428,14 @@ const SelectCustomerLedger = ({ customerName }) => {
                 className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
               />
             </div>
+            <div className="flex gap-2">
+                                                  <button
+                                                    onClick={() => setCurrentPage(1)}
+                                                    className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300  cursor-pointer"
+                                                  >
+                                                    <FaFilter /> Filter
+                                                  </button>
+                                                </div>
           </div>
         )}
 

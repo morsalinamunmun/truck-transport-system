@@ -88,6 +88,7 @@ import UpdateLeaveForm from "../Pages/HR/UpdateLeaveForm";
 import MonthlyStatement from "../Pages/MontlyStatement";
 import VehicleReport from "../Pages/Reports/VehicleReport";
 import Bill from "../Pages/Billing/Bill";
+import DailyTripExpense from "../Pages/DailyTripExpense";
 export const router = createBrowserRouter([
   {
     path: "/tramessy",
@@ -320,15 +321,15 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/DailyExpense",
+        path: "/tramessy/daily-trip-expense",
         element: (
           <PrivateRoute>
-            <DailyExpense />
+            <DailyTripExpense />
           </PrivateRoute>
         ),
       },
       {
-        path: "/tramessy/DailyExpense",
+        path: "/tramessy/daily-expense",
         element: (
           <PrivateRoute>
             <DailyExpense />

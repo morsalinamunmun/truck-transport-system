@@ -395,9 +395,9 @@ const PaymentList = () => {
         {showFilter && (
           <div className="md:flex gap-6 justify-between border border-gray-300 rounded-md p-5 my-5 transition-all duration-300 pb-5">
             <div className="relative w-full">
-              <label className="block mb-1 text-sm font-medium">
+              {/* <label className="block mb-1 text-sm font-medium">
                 Start Date
-              </label>
+              </label> */}
               <input
                 type="date"
                 value={startDate}
@@ -406,7 +406,7 @@ const PaymentList = () => {
               />
             </div>
             <div className="relative w-full">
-              <label className="block mb-1 text-sm font-medium">End Date</label>
+              {/* <label className="block mb-1 text-sm font-medium">End Date</label> */}
               <input
                 type="date"
                 value={endDate}
@@ -414,7 +414,7 @@ const PaymentList = () => {
                 className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
               />
             </div>
-            <div className="mt-3 md:mt-0 flex gap-2">
+            <div className="flex gap-2">
                                       <button
                                         onClick={() => setCurrentPage(1)}
                                         className="bg-primary text-white px-4 py-1 md:py-0 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300  cursor-pointer"

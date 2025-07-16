@@ -1,13 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { FaBars, FaMagnifyingGlass } from "react-icons/fa6";
 import avatar from "../../assets/avatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 
+import { LogOut, ChevronDown, ChevronUp, User, Mail, Phone, Menu } from "lucide-react";
+
 const Header = ({ setMobileSidebarOpen }) => {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+    const dropdownRef = useRef(null)
 
   // handle signout
   const handleSignout = () => {
@@ -51,7 +54,7 @@ const Header = ({ setMobileSidebarOpen }) => {
         </div> */}
 
         {/* Admin Dropdown */}
-        <div className="relative bg-white p-2 rounded-md flex gap-2 items-center">
+        {/* <div className="relative bg-white p-2 rounded-md flex gap-2 items-center">
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => setIsAdminOpen(!isAdminOpen)}
@@ -84,6 +87,51 @@ const Header = ({ setMobileSidebarOpen }) => {
               </p>
             </div>
           )}
+        </div> */}
+         {/* Admin Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <div
+            className="flex cursor-pointer items-center gap-2 rounded-md bg-white p-2"
+            onClick={() => setIsAdminOpen(!isAdminOpen)}
+          >
+            {/* Using a placeholder image for avatar */}
+            <img src={avatar} alt="Admin" className="h-8 w-8 rounded-full drop-shadow" />
+            {/* <h3 className="font-semibold text-blue-700">{user?.data?.user?.role}</h3> */}
+            {/* {isAdminOpen ? (
+              <ChevronUp className="h-4 w-4 text-gray-600 transition-transform duration-200" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-gray-600 transition-transform duration-200" />
+            )} */}
+          </div>
+
+          {/* Dropdown Content */}
+          <div
+            className={`absolute right-0 top-14 w-56 rounded-md bg-white p-3 shadow-lg transition-all duration-300 ease-in-out ${
+              isAdminOpen ? "visible opacity-100 scale-y-100" : "invisible opacity-0 scale-y-95"
+            } origin-top`}
+          >
+            <div className="mb-2 border-b border-gray-200 pb-2 space-y-2">
+              <p className="flex items-center gap-2 text-sm font-semibold text-primary">
+                <User className="h-4 w-4" />
+                {user?.data?.user?.role}
+              </p>
+              <p className="flex items-center gap-2 text-xs text-gray-600 ">
+                <Mail className="h-3 w-3" />
+                {user?.data?.user?.email}
+              </p>
+              <p className="flex items-center gap-2 text-xs text-gray-600 ">
+                <Phone className="h-3 w-3" />
+                {user?.data?.user?.phone}
+              </p>
+            </div>
+            <button
+              onClick={handleSignout}
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </>

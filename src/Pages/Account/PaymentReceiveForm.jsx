@@ -142,13 +142,16 @@ const PaymentReceiveForm = () => {
                 />
               </div>
               <div className="w-full">
-                <SelectField
-                  name="branch_name"
-                  label="Branch Name"
-                  required
-                  options={branchOptions}
-                  control={control}
-                />
+               <SelectField
+  name="branch_name"
+  label="Branch Name"
+  required
+  control={control}
+  options={[
+    { label: "Select Branch", value: "", disabled: true },
+    { label: "Head Office", value: "Head Office" },
+  ]}
+/>
                 {/* todo dropdown add korte hobe */}
               </div>
             </div>

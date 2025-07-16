@@ -43,7 +43,7 @@ const Sidebar = () => {
     <div className="overflow-y-scroll hide-scrollbar">
       <main>
         {/* Logo */}
-        <div className="py-[5px] pl-4 border-b border-gray-300">
+        <div className="py-[6px] pl-4 border-b border-gray-300">
           <Link to="/tramessy">
             {/* <img src={logo} alt="Logo" className="w-28" /> */}
             <div className="flex items-start justify-start">
@@ -57,7 +57,7 @@ const Sidebar = () => {
         </div>
 
         {/* Admin Info */}
-        <div className="p-3 border-b border-gray-300">
+        {/* <div className="p-3 border-b border-gray-300">
           <div className="bg-white p-2 rounded-md flex gap-2 items-center">
             <img
               src={avatar}
@@ -66,14 +66,14 @@ const Sidebar = () => {
             />
             <h3 className="text-primary font-semibold">Admin</h3>
           </div>
-        </div>
+        </div> */}
 
         {/* Navigation */}
         <div className="mt-3 px-2">
-          <ul className="space-y-3 list-none">
+          <ul className="space-y-3 list-none text-sm">
             {/* Dashboard */}
             <li
-              className={`py-3 px-2 rounded-sm cursor-pointer ${
+              className={` py-3 px-2 rounded-sm cursor-pointer ${
                 isActive("/tramessy")
                   ? "bg-primary text-white"
                   : "text-white bg-primary"
@@ -174,7 +174,7 @@ const Sidebar = () => {
                           <span>Fuel</span>
                         </Link>
                       </li>
-                      {/* <li>
+                      <li>
                         <Link
                           to="/tramessy/Parts"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -192,7 +192,7 @@ const Sidebar = () => {
                           ></div>
                           <span>Spare & Parts List</span>
                         </Link>
-                      </li> */}
+                      </li>
                       <li>
                         <Link
                           to="/tramessy/Maintenance"
@@ -903,16 +903,35 @@ const Sidebar = () => {
                       </li>
                       <li>
                         <Link
-                          to="/tramessy/DailyExpense"
+                          to="/tramessy/daily-trip-expense"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
-                            isActive("/tramessy/DailyExpense")
+                            isActive("/tramessy/daily-trip-expense")
                               ? "text-white bg-primary"
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
                           <div
                             className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/DailyExpense")
+                              isActive("/tramessy/daily-trip-expense")
+                                ? "bg-white"
+                                : "bg-primary"
+                            }`}
+                          ></div>
+                          <span>Daily Trip Expense</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/tramessy/daily-expense"
+                          className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
+                            isActive("/tramessy/daily-expense")
+                              ? "text-white bg-primary"
+                              : "text-gray-500 hover:text-primary"
+                          }`}
+                        >
+                          <div
+                            className={`w-[6px] h-[6px] rounded-full ${
+                              isActive("/tramessy/daily-expense")
                                 ? "bg-white"
                                 : "bg-primary"
                             }`}
@@ -1463,7 +1482,8 @@ const Sidebar = () => {
                         </Link>
                       </li>
                     </ul> */}
-                    <li>
+                    <ul className="space-y-3 px-2 text-sm mt-2">
+                      <li>
                         <Link
                           to="/tramessy/billing"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -1482,6 +1502,7 @@ const Sidebar = () => {
                           <span>Bill</span>
                         </Link>
                       </li>
+                    </ul>
                   </div>
                 </li>
                 {/* User Control */}

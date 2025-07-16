@@ -31,7 +31,7 @@ const Fuel = () => {
   // Fetch fuel data
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/api/fuel")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/fuel`)
       .then((response) => {
         if (response.data.status === "success") {
           setFuel(response.data.data);
@@ -140,7 +140,7 @@ const Fuel = () => {
   // delete by id
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://api.tramessy.com/api/fuel/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/fuel/${id}`, {
         method: "DELETE",
       });
 

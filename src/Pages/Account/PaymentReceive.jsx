@@ -117,12 +117,12 @@ const PaymentReceive = () => {
                   <td className="p-2">{dt.status}</td>
                   <td className="px-2 action_column">
                     <div className="flex gap-1">
-                      {/* <Link to={`/tramessy/UpdatepaymentForm/${dt.id}`}>
+                      <Link to={`/tramessy/UpdatepaymentForm/${dt.id}`}>
                         <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>
-                      </Link> */}
-                      <button
+                      </Link>
+                      {/* <button
                         // onClick={() => {
                         //   setSelectedEmployeeId(dt.id);
                         //   setIsOpen(true);
@@ -130,7 +130,7 @@ const PaymentReceive = () => {
                         className="text-red-900 hover:text-white hover:bg-red-900 px-2 py-1 rounded shadow-md transition-all cursor-pointer"
                       >
                         <FaTrashAlt className="text-[12px]" />
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>

@@ -4,8 +4,10 @@ import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
 import useRefId from "../hooks/useRef";
+import { useNavigate } from "react-router-dom";
 
 const AddRentVehicleForm = () => {
+  const navigate = useNavigate()
   const methods = useForm();
   const { handleSubmit, reset } = methods;
 
@@ -28,6 +30,7 @@ const AddRentVehicleForm = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/RentList")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }

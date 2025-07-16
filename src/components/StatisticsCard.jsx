@@ -99,9 +99,69 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
     fetchTripData()
   }, [today])
 
+  // trip
+    const [dailySales, setDailySales] = useState({});
+  const [todayTripCount, setTodayTripCount] = useState(0);
+   useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
+      .then((response) => {
+        const data = response.data.data;
+        const today = new Date().toISOString().split("T")[0];
+        const sale = data
+          .filter((item) => item.date === today)
+          .reduce((sum, trip) => sum + parseFloat(trip.total_rent || 0), 0);
+
+        setDailySales(sale);
+      })
+      .catch((error) => {
+        console.error("Error fetching trip data:", error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
+      .then((res) => {
+        const allTrips = res.data.data;
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split("T")[0];
+        // Filter trips matching today's date
+        const todayTrips = allTrips.filter((trip) => trip.date === today);
+        // Set today's trip count
+        setTodayTripCount(todayTrips.length);
+      });
+  }, []);
+
   return (
     <div className="">
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-5">
+  <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Daily Income</p>
+                <p className="text-3xl font-bold text-gray-900">{dailySales.toLocaleString()} TK</p>
+              </div>
+              <div className="p-3 bg-purple-100 rounded-full">
+  <svg
+    className="w-8 h-8 text-purple-600"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <text
+      x="5"
+      y="18"
+      fontSize="26"
+      fontWeight="bold"
+      fill="currentColor"
+    >
+      ৳
+    </text>
+  </svg>
+</div>
+
+            </div>
+          </div>
+          {/* avarage tk */}
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
             <div className="flex items-center justify-between">
               <div>
@@ -121,6 +181,33 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
             </div>
           </div>
 
+          {/* daily trip */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Daily Trip</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.totalDistance.toFixed(0)}</p>
+              </div>
+              <div className="p-3 bg-yellow-100 rounded-full">
+                <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+{/* active vehicle */}
           <div  onClick={handleActiveVehicleClick} className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
@@ -140,26 +227,7 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Peak Hour</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.peakHour}</p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+          {/* <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Total Distance</p>
@@ -182,11 +250,11 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
                 </svg>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* modal gari */}
-        {isModalOpen && (
+        {/* {isModalOpen && (
           <>
              <div
             className="fixed inset-0 bg-black bg-opacity-30 z-40"
@@ -213,7 +281,7 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
     </div>
   </div>
           </>
-)}
+)} */}
 
     </div>
     

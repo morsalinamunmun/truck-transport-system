@@ -254,7 +254,7 @@ const DailyCardOverview = () => {
   }, []);
   return (
     <div className="">
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
           {/* Daily Sales */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-100">Daily Sales</h3>

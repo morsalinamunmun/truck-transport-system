@@ -37,7 +37,7 @@ const Parts = () => {
         formData.append(key, data[key]);
       }
       const response = await axios.post(
-        "https://api.tramessy.com/api/parts",
+        `${import.meta.env.VITE_BASE_URL}/api/parts`,
         formData
       );
       const resData = response.data;
@@ -60,7 +60,7 @@ const Parts = () => {
   // fetch all parts
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/api/parts")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/parts`)
       .then((response) => {
         if (response.data.status === "success") {
           setParts(response.data.data);
@@ -79,7 +79,7 @@ const Parts = () => {
   // delete by id
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://api.tramessy.com/api/parts/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/parts/${id}`, {
         method: "DELETE",
       });
 
@@ -128,7 +128,7 @@ const Parts = () => {
     setCurrentPage(number);
   };
   return (
-    <main className="relative bg-gradient-to-br from-gray-100 to-white md:p-6">
+    <main className="relative  ">
       <Toaster position="top-right" reverseOrder={false} />
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-8 border border-gray-200">
         {/* Header */}
@@ -140,7 +140,7 @@ const Parts = () => {
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
               onClick={() => setShowFilter(true)}
-              className="bg-gradient-to-r from-[#11375B] to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
             >
               <FaPlus /> Parts
             </button>
@@ -165,21 +165,53 @@ const Parts = () => {
         {/* Table */}
         <div className="mt-5 overflow-x-auto rounded-xl">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white uppercase text-sm">
+            <thead className="bg-[#11375B] text-white uppercase text-xs">
               <tr>
                 <th className="px-2 md:px-4 py-3">SL</th>
                 <th className="px-2 md:px-4 py-3">Name</th>
+                <th className="px-2 md:px-4 py-3">Valid Date</th>
+                <th className="px-2 md:px-4 py-3">Status</th>
                 <th className="px-2 md:px-4 py-3">Action</th>
               </tr>
             </thead>
-            <tbody className="text-[#11375B] font-semibold">
-              {currentParts?.map((part, index) => (
+            <tbody className="text-gray-700">
+              {
+              
+              currentParts.length === 0 ? (
+    <tr>
+      <td colSpan="8" className="text-center py-10 text-gray-500 italic">
+        <div className="flex flex-col items-center">
+          <svg
+            className="w-12 h-12 text-gray-300 mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.75 9.75L14.25 14.25M9.75 14.25L14.25 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          No report data found.
+        </div>
+      </td>
+    </tr>
+  )  
+              : (currentParts?.map((part, index) => (
                 <tr
                   key={index}
                   className="hover:bg-gray-100 border-b border-r border-l border-gray-400 transition-all cursor-pointer"
                 >
                   <td className="md:border-r border-gray-400 px-2 md:px-4 py-4 font-bold">
                     {indexOfFirstItem + index + 1}
+                  </td>
+                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
+                    {part.name}
+                  </td>
+                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
+                    {part.date}
                   </td>
                   <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
                     {part.name}
@@ -203,13 +235,18 @@ const Parts = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )))
+              }
             </tbody>
           </table>
         </div>
       </div>
       {/* pagination */}
-      <div className="mt-10 flex justify-center">
+      {
+        currentParts.length === 0 ? (
+          ""
+        ) :
+      (<div className="mt-10 flex justify-center">
         <div className="space-x-2 flex items-center">
           <button
             onClick={handlePrevPage}
@@ -245,7 +282,7 @@ const Parts = () => {
             <GrFormNext />
           </button>
         </div>
-      </div>
+      </div>)}
       {/* Delete modal */}
       <div className="flex justify-center items-center">
         {isOpen && (
