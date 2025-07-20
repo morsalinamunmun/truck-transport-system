@@ -139,7 +139,7 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Daily Income</p>
-                <p className="text-3xl font-bold text-gray-900">{dailySales.toLocaleString()} TK</p>
+                <p className="text-3xl font-bold text-gray-900"> {(typeof dailySales === "number" ? dailySales : dailySales?.amount || 0).toLocaleString()} TK</p>
               </div>
               <div className="p-3 bg-purple-100 rounded-full">
   <svg

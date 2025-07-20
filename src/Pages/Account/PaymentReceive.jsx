@@ -139,8 +139,7 @@ const PaymentReceive = () => {
             </tbody>
           </table>
         </div>
-      </div>
-      {/* pagination */}
+        {/* pagination */}
                   {
                     currentPayment.length === 0 ? (
                       ""
@@ -182,6 +181,7 @@ const PaymentReceive = () => {
                       </button>
                     </div>
                   </div>)}
+      </div>
     </div>
   );
 };

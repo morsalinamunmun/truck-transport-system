@@ -126,13 +126,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/vehicel")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Vehicle List</span>
                         </Link>
                       </li>
@@ -145,16 +139,23 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/TripList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                        
                           <span>Trip List</span>
                         </Link>
                       </li>
+                      <li>
+                              <Link
+                                to="/tramessy/DriverList"
+                                className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
+                                  isActive("/tramessy/DriverList")
+                                    ? "text-white bg-primary"
+                                    : "text-gray-500 hover:text-primary"
+                                }`}
+                              >
+                              
+                                <span>Driver List</span>
+                              </Link>
+                            </li>
                       <li>
                         <Link
                           to="/tramessy/Fuel"
@@ -164,13 +165,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/Fuel")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Fuel</span>
                         </Link>
                       </li>
@@ -183,13 +178,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/Parts")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Spare & Parts List</span>
                         </Link>
                       </li>
@@ -202,13 +191,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/Maintenance")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Maintenance</span>
                         </Link>
                       </li>
@@ -249,13 +232,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/VendorList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>All Vendor List</span>
                         </Link>
                       </li>
@@ -296,13 +273,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/RentList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Rent Vehicle List</span>
                         </Link>
                       </li>
@@ -838,13 +809,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Customer")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Customer List</span>
                         </Link>
                       </li>
@@ -891,13 +856,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/DailyIncome")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                         
                           <span>Daily Income</span>
                         </Link>
                       </li>
@@ -910,13 +869,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/daily-trip-expense")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Daily Trip Expense</span>
                         </Link>
                       </li>
@@ -929,13 +882,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/daily-expense")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Daily Expense</span>
                         </Link>
                       </li>
@@ -948,13 +895,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/monthly-statement")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Monthly Statement</span>
                         </Link>
                       </li>
@@ -1021,13 +962,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Reports/Driver-Report")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Driver Report</span>
                         </Link>
                       </li>
@@ -1040,13 +975,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Reports/Fuel-Report")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Fuel Report</span>
                         </Link>
                       </li>
@@ -1097,13 +1026,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Reports/Trip-Report")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                          
                           <span>Trip Report</span>
                         </Link>
                       </li>
@@ -1116,13 +1039,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Reports/vehicle-report")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                      
                           <span>Vehicle Report</span>
                         </Link>
                       </li>
@@ -1182,13 +1099,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/account/PaymentList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                      
                           <span>Payment List</span>
                         </Link>
                       </li>
@@ -1201,13 +1112,6 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/account/PaymentReceive")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
                           <span>Payment Receive</span>
                         </Link>
                       </li>
@@ -1239,13 +1143,13 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
+                          {/* <div
                             className={`w-[6px] h-[6px] rounded-full bg-primary ${
                               isActive("/tramessy/account/DriverLedger")
                                 ? "bg-white"
                                 : "bg-primary"
                             }`}
-                          ></div>
+                          ></div> */}
                           <span>Driver Ledger</span>
                         </Link>
                       </li>
@@ -1258,14 +1162,19 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/account/CustomerLedger")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
                           <span>Customer Ledger</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/tramessy/account/vendor-ledger"
+                          className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
+                            isActive("/tramessy/account/vendor-ledger")
+                              ? "text-white bg-primary"
+                              : "text-gray-500 hover:text-primary"
+                          }`}
+                        >
+                          <span>Vendor-Ledger</span>
                         </Link>
                       </li>
                       {/* <li>
@@ -1492,13 +1401,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/billing")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                         
                           <span>Bill</span>
                         </Link>
                       </li>
@@ -1538,13 +1441,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                              isActive("/tramessy/AllUsers")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
+                       
                           <span>All Users</span>
                         </Link>
                       </li>

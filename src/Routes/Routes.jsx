@@ -89,6 +89,7 @@ import MonthlyStatement from "../Pages/MontlyStatement";
 import VehicleReport from "../Pages/Reports/VehicleReport";
 import Bill from "../Pages/Billing/Bill";
 import DailyTripExpense from "../Pages/DailyTripExpense";
+import VendorLedger from "../Pages/Account/VendorLedger";
 export const router = createBrowserRouter([
   {
     path: "/tramessy",
@@ -654,6 +655,10 @@ export const router = createBrowserRouter([
       {
         path: "/tramessy/account/OfficeLedger",
         element: <OfficeLedger />,
+      },
+      {
+        path: "/tramessy/account/vendor-ledger",
+        element: <VendorLedger/>,
       },
     ],
   },

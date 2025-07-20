@@ -434,7 +434,7 @@ const OverViewCard = () => {
           </div>
         ) : (
           <div className="text-center text-gray-500">
-            <span className="text-9xl flex justify-center">
+            <span className="text-4xl flex justify-center mt-20">
               <HiOutlineBellAlert />
             </span>
             <p className="text-lg">No documents expiring soon.</p>

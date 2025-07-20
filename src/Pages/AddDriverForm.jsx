@@ -7,12 +7,14 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
+import { useNavigate } from "react-router-dom";
 
 const AddDriverForm = () => {
   const methods = useForm();
   const { handleSubmit, register, reset, control } = methods;
   const [previewImage, setPreviewImage] = useState(null);
   const driverDateRef = useRef(null);
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
@@ -32,6 +34,7 @@ const AddDriverForm = () => {
           position: "top-right",
         });
         reset();
+        navigate("/DriverList")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }
@@ -49,7 +52,7 @@ const AddDriverForm = () => {
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
         Create Driver
       </h3>
-      <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+      <div className="mx-auto p-6  rounded-md shadow">
         <FormProvider {...methods} className="">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             {/* Name & Contact */}
