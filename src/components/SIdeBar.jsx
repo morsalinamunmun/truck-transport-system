@@ -156,7 +156,7 @@ const Sidebar = () => {
                                 <span>Driver List</span>
                               </Link>
                             </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/tramessy/Fuel"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -168,7 +168,7 @@ const Sidebar = () => {
                           
                           <span>Fuel</span>
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link
                           to="/tramessy/Parts"
@@ -182,7 +182,7 @@ const Sidebar = () => {
                           <span>Spare & Parts List</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/tramessy/Maintenance"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -194,7 +194,7 @@ const Sidebar = () => {
                           
                           <span>Maintenance</span>
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </li>
@@ -705,7 +705,7 @@ const Sidebar = () => {
                   </div>
                 </li> */}
                 {/* Purchase */}
-                {/* <li className="text-primary font-medium rounded-sm">
+                <li className="text-primary font-medium rounded-sm">
                   <div
                     onClick={() => toggleMenu("purchase")}
                     className="flex justify-between items-center py-3 px-2 cursor-pointer hover:bg-primary hover:text-white hover:rounded-sm duration-900 outline-none"
@@ -768,7 +768,7 @@ const Sidebar = () => {
                       </li>
                     </ul>
                   </div>
-                </li> */}
+                </li>
                 {/* Customer */}
                 <li className="text-primary font-medium rounded-sm">
                   <div

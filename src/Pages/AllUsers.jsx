@@ -25,9 +25,9 @@ const AllUsers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     axios
-      .get("https://api.tramessy.com/api/users")
+      .get(`${import.meta.env.VITE_BASE_URL}/api/users`)
       .then((response) => {
-        if (response.data.status === "Success") {
+        if (response.data.status === "success") {
           setUsers(response.data.data);
         }
         setLoading(false);
@@ -43,7 +43,7 @@ const AllUsers = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://api.tramessy.com/api/users/delete/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/api/users/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -175,7 +175,7 @@ const AllUsers = () => {
             All Users List
           </h1>
           <div className="mt-3 md:mt-0">
-            <Link to="/tramessy/AddUserForm">
+            <Link to="/tramessy/UserForm">
               <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
                 <FaPlus /> User
               </button>
@@ -281,7 +281,7 @@ const AllUsers = () => {
                   <td className="p-2">{user.status}</td>
                   <td className="action_column">
                     <div className="flex gap-1 justify-center">
-                      <Link to={`/UpdateUsersForm/${user.id}`}>
+                      <Link to={`/tramessy/UserForm/edit/${user.id}`}>
                         <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>

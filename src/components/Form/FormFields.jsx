@@ -59,6 +59,61 @@ export const InputField = ({
   );
 };
 
+// export const SelectField = ({
+//   name,
+//   label,
+//   required,
+//   options,
+//   control,
+//   placeholder,
+//   defaultValue,
+//   onSelectChange,
+// }) => {
+//   const {
+//     formState: { errors },
+//   } = useFormContext();
+
+//   const error = errors[name]?.message;
+
+//   return (
+//     <div className="mb-4">
+//       {label && (
+//         <label className="block text-sm font-medium mb-1 text-primary">
+//           {label} {required && <span className="text-red-500">*</span>}
+//         </label>
+//       )}
+//       <Controller
+//         name={name}
+//         control={control}
+//         rules={{ required: required ? `${label || name} is required` : false }}
+//         render={({ field: { onChange, value, ref } }) => (
+//           <Select
+//             inputRef={ref}
+//             value={options.find((opt) => opt.value === value) || null}
+//             onChange={(selectedOption) => {
+//               const selectedValue = selectedOption?.value || "";
+//               onChange(selectedValue);
+//               if (onSelectChange) {
+//                 onSelectChange(selectedOption);
+//               }
+//             }}
+//             options={options}
+//             placeholder={placeholder || `Select ${label}`}
+//             defaultValue={defaultValue}
+//             className="text-sm hide-scrollbar"
+//             classNamePrefix="react-select"
+//             isClearable
+//           />
+//         )}
+//       />
+//       {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+//     </div>
+//   );
+// };
+
+
+import CreatableSelect from "react-select/creatable";
+
 export const SelectField = ({
   name,
   label,
@@ -87,9 +142,11 @@ export const SelectField = ({
         control={control}
         rules={{ required: required ? `${label || name} is required` : false }}
         render={({ field: { onChange, value, ref } }) => (
-          <Select
+          <CreatableSelect
             inputRef={ref}
-            value={options.find((opt) => opt.value === value) || null}
+            value={
+              options.find((opt) => opt.value === value) || { label: value, value }
+            }
             onChange={(selectedOption) => {
               const selectedValue = selectedOption?.value || "";
               onChange(selectedValue);

@@ -282,128 +282,120 @@ import { InputField, SelectField } from "../components/Form/FormFields";
 import { FiCalendar } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function AddTripForm() {
   const navigate = useNavigate();
+  const dateRef = useRef(null);
 
   const methods = useForm({
     defaultValues: {
       date: "",
       tripTime: "",
-      loadPoint: "",
-      unloadPoint: "",
-      vehicleNo: "",
-      driverName: "",
-      driverMobile: "",
-      fuelCost: "",
-      tollCost: "",
-      policeCost: "",
-      commission: "",
-      labour: "",
+      load_point: "",
+      unload_point: "",
+      vehicle_no: "",
+      driver_name: "",
+      driver_mobile: "",
+      fuel_cost: "",
+      toll_cost: "",
+      police_cost: "",
+      driver_commission: "",
+      labor: "",
       others: "",
-      damageDay: "",
-      damageRate: "",
+      damarageDay: "",
+      damarageRate: "",
       customerName: "",
       rentAmount: "",
-      advancePayment: ""
+      advancePayment: "",
+      parking_cost: "",
+      night_guard: "",
+      feri_cost: "",
+      chada: "",
+      food_cost: "",
+      total_exp: 0,
+      total: 0,
+      damarageTotal: 0,
+      transport_type: "",
+      total_rent: "",
+      challan: "",
+      trip_rent: "",
+      advance: "",
+      due_amount: "",
+      mobile: "",
+      driver_adv: "",
     },
-  });
-   
-  const { handleSubmit, control,  watch, setValue } = methods;
- const selectedTransport = watch("transport_type");
-  const watchFields = watch([
-    "fuelCost",
-    "tollCost",
-    "policeCost",
-    "commission",
-    "labour",
-    "others",
-    "damarageDay",
-    "damarageRate",
-  ]);
+  })
 
-  // calculate Total Expense
-  const driverCommision = parseFloat(watch("driver_commission") || 0);
-  const roadCost = parseFloat(watch("road_cost") || 0);
-  const labourCost = parseFloat(watch("labor") || 0);
-  const parkingCost = parseFloat(watch("parking_cost") || 0);
-  const guardCost = parseFloat(watch("night_guard") || 0);
-  const tollCost = parseFloat(watch("toll_cost") || 0);
-  const feriCost = parseFloat(watch("feri_cost") || 0);
-  const policeCost = parseFloat(watch("police_cost") || 0);
-  const chadaCost = parseFloat(watch("chada") || 0);
+  const { handleSubmit, control, watch, setValue, register } = methods
+  const selectedTransport = watch("transport_type")
 
-  const totalExpense =
-    driverCommision +
-    roadCost +
-    labourCost +
-    parkingCost +
-    guardCost +
-    tollCost +
-    feriCost +
-    policeCost +
-    chadaCost;
+  // Watch fields for total expense calculation
+  const fuelCost = Number.parseFloat(watch("fuel_cost") || 0)
+  const tollCost = Number.parseFloat(watch("toll_cost") || 0)
+  const policeCost = Number.parseFloat(watch("police_cost") || 0)
+  const driverCommision = Number.parseFloat(watch("driver_commission") || 0)
+  const labourCost = Number.parseFloat(watch("labor") || 0)
+  const othersCost = Number.parseFloat(watch("others") || 0)
+  const parkingCost = Number.parseFloat(watch("parking_cost") || 0)
+  const nightGuardCost = Number.parseFloat(watch("night_guard") || 0)
+  const feriCost = Number.parseFloat(watch("feri_cost") || 0)
+  const chadaCost = Number.parseFloat(watch("chada") || 0)
+  const foodCost = Number.parseFloat(watch("food_cost") || 0)
+  const damarageDay = Number.parseFloat(watch("damarageDay") || 0)
+  const damarageRate = Number.parseFloat(watch("damarageRate") || 0)
 
+  // Calculate Total Expense for own_transport
   useEffect(() => {
     const total =
       driverCommision +
-      roadCost +
       labourCost +
       parkingCost +
-      guardCost +
+      nightGuardCost +
       tollCost +
       feriCost +
       policeCost +
-      chadaCost;
-    setValue("total_exp", total);
+      foodCost +
+      chadaCost +
+      fuelCost +
+      othersCost
+    setValue("total_exp", total)
   }, [
     driverCommision,
-    roadCost,
     labourCost,
     parkingCost,
-    guardCost,
+    nightGuardCost,
     tollCost,
     feriCost,
     policeCost,
     chadaCost,
+    foodCost,
+    fuelCost,
+    othersCost,
     setValue,
-  ]);
+  ])
 
-  // total cost
+  // Calculate total and damarageTotal (from original watchFields useEffect)
   useEffect(() => {
-      const keys = [
-        "fuelCost",
-        "tollCost",
-        "policeCost",
-        "commission",
-        "labour",
-        "others",
-        "damarageDay",
-        "damarageRate",
-      ];
-const values = watchFields.reduce((acc, val, i) => {
-      acc[keys[i]] = Number(val || 0);
-      return acc;
-    }, {});
-
-    const total =
-      values.fuelCost +
-      values.tollCost +
-      values.policeCost +
-      values.commission +
-      values.labour +
-      values.others;
-
-    const damarageTotal = values.damarageDay * values.damarageRate;
-
-    methods.setValue("total", total);
-    methods.setValue("damarageTotal", damarageTotal);
-  }, [watchFields, methods]);
-
+    const total = fuelCost + tollCost + policeCost + driverCommision + labourCost + foodCost + othersCost
+    const damarageTotal = damarageDay * damarageRate
+    setValue("total", total)
+    setValue("damarageTotal", damarageTotal)
+  }, [
+    fuelCost,
+    tollCost,
+    policeCost,
+    driverCommision,
+    labourCost,
+    foodCost,
+    othersCost,
+    damarageDay,
+    damarageRate,
+    setValue,
+  ])
    const onSubmit = async (data) => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/${data.id}`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -474,6 +466,7 @@ useEffect(() => {
     value: `${dt.registration_zone} ${dt.registration_serial} ${dt.registration_number} `,
     label: `${dt.registration_zone} ${dt.registration_serial} ${dt.registration_number} `,
   }));
+  console.log(vendorVehicleOptions, 'vendorVeh')
 
   // select own driver from api
   const [vendor, setVendorDrivers] = useState([]);
@@ -483,11 +476,13 @@ useEffect(() => {
       .then((data) => setVendorDrivers(data.data))
       .catch((error) => console.error("Error fetching vendor data:", error));
   }, []);
-  const vendorDriverOptions = vendor.map((dt) => ({
+  const vendorDriverOptions = vendor?.map((dt) => ({
     value: dt.vendor_name,
     label: dt.vendor_name,
     contact: dt.mobile,
   }));
+
+  console.log(vendorDriverOptions, "vendorD")
 
    // select own driver from api
   const [drivers, setDrivers] = useState([]);
@@ -557,15 +552,29 @@ useEffect(() => {
             <h3 className="text-orange-500 font-medium text-center mb-6">Trip & Destination Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-              <InputField name="date" label="Date" required icon={<span
-                                  className="py-[11px] absolute right-0 px-3 top-[22px] transform -translate-y-1/2 bg-primary rounded-r"
-                                  onClick={() => registrationDateRef.current?.showPicker?.()}
-                                >
-                                  <FiCalendar className="text-white cursor-pointer" />
-                                </span>} />
+               <div className="relative w-full">
+              <InputField
+                name="date"
+                label="Date"
+                type="date"
+                required
+                inputRef={(e) => {
+                  register("date").ref(e);
+                  dateRef.current = e;
+                }}
+                icon={
+                  <span
+                    className="py-[11px] absolute right-0 px-3 top-[22px] transform -translate-y-1/2 bg-primary rounded-r"
+                    onClick={() => dateRef.current?.showPicker?.()}
+                  >
+                    <FiCalendar className="text-white cursor-pointer" />
+                  </span>
+                }
+              />
+            </div>
               <InputField name="tripTime" label="Trip Time" placeholder="Trip Time" />
-              <InputField name="loadPoint" label="Load Point" placeholder="Load Point" />
-              <InputField name="unloadPoint" label="Unload Point" placeholder="Unload Point" />
+              <InputField name="load_point" label="Load Point" placeholder="Load Point" />
+              <InputField name="unload_point" label="Unload Point" placeholder="Unload Point" />
             </div>
           </div>
 
@@ -694,6 +703,9 @@ useEffect(() => {
                       type="number"
                     />
                   </div>
+                  <div className="w-full">
+                    <InputField name="fuel_cost" label="Fuel Cost" />
+                  </div>
                 </div>
                 <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
                   <div className="w-full">
@@ -736,16 +748,20 @@ useEffect(() => {
                   <div className="w-full">
                     <InputField name="chada" label="Chada" type="number" />
                   </div>
+                  <div className="w-full">
+                    <InputField name="food_cost" label="Food Cost" type="number" />
+                  </div>
 
                   <div className="w-full">
-                    <InputField
+                    {/* <InputField
                       name="total_exp"
                       label="Total Expense"
                       readOnly
                       defaultValue={totalExpense}
                       value={totalExpense}
                       required
-                    />
+                    /> */}
+                     <InputField name="total_exp" label="Total Expense" readOnly value={watch("total_exp")} />
                   </div>
                 </div>
               </div>
@@ -772,7 +788,7 @@ useEffect(() => {
             )}
 
           {/* Running Cost Section */}
-          <div className="bg-white rounded-lg border border-gray-300 p-4">
+          {/* <div className="bg-white rounded-lg border border-gray-300 p-4">
             <h3 className="text-orange-500 font-medium text-center mb-6">Running Cost Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 mb-2">
@@ -787,10 +803,10 @@ useEffect(() => {
               <InputField name="others" label="Others" />
               <InputField name="total" label="Total" readOnly />
             </div>
-          </div>
+          </div> */}
 
           {/* Damage Section */}
-          <div className="bg-white rounded-lg border border-gray-300 p-4">
+          {/* <div className="bg-white rounded-lg border border-gray-300 p-4">
             <h3 className="text-orange-500 font-medium text-center mb-6">Damarage Section!</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
@@ -798,17 +814,16 @@ useEffect(() => {
               <InputField name="damarageRate" label="Damarage Rate" />
               <InputField name="damarageTotal" label="Damarage Total" readOnly />
             </div>
-          </div>
+          </div> */}
 
           {/* Customer & Payment Section */}
           <div className="bg-white rounded-lg border border-gray-300 p-4">
             <h3 className="text-orange-500 font-medium text-center mb-6">Customer & Payment Section!</h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5">
-              <SelectField name="customerName" label="Customer Name" options={customerOptions} control={control} required />
-              <InputField name="mobile" label="Customer Number" />
-              <InputField name="rentAmount" label="Rent Amount" />
-              <InputField name="advancePayment" label="Advance Payment" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-5">
+              <SelectField name="customer" label="Customer Name" options={customerOptions} control={control} required />
+              <InputField name="customer_mobile" label="Customer Number" />
+              <InputField name="rent_Amount" label="Rent Amount" />
             </div>
           </div>
 
@@ -838,3 +853,6 @@ useEffect(() => {
     </FormProvider>
   );
 }
+
+
+

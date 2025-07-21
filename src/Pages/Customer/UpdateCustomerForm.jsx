@@ -5,9 +5,10 @@ import { InputField, SelectField } from "../../components/Form/FormFields";
 import { useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateCustomerForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateCustomerLoaderData = useLoaderData();
   const { id, date, customer_name, mobile, email, address, due, status } =
@@ -35,6 +36,7 @@ const UpdateCustomerForm = () => {
         toast.success("Customer updated successfully!", {
           position: "top-right",
         });
+        navigate("/Customer")
       } else {
         toast.error("Server issue " + (resData.message || "Unknown problem"));
       }

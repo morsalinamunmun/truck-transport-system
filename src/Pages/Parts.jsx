@@ -10,6 +10,8 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import BtnSubmit from "../components/Button/BtnSubmit";
 
 const Parts = () => {
+  const [editMode, setEditMode] = useState(false);
+const [editId, setEditId] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,40 +31,42 @@ const Parts = () => {
   } = useForm();
   const partsDateRef = useRef(null);
   // post parts
-  const onSubmit = async (data) => {
-    console.log("add car data", data);
-    try {
-      const formData = new FormData();
-      for (const key in data) {
-        formData.append(key, data[key]);
-      }
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/parts`,
-        formData
-      );
-      const resData = response.data;
-      console.log("resData", resData);
-      if (resData.status === "success") {
-        toast.success("Parts saved successfully!", {
-          position: "top-right",
-        });
-        reset();
-      } else {
-        toast.error("Server issue: " + (resData.message || "Unknown error"));
-      }
-    } catch (error) {
-      console.error(error);
-      const errorMessage =
-        error.response?.data?.message || error.message || "Unknown error";
-      toast.error("Server issue: " + errorMessage);
-    }
-  };
+  // const onSubmit = async (data) => {
+  //   console.log("add car data", data);
+  //   try {
+  //     const formData = new FormData();
+  //     for (const key in data) {
+  //       formData.append(key, data[key]);
+  //     }
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_BASE_URL}/api/parts/create`,
+  //       formData
+  //     );
+  //     const resData = response.data;
+  //     console.log("resData", resData);
+  //     if (resData.status === "Success") {
+  //       toast.success("Parts saved successfully!", {
+  //         position: "top-right",
+  //       });
+  //       reset();
+  //       setIsOpen(false)
+  //     } else {
+  //       toast.error("Server issue: " + (resData.message || "Unknown error"));
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     const errorMessage =
+  //       error.response?.data?.message || error.message || "Unknown error";
+  //     toast.error("Server issue: " + errorMessage);
+  //   }
+  // };
+
   // fetch all parts
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BASE_URL}/api/parts`)
+  const fetchParts = () => {
+axios
+      .get(`${import.meta.env.VITE_BASE_URL}/api/parts/list`)
       .then((response) => {
-        if (response.data.status === "success") {
+        if (response.data.status === "Success") {
           setParts(response.data.data);
         }
         setLoading(false);
@@ -71,7 +75,67 @@ const Parts = () => {
         console.error("Error fetching driver data:", error);
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    fetchParts()
   }, []);
+
+  const onSubmit = async (data) => {
+  try {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+
+    let response;
+    if (editMode) {
+      response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/parts/update/${editId}`,
+        formData
+      );
+    } else {
+      response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/parts/create`,
+        formData
+      );
+    }
+
+    const resData = response.data;
+
+    if (resData.status === "Success") {
+      toast.success(
+        editMode
+          ? "Parts updated successfully!"
+          : "Parts saved successfully!",
+        { position: "top-right" }
+      );
+      reset();
+      setIsOpen(false);
+      setShowFilter(false);
+      setEditMode(false);
+      setEditId(null);
+      // Refresh data
+      fetchParts();
+    } else {
+      toast.error("Server issue: " + (resData.message || "Unknown error"));
+    }
+  } catch (error) {
+    console.error(error);
+    const errorMessage =
+      error.response?.data?.message || error.message || "Unknown error";
+    toast.error("Server issue: " + errorMessage);
+  }
+};
+
+// edit modal handler
+const handleEdit = (part) => {
+  setEditMode(true);        // Activate edit mode
+  setEditId(part.id);       // Store part ID for update
+  reset(part);              // Fill form with part data
+  setShowFilter(true);      // Open the modal
+};
+  
 
   if (loading) return <p className="text-center mt-16">Loading parts...</p>;
 
@@ -104,11 +168,11 @@ const Parts = () => {
     }
   };
   // search
-  const filteredParts = parts.filter((part) => {
+  const filteredParts = parts?.filter((part) => {
     const term = searchTerm.toLowerCase();
     return (
-      part.name?.toLowerCase().includes(term) ||
-      part.date?.toLowerCase().includes(term)
+      part.parts_name?.toLowerCase().includes(term) ||
+      part.parts_validity?.toLowerCase().includes(term)
     );
   });
   // pagination
@@ -163,7 +227,7 @@ const Parts = () => {
           </div>
         </div>
         {/* Table */}
-        <div className="mt-5 overflow-x-auto rounded-xl">
+        <div className="mt-5 overflow-x-auto rounded-md border border-gray-200">
           <table className="min-w-full text-sm text-left">
             <thead className="bg-[#11375B] text-white uppercase text-xs">
               <tr>
@@ -202,27 +266,27 @@ const Parts = () => {
               : (currentParts?.map((part, index) => (
                 <tr
                   key={index}
-                  className="hover:bg-gray-100 border-b border-r border-l border-gray-400 transition-all cursor-pointer"
+                  className="hover:bg-gray-100 border-b border-gray-300 transition-all cursor-pointer"
                 >
-                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4 font-bold">
+                  <td className=" px-2 md:px-4 py-4 font-bold">
                     {indexOfFirstItem + index + 1}
                   </td>
-                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
-                    {part.name}
+                  <td className=" px-2 md:px-4 py-4">
+                    {part.parts_name}
                   </td>
-                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
-                    {part.date}
+                  <td className=" px-2 md:px-4 py-4">
+                    {part.parts_validity}
                   </td>
-                  <td className="md:border-r border-gray-400 px-2 md:px-4 py-4">
+                  <td className=" px-2 md:px-4 py-4">
                     {part.name}
                   </td>
                   <td className="px-2 md:px-4 py-4">
                     <div className="flex gap-2">
-                      <Link to={`/UpdatePartsForm/${part.id}`}>
-                        <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
+                      {/* <Link to={`/UpdatePartsForm/${part.id}`}> */}
+                        <button onClick={() => handleEdit(part)} className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>
-                      </Link>
+                      {/* </Link> */}
                       <button className="text-red-900 hover:text-white hover:bg-red-900 px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                         <FaTrashAlt
                           onClick={() => {
@@ -331,7 +395,7 @@ const Parts = () => {
               <IoMdClose />
             </button>
             <h2 className="text-xl font-semibold text-[#11375B] mb-4">
-              Add Parts
+             {editMode ? "Update Parts" : "Add Parts"}
             </h2>
 
             <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -381,7 +445,7 @@ const Parts = () => {
               </div>
               {/* Submit Button */}
               <div className="text-right">
-                <BtnSubmit>Submit</BtnSubmit>
+                <BtnSubmit>{editMode ? "Update" : "Submit"}</BtnSubmit>
               </div>
             </form>
           </div>

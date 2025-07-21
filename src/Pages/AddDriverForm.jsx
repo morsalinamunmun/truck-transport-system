@@ -34,7 +34,7 @@ const AddDriverForm = () => {
           position: "top-right",
         });
         reset();
-        navigate("/DriverList")
+        navigate("/tramessy/DriverList")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }

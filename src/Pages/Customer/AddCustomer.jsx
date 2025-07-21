@@ -7,10 +7,12 @@ import { useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../hooks/useRef";
+import { useNavigate } from "react-router-dom";
 
 const AddCustomer = () => {
   const dateRef = useRef(null);
   const methods = useForm();
+  const navigate = useNavigate();
   const { handleSubmit, reset, register } = methods;
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
@@ -31,6 +33,7 @@ const AddCustomer = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/Customer")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }

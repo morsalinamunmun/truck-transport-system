@@ -24,10 +24,8 @@ const AddVendorForm = () => {
   };
 
   const onSubmit = async (data) => {
-    const refId = generateRefId();
     try {
       const formData = new FormData();
-      formData.append("ref_id", refId);
       for (const key in data) {
         formData.append(key, data[key]);
       }

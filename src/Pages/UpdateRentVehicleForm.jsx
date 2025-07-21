@@ -3,8 +3,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 const UpdateRentVehicleForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateRentLoaderData = useLoaderData();
   const {
@@ -44,6 +45,7 @@ const UpdateRentVehicleForm = () => {
         toast.success("Rent vehicle updated successfully!", {
           position: "top-right",
         });
+        navigate("/tramessy/RentList")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }

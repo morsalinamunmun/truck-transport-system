@@ -211,7 +211,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/fuel/${params.id}`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/fuel/${params.id}`),
       },
       {
         path: "/tramessy/Parts",
@@ -229,7 +229,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/parts/${params.id}`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/parts/${params.id}`),
       },
       {
         path: "/tramessy/Maintenance",
@@ -255,7 +255,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/maintenance/${params.id}`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/maintenance/${params.id}`),
       },
       {
         path: "/tramessy/VendorList",
@@ -354,7 +354,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/AddUserForm",
+        path: "/tramessy/UserForm",
         element: (
           <AdminRoute>
             <AddUserForm />
@@ -362,14 +362,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/UpdateUsersForm/:id",
+        path: "/tramessy/UserForm/edit/:id",
         element: (
           <PrivateRoute>
-            <UpdateUsersForm />
+            <AddUserForm />
           </PrivateRoute>
         ),
-        loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/users/${params.id}`),
+        // loader: ({ params }) =>
+        //   fetch(`${import.meta.env.VITE_BASE_URL}/api/users/${params.id}`),
       },
       {
         path: "/tramessy/Login",
@@ -387,7 +387,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/trip/${params.id}`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/${params.id}`),
       },
       {
         path: "/tramessy/UpdateExpenseForm/:id",
@@ -397,7 +397,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://api.tramessy.com/api/trip/${params.id}`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/trip/${params.id}`),
       },
 
       // HR
@@ -638,6 +638,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/tramessy/account/PaymentReceiveForm",
+        element: <PaymentReceiveForm />,
+      },
+      {
+        path: "/tramessy/account/PaymentReceiveForm/edit/:id",
         element: <PaymentReceiveForm />,
       },
       {

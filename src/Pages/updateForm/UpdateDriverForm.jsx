@@ -7,9 +7,10 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../../components/Form/FormFields";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateDriverForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateDriverLoaderData = useLoaderData();
   const {
@@ -57,6 +58,7 @@ const UpdateDriverForm = () => {
         toast.success("Driver updated successfully", {
           position: "top-right",
         });
+        navigate("/tramessy/DriverList")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }
@@ -71,10 +73,10 @@ const UpdateDriverForm = () => {
   return (
     <div className="mt-10">
       <Toaster />
-      <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
+      <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md border border-gray-200">
         Update Driver
       </h3>
-      <div className="mx-auto p-6 bg-gray-100 rounded-md shadow">
+      <div className="mx-auto p-6  rounded-md shadow">
         <FormProvider {...methods} className="">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             {/* Name & Contact */}

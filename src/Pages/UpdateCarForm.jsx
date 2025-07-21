@@ -5,7 +5,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 const UpdateCarForm = () => {
   //   update loader data
   const updateCarLoaderData = useLoaderData();
@@ -43,6 +43,7 @@ const UpdateCarForm = () => {
   const roadPermitRef = useRef(null);
   const fitnessDateRef = useRef(null);
   const insuranceDateRef = useRef(null);
+  const navigate = useNavigate()
   // select driver from api
   const [drivers, setDrivers] = useState([]);
   useEffect(() => {
@@ -75,6 +76,7 @@ const UpdateCarForm = () => {
         toast.success("Vehicle updated successfully!", {
           position: "top-right",
         });
+        navigate('/vehicel')
       } else {
         toast.error("Server issue " + (resData.message || "Unknown problem"));
       }
@@ -91,7 +93,7 @@ const UpdateCarForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
         <Toaster position="top-center" reverseOrder={false} />
         <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
-          Add Vehicle Information
+          Update Vehicle Information
         </h3>
 
         <div className="mx-auto p-6 rounded-b-md shadow border border-gray-200">
