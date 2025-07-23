@@ -331,6 +331,7 @@ const PaymentList = () => {
   };
 
   if (loading) return <p className="text-center mt-16">Loading data...</p>;
+  console.log(currentPayments, "p")
 
   return (
     <div className=" ">
@@ -437,7 +438,7 @@ const PaymentList = () => {
                 <th className="px-1 py-2">Quantity</th>
                 <th className="px-1 py-2">Unit Price</th>
                 <th className="px-1 py-2">Total Amount</th>
-                <th className="px-1 py-2">Pay Amount</th>
+                {/* <th className="px-1 py-2">Pay Amount</th> */}
                 <th className="px-1 py-2">Due Amount</th>
                 <th className="px-1 py-2">Status</th>
                 <th className="px-1 py-2">Action</th>
@@ -479,9 +480,9 @@ const PaymentList = () => {
                   <td className="px-1 py-2">{dt.item_name}</td>
                   <td className="px-1 py-2">{dt.quantity}</td>
                   <td className="px-1 py-2">{dt.unit_price}</td>
-                  <td className="px-1 py-2">{dt.total}</td>
-                  <td className="px-1 py-2">{dt.pay_amount}</td>
-                  <td className="px-1 py-2">{dt.total - dt.pay_amount}</td>
+                  <td className="px-1 py-2">{dt.total_amount}</td>
+                  {/* <td className="px-1 py-2">{dt.pay_amount}</td> */}
+                  <td className="px-1 py-2">{dt.due_amount}</td>
                   <td className="px-1 py-2">
                     {(() => {
                       const total = parseFloat(dt.total) || 0;

@@ -6,8 +6,10 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../hooks/useRef";
 import { FiCalendar } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const AddSupply = () => {
+  const navigate = useNavigate();
   const methods = useForm();
   const dateRef = useRef(null);
   const { handleSubmit, reset, register } = methods;
@@ -29,6 +31,7 @@ const AddSupply = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/Purchase/SupplierList")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }
@@ -43,13 +46,13 @@ const AddSupply = () => {
   return (
     <div className="mt-10">
       <Toaster />
-      <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
+      <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md ">
         Supply Information Setup
       </h3>
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto p-6 bg-gray-100 rounded-md shadow space-y-4"
+          className="mx-auto p-6 rounded-b-md shadow space-y-4 border border-gray-300"
         >
           {/*  */}
           <div className="md:flex justify-between gap-3">
@@ -86,7 +89,7 @@ const AddSupply = () => {
               <InputField name="address" label="Address" required />
             </div>
             <div className="w-full">
-              <InputField name="due_amount" label="Due Balance" required />
+              <InputField name="due_amount" label="Due Balance" />
             </div>
             <div className="w-full">
               <InputField

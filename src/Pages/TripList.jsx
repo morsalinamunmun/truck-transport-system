@@ -338,7 +338,7 @@ const handlePrint = useReactToPrint({
             </button>
           
             <button
-              onClick={exportTripsToExcel}
+              onClick={printTripsTable}
               className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-blue-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
             >
               <FaPrint className="" />
@@ -394,6 +394,7 @@ const handlePrint = useReactToPrint({
             <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="p-2 ">SL.</th>
+                <th className="p-2 ">Trip ID</th>
                 <th className="p-2">Date</th>
                 <th className="p-2">DriverInfo</th>
                 <th className="p-2">Load</th>
@@ -436,6 +437,7 @@ const handlePrint = useReactToPrint({
                     className="hover:bg-gray-50 transition-all border-b border-gray-300"
                   >
                     <td className="p-2 font-bold">{index + 1}</td>
+                    <td className="p-2">{dt?.ref_id}</td>
                     <td className="p-2">{dt?.date}</td>
                     <td className="p-2">
                       <p>Name: {dt.driver_name}</p>

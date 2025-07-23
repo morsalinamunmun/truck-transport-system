@@ -11,8 +11,8 @@ const MonthlyStatement = () => {
   const fetchData = async () => {
     try {
       const [tripRes, fuelRes, maintenanceRes] = await Promise.all([
-        axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip`),
-        axios.get(`${import.meta.env.VITE_BASE_URL}/api/fuel`),
+        axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`),
+        axios.get(`${import.meta.env.VITE_BASE_URL}/api/fuel/list`),
         axios.get(`${import.meta.env.VITE_BASE_URL}/api/maintenance`),
       ]);
 

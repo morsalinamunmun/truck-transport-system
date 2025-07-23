@@ -127,7 +127,7 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>Vehicle List</span>
+                          <span>Vehicles </span>
                         </Link>
                       </li>
                       <li>
@@ -140,10 +140,10 @@ const Sidebar = () => {
                           }`}
                         >
                         
-                          <span>Trip List</span>
+                          <span>Trips</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                               <Link
                                 to="/tramessy/DriverList"
                                 className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -153,9 +153,9 @@ const Sidebar = () => {
                                 }`}
                               >
                               
-                                <span>Driver List</span>
+                                <span>Driver </span>
                               </Link>
-                            </li>
+                            </li> */}
                       {/* <li>
                         <Link
                           to="/tramessy/Fuel"
@@ -233,7 +233,7 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>All Vendor List</span>
+                          <span>All Vendor </span>
                         </Link>
                       </li>
                     </ul>
@@ -274,14 +274,14 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>Rent Vehicle List</span>
+                          <span>Rent Vehicle </span>
                         </Link>
                       </li>
                     </ul>
                   </div>
                 </li>
                 {/* HR management */}
-                {/* <li className="text-primary font-medium rounded-sm">
+                <li className="text-primary font-medium rounded-sm">
                   <div
                     onClick={() => toggleMenu("hrManagement")}
                     className="flex justify-between items-center py-3 px-2 cursor-pointer hover:bg-primary hover:text-white hover:rounded-sm duration-900"
@@ -311,11 +311,7 @@ const Sidebar = () => {
                           className="flex justify-between items-center p-2 cursor-pointer hover:text-primary rounded-sm"
                         >
                           <span className="flex gap-2 items-center">
-                            <div
-                              className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                isActive("/hrm") ? "bg-white" : "bg-primary"
-                              }`}
-                            ></div>
+                           
                             <span>HRM</span>
                           </span>
                           <span
@@ -341,14 +337,8 @@ const Sidebar = () => {
                                     : "text-gray-500 hover:text-primary"
                                 }`}
                               >
-                                <div
-                                  className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                    isActive("/tramessy/HR/HRM/employee-list")
-                                      ? "bg-white"
-                                      : "bg-primary"
-                                  }`}
-                                ></div>
-                                Employee List
+                                
+                                Employee 
                               </Link>
                             </li>
                             <li>
@@ -360,14 +350,8 @@ const Sidebar = () => {
                                     : "text-gray-500 hover:text-primary"
                                 }`}
                               >
-                                <div
-                                  className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                    isActive("/tramessy/DriverList")
-                                      ? "bg-white"
-                                      : "bg-primary"
-                                  }`}
-                                ></div>
-                                <span>Driver List</span>
+                               
+                                <span>Driver</span>
                               </Link>
                             </li>
                             <li>
@@ -379,13 +363,7 @@ const Sidebar = () => {
                                     : "text-gray-500 hover:text-primary"
                                 }`}
                               >
-                                <div
-                                  className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                    isActive("/tramessy/HR/HRM/Office")
-                                      ? "bg-white"
-                                      : "bg-primary"
-                                  }`}
-                                ></div>
+                               
                                 Office
                               </Link>
                             </li>
@@ -407,13 +385,7 @@ const Sidebar = () => {
                           className="flex justify-between items-center p-2 cursor-pointer hover:text-primary rounded-sm"
                         >
                           <span className="flex gap-2 items-center">
-                            <div
-                              className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                isActive("/attendance")
-                                  ? "bg-white"
-                                  : "bg-primary"
-                              }`}
-                            ></div>
+                           
                             <span>Attendance</span>
                           </span>
                           <span
@@ -442,32 +414,24 @@ const Sidebar = () => {
                                 }`}
                               >
                                 <span className="flex gap-2 items-center">
-                                  <div
-                                    className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                      isActive(
-                                        "/tramessy/HR/Attendance/AttendanceList"
-                                      )
-                                        ? "bg-white"
-                                        : "bg-primary"
-                                    }`}
-                                  ></div>
+                                  
                                   <span>Attendance</span>
                                 </span>
                               </Link>
                             </li>
 
-                            <li>
+                            {/* <li>
                               <Link
-                                to="/tramessy/HRM/attendance-report"
+                                to="/tramessy/HR/attendance/attendance-report"
                                 className={`block p-2 rounded-sm ${
-                                  isActive("/HRM/attendance-report")
+                                  isActive("/HRM/attendance/attendance-report")
                                     ? "text-white bg-primary"
                                     : "text-gray-500 hover:text-primary"
                                 }`}
                               >
                                 Attendance Report
                               </Link>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </li>
@@ -495,13 +459,7 @@ const Sidebar = () => {
                                   : "text-gray-500 hover:text-primary"
                               }`}
                             >
-                              <div
-                                className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                  isActive("/tramessy/HR/HRM/Leave")
-                                    ? "bg-white"
-                                    : "bg-primary"
-                                }`}
-                              ></div>
+                              
                               <span>Leave Request</span>
                             </Link>
                           </li>
@@ -514,13 +472,7 @@ const Sidebar = () => {
                                   : "text-gray-500 hover:text-primary"
                               }`}
                             >
-                              <div
-                                className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                  isActive("/tramessy/HR/HRM/MonthAttendance")
-                                    ? "bg-white"
-                                    : "bg-primary"
-                                }`}
-                              ></div>
+                              
                               <span>Month Attendance</span>
                             </Link>
                           </li>
@@ -529,7 +481,7 @@ const Sidebar = () => {
                     </ul>
                   </div>
                 
-                  <div
+                  {/* <div
                     className={`transition-all duration-300 overflow-hidden px-1 ${
                       openMenu.hrManagement ? "max-h-[200px]" : "max-h-0"
                     }`}
@@ -542,11 +494,7 @@ const Sidebar = () => {
                           className="flex justify-between items-center p-2 cursor-pointer hover:text-primary rounded-sm"
                         >
                           <span className="flex gap-2 items-center">
-                            <div
-                              className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                isActive("/payroll") ? "bg-white" : "bg-primary"
-                              }`}
-                            ></div>
+                            
                             <span>Payroll</span>
                           </span>
                           <span
@@ -575,15 +523,7 @@ const Sidebar = () => {
                                     : "text-gray-500 hover:text-primary"
                                 }`}
                               >
-                                <div
-                                  className={`w-[6px] h-[6px] rounded-full bg-primary ${
-                                    isActive(
-                                      "/tramessy/HRM/Payroll/Advance-Salary"
-                                    )
-                                      ? "bg-white"
-                                      : "bg-primary"
-                                  }`}
-                                ></div>
+                               
                                 Salary Advance
                               </Link>
                             </li>
@@ -617,8 +557,8 @@ const Sidebar = () => {
                         </div>
                       </li>
                     </ul>
-                  </div>
-                </li> */}
+                  </div> */}
+                </li>
 
                 {/* Inventory management */}
                 {/* <li className="text-primary font-medium rounded-sm">
@@ -737,14 +677,8 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Purchase/PurchaseList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
-                          <span>Purchase List</span>
+                          
+                          <span>Purchase </span>
                         </Link>
                       </li>
                       <li>
@@ -756,14 +690,8 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <div
-                            className={`w-[6px] h-[6px] rounded-full ${
-                              isActive("/tramessy/Purchase/SupplierList")
-                                ? "bg-white"
-                                : "bg-primary"
-                            }`}
-                          ></div>
-                          <span>Supplier List</span>
+                          
+                          <span>Supplier </span>
                         </Link>
                       </li>
                     </ul>
@@ -810,7 +738,7 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>Customer List</span>
+                          <span>Customer</span>
                         </Link>
                       </li>
                     </ul>
@@ -1100,7 +1028,7 @@ const Sidebar = () => {
                           }`}
                         >
                       
-                          <span>Payment List</span>
+                          <span>Payment </span>
                         </Link>
                       </li>
                       <li>

@@ -7,8 +7,10 @@ import { FiCalendar } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import useRefId from "../../../hooks/useRef";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const OfficeForm = () => {
+  const navigate = useNavigate()
   const methods = useForm();
   const { handleSubmit, register, reset } = methods;
   const dateRef = useRef(null);
@@ -32,6 +34,7 @@ const OfficeForm = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/HR/HRM/Office")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }
@@ -51,7 +54,7 @@ const OfficeForm = () => {
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-3 mx-auto bg-gray-100 rounded-md shadow"
+          className="space-y-3 mx-auto rounded-md shadow"
         >
           {/* Trip & Destination Section */}
           <div className="border border-gray-300 p-3 md:p-5 rounded-b-md">

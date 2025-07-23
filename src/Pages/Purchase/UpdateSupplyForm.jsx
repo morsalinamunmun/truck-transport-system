@@ -6,9 +6,10 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../hooks/useRef";
 import { FiCalendar } from "react-icons/fi";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateSupplyForm = () => {
+  const navigate = useNavigate();
   //   update loader data
   const updateDriverLoaderData = useLoaderData();
   const {
@@ -41,6 +42,7 @@ const UpdateSupplyForm = () => {
         toast.success("Supply information updated successfully!", {
           position: "top-right",
         });
+      navigate("/tramessy/Purchase/SupplierList")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }
@@ -61,7 +63,7 @@ const UpdateSupplyForm = () => {
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto p-6 bg-gray-100 rounded-md shadow space-y-4"
+          className="mx-auto p-6 border border-gray-300 rounded-b-md shadow space-y-4"
         >
           {/*  */}
           <div className="md:flex justify-between gap-3">

@@ -7,6 +7,7 @@ import { IoMdClose } from "react-icons/io";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../../hooks/useRef";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
   const methods = useForm();
@@ -14,6 +15,7 @@ const AddEmployee = () => {
   const dateRef = useRef(null);
   const joinDateRef = useRef(null);
   const [branch, setBranch] = useState([]);
+  const navigate = useNavigate()
   // select branch name from api
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BASE_URL}/api/office/list`)
@@ -35,7 +37,7 @@ const AddEmployee = () => {
       for (const key in data) {
         formData.append(key, data[key]);
       }
-      formData.append("ref_id", generateRefId());
+      // formData.append("ref_id", generateRefId());
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/employee/create`,
         formData
@@ -47,6 +49,7 @@ const AddEmployee = () => {
           position: "top-right",
         });
         reset();
+        navigate("/tramessy/HR/HRM/employee-list")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }
@@ -66,7 +69,7 @@ const AddEmployee = () => {
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto p-6 bg-gray-100 rounded-md shadow space-y-4"
+          className="mx-auto p-6 border border-gray-300 rounded-b-md shadow space-y-4"
         >
           {/* Row 1: Full Name, Email, Mobile */}
           <div className="md:flex justify-between gap-3">
@@ -75,7 +78,7 @@ const AddEmployee = () => {
                 name="branch_name"
                 label="Branch Name"
                 required={true}
-                options={branchOptions}
+                options={[{ value: "Head Office", label: "Head Office" }]}
                 control={control}
               />
             </div>

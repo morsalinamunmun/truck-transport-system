@@ -191,6 +191,15 @@ const handleEdit = (part) => {
   const handlePageClick = (number) => {
     setCurrentPage(number);
   };
+
+  // parts status
+  const isPartExpired = (validityDate) => {
+  if (!validityDate) return true; // assume expired if no date
+  const today = new Date().setHours(0, 0, 0, 0);
+  const partDate = new Date(validityDate).setHours(0, 0, 0, 0);
+  return partDate < today;
+};
+
   return (
     <main className="relative  ">
       <Toaster position="top-right" reverseOrder={false} />
@@ -278,7 +287,11 @@ const handleEdit = (part) => {
                     {part.parts_validity}
                   </td>
                   <td className=" px-2 md:px-4 py-4">
-                    {part.name}
+                   {isPartExpired(part.parts_validity) ? (
+    <span className="text-red-500 font-semibold">Expired Date</span>
+  ) : (
+    <span className="text-green-600 font-semibold">Valid Date</span>
+  )}
                   </td>
                   <td className="px-2 md:px-4 py-4">
                     <div className="flex gap-2">

@@ -179,7 +179,7 @@ export const router = createBrowserRouter([
         path: "/tramessy/UpdateTripForm/:id",
         element: (
           <PrivateRoute>
-            <UpdateTripForm />
+            <AddTripForm />
           </PrivateRoute>
         ),
         loader: ({ params }) =>
@@ -401,34 +401,34 @@ export const router = createBrowserRouter([
       },
 
       // HR
-      // {
-      //   path: "/tramessy/HR/HRM/employee-list",
-      //   element: <EmployeeList />,
-      // },
-      // {
-      //   path: "/tramessy/HR/HRM/Office",
-      //   element: <Office />,
-      // },
-      // {
-      //   path: "/tramessy/HR/HRM/OfficeForm",
-      //   element: <OfficeForm />,
-      // },
-      // {
-      //   path: "/tramessy/HR/HRM/UpdateOfficeForm/:id",
-      //   element: (
-      //     <PrivateRoute>
-      //       <UpdateOfficeForm />
-      //     </PrivateRoute>
-      //   ),
-      //   loader: ({ params }) =>
-      //     fetch(
-      //       `${import.meta.env.VITE_BASE_URL}/api/office/show/${params.id}`
-      //     ),
-      // },
-      // {
-      //   path: "/tramessy/HR/HRM/AddEmployee",
-      //   element: <AddEmployee />,
-      // },
+      {
+        path: "/tramessy/HR/HRM/employee-list",
+        element: <EmployeeList />,
+      },
+      {
+        path: "/tramessy/HR/HRM/Office",
+        element: <Office />,
+      },
+      {
+        path: "/tramessy/HR/HRM/OfficeForm",
+        element: <OfficeForm />,
+      },
+      {
+        path: "/tramessy/HR/HRM/UpdateOfficeForm/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateOfficeForm />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(
+            `${import.meta.env.VITE_BASE_URL}/api/office/show/${params.id}`
+          ),
+      },
+      {
+        path: "/tramessy/HR/HRM/AddEmployee",
+        element: <AddEmployee />,
+      },
       {
         path: "/tramessy/UpdateEmployeeForm/:id",
         element: (
@@ -441,15 +441,15 @@ export const router = createBrowserRouter([
             `${import.meta.env.VITE_BASE_URL}/api/employee/show/${params.id}`
           ),
       },
-      // {
-      //   path: "/tramessy/HR/Attendance/AttendanceList",
-      //   element: <AttendanceList />,
-      // },
+      {
+        path: "/tramessy/HR/Attendance/AttendanceList",
+        element: <AttendanceList />,
+      },
 
-      // {
-      //   path: "/tramessy/HR/HRM/Attendance/AttendanceForm",
-      //   element: <AttendanceForm />,
-      // },
+      {
+        path: "/tramessy/HR/HRM/Attendance/AttendanceForm",
+        element: <AttendanceForm />,
+      },
       // payroll
       // {
       //   path: "/tramessy/HRM/Payroll/Advance-Salary",
@@ -487,30 +487,30 @@ export const router = createBrowserRouter([
             `${import.meta.env.VITE_BASE_URL}/api/leave/show/${params.id}`
           ),
       },
-      // {
-      //   path: "/tramessy/Purchase/PurchaseList",
-      //   element: <PurchaseList />,
-      // },
-      // {
-      //   path: "/tramessy/Purchase/PurchaseForm",
-      //   element: <PurchaseForm />,
-      // },
-      // {
-      //   path: "/tramessy/Purchase/UpdatePurchaseForm/:id",
-      //   element: <UpdatePurchaseForm />,
-      //   loader: ({ params }) =>
-      //     fetch(
-      //       `${import.meta.env.VITE_BASE_URL}/api/purchase/show/${params.id}`
-      //     ),
-      // },
-      // {
-      //   path: "/tramessy/Purchase/SupplierList",
-      //   element: <SupplierList />,
-      // },
-      // {
-      //   path: "/tramessy/Purchase/AddSupply",
-      //   element: <AddSupply />,
-      // },
+      {
+        path: "/tramessy/Purchase/PurchaseList",
+        element: <PurchaseList />,
+      },
+      {
+        path: "/tramessy/Purchase/PurchaseForm",
+        element: <PurchaseForm />,
+      },
+      {
+        path: "/tramessy/Purchase/UpdatePurchaseForm/:id",
+        element: <PurchaseForm />,
+        // loader: ({ params }) =>
+        //   fetch(
+        //     `${import.meta.env.VITE_BASE_URL}/api/purchase/show/${params.id}`
+        //   ),
+      },
+      {
+        path: "/tramessy/Purchase/SupplierList",
+        element: <SupplierList />,
+      },
+      {
+        path: "/tramessy/Purchase/AddSupply",
+        element: <AddSupply />,
+      },
       {
         path: "/tramessy/UpdateSupplyForm/:id",
         element: (

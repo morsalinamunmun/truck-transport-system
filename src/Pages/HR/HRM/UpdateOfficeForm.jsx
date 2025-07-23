@@ -5,9 +5,10 @@ import BtnSubmit from "../../../components/Button/BtnSubmit";
 import { FiCalendar } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateOfficeForm = () => {
+  const navigate = useNavigate()
   //   update loader data
   const updateOfficeLoaderData = useLoaderData();
   const { id, date, branch_name, address, factory_name } =
@@ -32,6 +33,7 @@ const UpdateOfficeForm = () => {
         toast.success("Office info Updated successfully!", {
           position: "top-right",
         });
+        navigate("/tramessy/HR/HRM/Office")
       } else {
         toast.error("Server Error: " + (resData.message || "Unknown issue"));
       }
@@ -51,7 +53,7 @@ const UpdateOfficeForm = () => {
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-3 mx-auto bg-gray-100 rounded-md shadow"
+          className="space-y-3 mx-auto rounded-md shadow"
         >
           {/* Trip & Destination Section */}
           <div className="border border-gray-300 p-3 md:p-5 rounded-b-md">

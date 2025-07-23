@@ -6,9 +6,10 @@ import { FiCalendar } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateEmployeeForm = () => {
+  const navigate = useNavigate();
   //   update loader data
   const updateEmployeeLoaderData = useLoaderData();
   const {
@@ -71,6 +72,7 @@ const UpdateEmployeeForm = () => {
         toast.success("Employee updated successfully", {
           position: "top-right",
         });
+        navigate("/tramessy/HR/HRM/employee-list")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }
@@ -86,12 +88,12 @@ const UpdateEmployeeForm = () => {
     <div className="mt-10">
       <Toaster position="top-center" reverseOrder={false} />
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
-        Add Employee Information
+        Update Employee Information
       </h3>
       <FormProvider {...methods} className="">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto p-6 bg-gray-100 rounded-md shadow space-y-4"
+          className="mx-auto p-6 border border-gray-300 rounded-b-md shadow space-y-4"
         >
           {/* Row 1: Full Name, Email, Mobile */}
           <div className="md:flex justify-between gap-3">
