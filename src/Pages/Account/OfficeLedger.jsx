@@ -3,6 +3,12 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaFilter } from "react-icons/fa6";
+import { FaFileExcel, FaFilePdf, FaPrint } from "react-icons/fa";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 
 const OfficeLedger = () => {
   let openingBalance = 2000;
@@ -19,6 +25,7 @@ const OfficeLedger = () => {
       .then((response) => {
         if (response.data.status === "Success") {
           const data = response.data.data;
+          
           setbranch(data);
         }
 
@@ -71,8 +78,43 @@ const OfficeLedger = () => {
     return true;
   });
 
+  // excel
+  const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(filteredBranch);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Office Ledger");
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "office-ledger.xlsx");
+};
+
+// pdf
+const exportToPdf = () => {
+  const input = document.getElementById("ledger-table"); // we'll set this ID below
+  html2canvas(input).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("l", "mm", "a4"); // landscape
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("office-ledger.pdf");
+  });
+};
+
+// print
+const handlePrint = () => {
+  const printContents = document.getElementById("ledger-table").innerHTML;
+  const originalContents = document.body.innerHTML;
+  document.body.innerHTML = printContents;
+  window.print();
+  document.body.innerHTML = originalContents;
+  window.location.reload(); // optional: reload after print
+};
+
+
   return (
-    <main className="bg-gradient-to-br from-gray-100 to-white md:p-2 overflow-hidden">
+    <main className=" overflow-hidden">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden  max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 border border-gray-200">
         {/* Header */}
@@ -83,7 +125,7 @@ const OfficeLedger = () => {
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
               onClick={() => setShowFilter((prev) => !prev)}
-              className="bg-gradient-to-r from-[#11375B] to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
             >
               <FaFilter /> Filter
             </button>
@@ -93,23 +135,31 @@ const OfficeLedger = () => {
         {/* Export */}
         <div className="md:flex items-center justify-between mb-4">
           <div className="flex gap-1 md:gap-3 flex-wrap">
-            <div className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all">
-              CSV
-            </div>
-
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              Excel
-            </button>
-
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              PDF
-            </button>
-
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              Print
-            </button>
+             <button
+                            onClick={exportToExcel}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFileExcel className="" />
+                            Excel
+                          </button>
+                        
+                          <button
+                            onClick={exportToPdf}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-amber-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFilePdf className="" />
+                            PDF
+                          </button>
+                        
+                          <button
+                            onClick={handlePrint}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-blue-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaPrint className="" />
+                            Print
+                          </button>
           </div>
-          <div className="mt-3 md:mt-0">
+          {/* <div className="mt-3 md:mt-0">
             <div className="relative w-full">
               <label className="text-primary text-sm font-semibold">
                 Select Branch Ledger
@@ -128,7 +178,7 @@ const OfficeLedger = () => {
               </select>
               <MdOutlineArrowDropDown className="absolute top-[35px] right-2 pointer-events-none text-xl text-gray-500" />
             </div>
-          </div>
+          </div> */}
         </div>
         {/* Conditional Filter Section */}
         {showFilter && (
@@ -152,7 +202,7 @@ const OfficeLedger = () => {
           </div>
         )}
         {/* Table */}
-        <div className="w-full mt-5 overflow-x-auto border border-gray-200">
+        <div id="ledger-table" className="w-full mt-5 overflow-x-auto border border-gray-200">
           <table className="w-full text-sm text-left">
             <thead className="text-black capitalize font-bold">
               <tr>

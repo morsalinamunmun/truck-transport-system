@@ -117,7 +117,7 @@ const InvoicePrint = forwardRef(({ data }, ref) => {
 
 
   return (
-    <div ref={ref} className="text-sm p-8 bg-pink-100 w-[810px] h-[1000px] text-black font-sans mx-auto">
+    <div ref={ref} className="text-sm p-8 bg-white w-[810px] h-[1000px] text-black font-sans mx-auto">
       <div className="text-center mb-2">
         <h2 className="text-2xl font-bold text-primary">লাকসাম পরিবহন সংস্থা</h2>
         <h3 className="font-semibold text-blue-900">LAKSHAM PORIBOHAN SONGSTHA</h3>

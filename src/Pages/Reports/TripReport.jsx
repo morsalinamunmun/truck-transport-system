@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -26,6 +26,7 @@ const TripReport = () => {
         if (res.data.status === "Success") {
           setTrips(res.data.data)
         }
+        setLoading(false) 
       })
       .catch((err) => {console.error("Failed to fetch trips", err)
       setLoading(false)}

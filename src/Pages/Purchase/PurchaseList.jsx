@@ -28,12 +28,12 @@ const PurchaseList = () => {
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
             <FaUserSecret className="text-[#11375B] text-2xl" />
-            Purchase 
+            Maintenance
           </h1>
           <div className="mt-3 md:mt-0 flex gap-2">
             <Link to="/tramessy/Purchase/PurchaseForm">
               <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
-                <FaPlus /> Purchase
+                <FaPlus /> Add
               </button>
             </Link>
           </div>
@@ -71,7 +71,7 @@ const PurchaseList = () => {
                     <img
                       src={`${import.meta.env.VITE_BASE_URL}/public/uploads/purchase/${dt.bill_image}`}
                       alt=""
-                      className="w-20 h-20 rounded-full"
+                      className="w-16 h-16 rounded-full"
                     />
                   </td>
                   <td className="px-2 action_column">

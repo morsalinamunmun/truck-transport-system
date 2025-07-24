@@ -450,6 +450,8 @@ import { Edit, FileText, FileSpreadsheet, FileImage, Printer, Plus, Filter, X } 
 import { FaFileExcel, FaFilePdf, FaFilter, FaPrint, FaTruck } from "react-icons/fa"
 import { GrFormNext, GrFormPrevious } from "react-icons/gr"
 import toast, { Toaster } from "react-hot-toast"
+import { FaPlus } from "react-icons/fa6"
+import { Link } from "react-router-dom"
 
 const DailyExpense = () => {
   const [expenses, setExpenses] = useState([])
@@ -676,9 +678,14 @@ const DailyExpense = () => {
                 <div className="md:flex items-center justify-between mb-6">
                   <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
                     <FaTruck className="text-[#11375B] text-2xl" />
-                    Daily Expense 
+                    Sallary Expense 
                   </h1>
                   <div className="mt-3 md:mt-0 flex gap-2">
+                    {/* <Link to="/tramessy/AddSallaryExpenseForm"> */}
+                                  <button onClick={() => showModal()} className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
+                                    <FaPlus /> Add 
+                                  </button>
+                                {/* </Link> */}
                     <button
                       onClick={() => setShowFilter((prev) => !prev)} // Toggle filter
                       className=" text-primary border border-primary px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
@@ -880,10 +887,10 @@ const DailyExpense = () => {
 
       {/* Modal */}
       {isModalVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#000000ad] z-50">
+          <div className="relative bg-white rounded-lg shadow-lg p-6  max-w-2xl border border-gray-300">
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-5 border-b border-gray-200">
+            <div className="flex justify-between items-center p-5 ">
               <h2 className="text-lg font-semibold text-gray-900">{editingId ? "খরচ আপডেট করুন" : "নতুন খরচ যুক্ত করুন"}</h2>
               <button onClick={handleCancel} className="p-1 hover:bg-gray-100 rounded transition-colors">
                 <X size={20} />
@@ -895,7 +902,7 @@ const DailyExpense = () => {
               <div className="p-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">তারিখ *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
                     <input
                       type="date"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -905,11 +912,11 @@ const DailyExpense = () => {
                     {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">যাকে প্রদান *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Paid To *</label>
                     <input
                       type="text"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="প্রাপকের নাম"
+                      placeholder="Paid To"
                       value={formData.paid_to}
                       onChange={(e) => setFormData({ ...formData, paid_to: e.target.value })}
                     />
@@ -919,22 +926,22 @@ const DailyExpense = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">পরিমাণ *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Amount *</label>
                     <input
                       type="number"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="পরিমাণ"
+                      placeholder="Amount"
                       value={formData.pay_amount}
                       onChange={(e) => setFormData({ ...formData, pay_amount: e.target.value })}
                     />
                     {errors.pay_amount && <p className="text-red-500 text-xs mt-1">{errors.pay_amount}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">ক্যাটাগরি *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                     <input
                       type="text"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="ক্যাটাগরি"
+                      placeholder="Category"
                       value={formData.payment_category}
                       onChange={(e) => setFormData({ ...formData, payment_category: e.target.value })}
                     />
@@ -943,11 +950,11 @@ const DailyExpense = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">মন্তব্য</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Remarks</label>
                   <input
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="মন্তব্য"
+                    placeholder="Remarks"
                     value={formData.remarks}
                     onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                   />
@@ -955,19 +962,19 @@ const DailyExpense = () => {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex justify-end gap-3 p-5 border-t border-gray-200">
+              <div className="flex justify-end gap-3 p-5 ">
                 <button
                   type="button"
                   onClick={handleCancel}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
                 >
-                  বাতিল করুন
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition-colors"
                 >
-                  সাবমিট
+                  Submit
                 </button>
               </div>
             </form>

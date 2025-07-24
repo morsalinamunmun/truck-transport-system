@@ -25,7 +25,7 @@ const Stockin = () => {
   }, []);
   if (loading) return <p className="text-center mt-16">Loading vehicle...</p>;
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-white md:p-4">
+    <div className=" md:p-4">
       <div className="w-xs md:w-full overflow-hidden overflow-x-auto max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 md:p-6 border border-gray-200">
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">

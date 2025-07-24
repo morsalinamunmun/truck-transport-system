@@ -1242,26 +1242,29 @@ export default function AddTripForm() {
   const [vendorVehicle, setVendorVehicle] = useState([])
   const [vendorDrivers, setVendorDrivers] = useState([])
   const [customer, setCustomer] = useState([])
-
+  const [vendors, setVendors] = useState([])
+console.log(vendors, 'ven')
   // Fetch all necessary data (trip and options) in one go
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         // Fetch all options concurrently
-        const [vehicleRes, driverRes, vendorVehicleRes, vendorDriversRes, customerRes] = await Promise.all([
+        const [vehicleRes, driverRes, vendorVehicleRes, vendorDriversRes, customerRes, vendorRes] = await Promise.all([
           fetch(`${import.meta.env.VITE_BASE_URL}/api/vehicle/list`),
           fetch(`${import.meta.env.VITE_BASE_URL}/api/driver/list`),
           fetch(`${import.meta.env.VITE_BASE_URL}/api/rent/list`), // Vendor vehicles
           fetch(`${import.meta.env.VITE_BASE_URL}/api/rent/list`), // Vendor drivers (assuming same endpoint)
           fetch(`${import.meta.env.VITE_BASE_URL}/api/customer/list`),
+          fetch(`${import.meta.env.VITE_BASE_URL}/api/vendor/list`)
         ])
 
-        const [vehicleData, driverData, vendorVehicleData, vendorDriversData, customerData] = await Promise.all([
+        const [vehicleData, driverData, vendorVehicleData, vendorDriversData, customerData, vendorListData] = await Promise.all([
           vehicleRes.json(),
           driverRes.json(),
           vendorVehicleRes.json(),
           vendorDriversRes.json(),
           customerRes.json(),
+          vendorRes.json()
         ])
 
         setVehicle(vehicleData.data)
@@ -1269,6 +1272,7 @@ export default function AddTripForm() {
         setVendorVehicle(vendorVehicleData.data)
         setVendorDrivers(vendorDriversData.data)
         setCustomer(customerData.data)
+        setVendors(vendorListData.data)
 
         // If in update mode, fetch trip data and reset form
         if (id) {
@@ -1415,7 +1419,11 @@ export default function AddTripForm() {
       methods.setValue("customer_mobile", selectedCustomer.mobile || "")
     }
   }, [selectedCustomerName, customerOptions, methods])
-
+  // vendor name
+const vendorOptions = vendors.map((vendor) => ({
+  value: vendor.vendor_name,
+  label: vendor.vendor_name,
+}))
   return (
     <FormProvider {...methods}>
       <Toaster />
@@ -1518,6 +1526,16 @@ export default function AddTripForm() {
                     control={control}
                   />
                 )}
+                {/* vendor name */}
+                { selectedTransport === "vendor_transport" ? (
+                  <SelectField
+                    name="vendor_name"
+                    label="Vendor Name"
+                    required={!id}
+                    control={control}
+                    options={vendorOptions}
+                  />
+                ) : ""}
                 {/* driver name transport based */}
                 {selectedTransport === "own_transport" ? (
                   <SelectField

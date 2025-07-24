@@ -5,7 +5,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { MdOutlineAirplaneTicket } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const PaymentReceive = () => {
+const VendorPayment = () => {
   const [payment, setPayment] = useState([]);
   const [loading, setLoading] = useState(true);
   // Fetch payment data
@@ -52,10 +52,10 @@ const PaymentReceive = () => {
         <div className="md:flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
                           <MdOutlineAirplaneTicket className="text-[#11375B] text-2xl" />
-                          Payment Receive
+                          Vendor Payment
                         </h2>
           <div className="mt-3 md:mt-0 flex gap-2">
-            <Link to="/tramessy/account/PaymentReceiveForm">
+            <Link to="/tramessy/account/VendorPaymentForm">
               <button className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer">
                 <FaPlus /> Add
               </button>
@@ -68,12 +68,10 @@ const PaymentReceive = () => {
               <tr>
                 <th className="px-2 py-3">SL.</th>
                 <th className="px-2 py-3">Date</th>
-                <th className="px-2 py-3">Customer Name</th>
-                <th className="px-2 py-3">Branch Name</th>
+                <th className="px-2 py-3">Vendor Name</th>
                 <th className="px-2 py-3">BillRef</th>
                 <th className="px-2 py-3">Amount</th>
                 <th className="px-2 py-3">Cash Type</th>
-                {/* <th className="px-2 py-3">Note</th> */}
                 <th className="px-2 py-3">Created By</th>
                 <th className="px-2 py-3">Status</th>
                 <th className="px-2 py-3">Action</th>
@@ -108,16 +106,14 @@ const PaymentReceive = () => {
                   <td className="p-2 font-bold">{index + 1}.</td>
                   <td className="p-2">{dt.date}</td>
                   <td className="p-2">{dt.customer_name}</td>
-                  <td className="p-2">{dt.branch_name}</td>
                   <td className="p-2">{dt.bill_ref}</td>
                   <td className="p-2">{dt.amount}</td>
                   <td className="p-2">{dt.cash_type}</td>
-                  {/* <td className="p-2">{dt.note}</td> */}
                   <td className="p-2">{dt.created_by}</td>
                   <td className="p-2">{dt.status}</td>
                   <td className="px-2 action_column">
                     <div className="flex gap-1">
-                      <Link to={`/tramessy/account/PaymentReceiveForm/edit/${dt.id}`}>
+                      <Link to={`/tramessy/account/VendorPaymentForm/edit/${dt.id}`}>
                         <button className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer">
                           <FaPen className="text-[12px]" />
                         </button>
@@ -186,4 +182,4 @@ const PaymentReceive = () => {
   );
 };
 
-export default PaymentReceive;
+export default VendorPayment;

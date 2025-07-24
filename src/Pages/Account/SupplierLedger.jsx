@@ -1,29 +1,21 @@
 import axios from "axios";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { FaFileExcel, FaFilePdf, FaPrint } from "react-icons/fa";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 const SupplierLedger = () => {
   let openingBalance = 2000;
   let currentBalance = openingBalance;
-  const [supplies, setSupplies] = useState([]); // Supplier dropdown options
+  const [supplier, setSupplier] = useState([]); // Supplier dropdown options
   const [supplierLedger, setSupplierLedger] = useState([]); // Ledger data for table
   const [loading, setLoading] = useState(true); // Loading only for initial ledger fetch
   const [selectedSupplier, setSelectedSupplier] = useState("");
-
-  // Fetch supplies once, no loading state here
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BASE_URL}/api/supply/list`)
-      .then((response) => {
-        if (response.data.status === "Success") {
-          setSupplies(response.data.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching supplies:", error);
-      });
-  }, []);
 
   // Fetch full ledger on mount, set loading only here
   useEffect(() => {
@@ -32,6 +24,7 @@ const SupplierLedger = () => {
       .get(`${import.meta.env.VITE_BASE_URL}/api/supplierLedger/list`)
       .then((response) => {
         if (response.data.status === "Success") {
+          setSupplier(response.data.data)
           setSupplierLedger(response.data.data);
         }
         setLoading(false);
@@ -41,6 +34,11 @@ const SupplierLedger = () => {
         setLoading(false);
       });
   }, []);
+
+  const supplierNames = [
+  ...new Set(supplier.map((item) => item.supplier_name).filter(Boolean)),
+];
+console.log(supplierNames)
 
   // Filter ledger data client-side on supplier change, no loading state here
   useEffect(() => {
@@ -74,10 +72,115 @@ const SupplierLedger = () => {
     }
   }, [selectedSupplier]);
 
+  // excel
+   const exportSuppliersToExcel = () => {
+  const dataToExport = supplierLedger.map((item, index) => ({
+    SL: index + 1,
+    Date: item.date || "",
+    Particulars: item.remarks || "",
+    Mode: item.mode || "",
+    PurchaseAmount: item.purchase_amount || 0,
+    PaymentAmount: item.payment_amount || 0,
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Supplier Ledger");
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, `Supplier_Ledger_${selectedSupplier || "All"}.xlsx`);
+};
+
+    // PDF
+    const exportSuppliersToPDF = () => {
+  const doc = new jsPDF();
+
+  const tableColumn = [
+    "SL.",
+    "Date",
+    "Particulars",
+    "Mode",
+    "PurchaseAmount",
+    "PaymentAmount",
+    "Balance",
+  ];
+
+  let pdfRows = [];
+  let runningBalance = 2000;
+
+  supplierLedger.forEach((item, index) => {
+    const purchase = parseFloat(item.purchase_amount) || 0;
+    const payment = parseFloat(item.payment_amount) || 0;
+    runningBalance += purchase - payment;
+
+    pdfRows.push([
+      index + 1,
+      item.date || "",
+      item.remarks || "",
+      item.mode || "",
+      purchase.toFixed(2),
+      payment.toFixed(2),
+      runningBalance.toFixed(2),
+    ]);
+  });
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: pdfRows,
+    startY: 20,
+    styles: {
+      fontSize: 8,
+      cellPadding: 2,
+    },
+    headStyles: {
+      fillColor: [17, 55, 91],
+      textColor: [255, 255, 255],
+    },
+    theme: "striped",
+  });
+
+  doc.save(`Supplier_Ledger_${selectedSupplier || "All"}.pdf`);
+};
+
+  
+    // Print
+    const printTable = () => {
+  const content = document.getElementById("supplier-ledger-table").innerHTML;
+  const printWindow = window.open("", "", "width=900,height=700");
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Supplier Ledger</title>
+        <style>
+          table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+          }
+          th, td {
+            padding: 4px;
+            font-size: 12px;
+          }
+          table {
+            width: 100%;
+          }
+        </style>
+      </head>
+      <body>${content}</body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.print();
+};
+
+
   if (loading) return <p className="text-center mt-16">Loading data...</p>;
 
   return (
-    <main className="bg-gradient-to-br from-gray-100 to-white md:p-2 overflow-hidden">
+    <main className=" overflow-hidden">
       <Toaster />
       <div className="w-xs md:w-full overflow-hidden max-w-7xl mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-2 py-10 border border-gray-200">
         {/* Header */}
@@ -91,21 +194,30 @@ const SupplierLedger = () => {
         {/* Export and Supplier Filter */}
         <div className="md:flex items-center justify-between mb-4">
           <div className="flex gap-1 md:gap-3 flex-wrap">
-            <div className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              CSV
-            </div>
 
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              Excel
-            </button>
-
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              PDF
-            </button>
-
-            <button className="py-2 px-5 bg-gray-200 text-primary font-semibold rounded-md hover:bg-primary hover:text-white transition-all cursor-pointer">
-              Print
-            </button>
+             <button
+                            onClick={exportSuppliersToExcel}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFileExcel className="" />
+                            Excel
+                          </button>
+                        
+                          <button
+                            onClick={exportSuppliersToPDF}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-amber-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaFilePdf className="" />
+                            PDF
+                          </button>
+                        
+                          <button
+                            onClick={printTable}
+                            className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-blue-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+                          >
+                            <FaPrint className="" />
+                            Print
+                          </button>
           </div>
           <div className="mt-3 md:mt-0 w-full md:w-64 relative">
             <label className="text-primary text-sm font-semibold">
@@ -117,9 +229,9 @@ const SupplierLedger = () => {
               className="mt-1 w-full text-gray-700 text-sm border border-gray-300 bg-white p-2 rounded appearance-none outline-none"
             >
               <option value="">Select supplier</option>
-              {supplies.map((supply, idx) => (
-                <option key={idx} value={supply.contact_person_name}>
-                  {supply.contact_person_name}
+              {supplierNames.map((supply, idx) => (
+                <option key={idx} value={supply}>
+                  {supply}
                 </option>
               ))}
             </select>
@@ -128,7 +240,7 @@ const SupplierLedger = () => {
         </div>
 
         {/* Table */}
-        <div className="w-full mt-5 overflow-x-auto border border-gray-200">
+        <div id="supplier-ledger-table" className="w-full mt-5 overflow-x-auto border border-gray-200">
           <table className="w-full text-sm text-left">
             <thead className="text-black capitalize font-bold">
               <tr>
@@ -160,7 +272,7 @@ const SupplierLedger = () => {
                       {index + 1}.
                     </td>
                     <td className="border border-gray-700 px-2 py-1">
-                      {dt.data}
+                      {dt.date}
                     </td>
                     <td className="border border-gray-700 px-2 py-1">
                       {dt.remarks}

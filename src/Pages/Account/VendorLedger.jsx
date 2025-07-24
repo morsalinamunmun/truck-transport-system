@@ -18,9 +18,10 @@ const VendorLedger = () => {
       .get(`${import.meta.env.VITE_BASE_URL}/api/vendorLedger/list`)
       .then((res) => {
         if (res.data.status === "Success") {
-          setVendorData(res.data.data);
-        }
-        setLoading(false);
+        const onlyVendorRows = res.data.data.filter((v) => !!v.vendor_name) 
+        setVendorData(onlyVendorRows);
+      }
+      setLoading(false);
       })
       .catch((err) => {
         console.error("Vendor ledger error:", err);
@@ -30,9 +31,9 @@ const VendorLedger = () => {
 
   if (loading) return <p className="text-center mt-16">Loading Vendor Ledger...</p>;
 
-  const vendorNames = [...new Set(vendorData.map((v) => v.customer))];
+  const vendorNames = [...new Set(vendorData.map((v) => v.vendor_name))];
   const filteredVendors = selectedVendor
-    ? vendorData.filter((v) => v.customer === selectedVendor)
+    ? vendorData.filter((v) => v.vendor_name === selectedVendor)
     : vendorData;
 
   const totals = filteredVendors.reduce(

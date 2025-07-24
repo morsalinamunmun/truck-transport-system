@@ -340,7 +340,7 @@ const PaymentList = () => {
         <div className="md:flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-primary flex items-center gap-2 ">
                 <FaUserSecret className="text-[#11375B] text-2xl" />
-                Payment List
+                Payment 
               </h2>
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
@@ -600,7 +600,7 @@ const PaymentList = () => {
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <InputField
-                  name="due_amount"
+                  name="total_amount"
                   label="Due Amount"
                   required
                   readOnly

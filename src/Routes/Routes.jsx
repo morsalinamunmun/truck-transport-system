@@ -90,6 +90,8 @@ import VehicleReport from "../Pages/Reports/VehicleReport";
 import Bill from "../Pages/Billing/Bill";
 import DailyTripExpense from "../Pages/DailyTripExpense";
 import VendorLedger from "../Pages/Account/VendorLedger";
+import VendorPayment from "../Pages/Account/VendorPayment";
+import VendorPaymentForm from "../Pages/Account/VendorPaymentForm";
 export const router = createBrowserRouter([
   {
     path: "/tramessy",
@@ -132,7 +134,7 @@ export const router = createBrowserRouter([
           ),
       },
       {
-        path: "/tramessy/DriverList",
+        path: "/tramessy/HR/HRM/DriverList",
         element: (
           <PrivateRoute>
             <DriverList />
@@ -330,7 +332,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/tramessy/daily-expense",
+        path: "/tramessy/HR/HRM/daily-expense",
         element: (
           <PrivateRoute>
             <DailyExpense />
@@ -643,6 +645,18 @@ export const router = createBrowserRouter([
       {
         path: "/tramessy/account/PaymentReceiveForm/edit/:id",
         element: <PaymentReceiveForm />,
+      },
+      {
+        path: "/tramessy/account/VendorPayment",
+        element: <VendorPayment />,
+      },
+      {
+        path: "/tramessy/account/VendorPaymentForm",
+        element: <VendorPaymentForm />,
+      },
+      {
+        path: "/tramessy/account/VendorPaymentForm/edit/:id",
+        element: <VendorPaymentForm />,
       },
       {
         path: "/tramessy/account/CustomerLedger",
