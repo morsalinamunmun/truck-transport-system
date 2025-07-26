@@ -28,7 +28,7 @@ const PurchaseList = () => {
         <div className="md:flex items-center justify-between mb-6">
           <h1 className="text-xl font-extrabold text-[#11375B] flex items-center gap-3">
             <FaUserSecret className="text-[#11375B] text-2xl" />
-            Maintenance
+            Purchase
           </h1>
           <div className="mt-3 md:mt-0 flex gap-2">
             <Link to="/tramessy/Purchase/PurchaseForm">

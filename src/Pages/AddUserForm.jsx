@@ -139,6 +139,7 @@ import { useNavigate, useParams } from "react-router-dom" // Import useParams
 import { useEffect, useState } from "react" // Import useEffect and useState
 
 const AddUserForm = () => {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams() // Get ID from URL parameters
   const isUpdateMode = !!id // Determine if we are in update mode
@@ -194,6 +195,7 @@ const AddUserForm = () => {
   }, [id, reset, navigate, initialDataLoaded, isUpdateMode])
 
   const onSubmit = async (data) => {
+    setLoading(true)
     try {
       const formData = new FormData()
       Object.entries(data).forEach(([key, value]) => {
@@ -232,7 +234,9 @@ const AddUserForm = () => {
       const clientErrorMessage = error.response?.data?.message || error.message || "Unknown error"
       toast.error("Server issue: " + clientErrorMessage)
       console.error("Submit error:", error)
-    }
+    }finally {
+    setLoading(false); 
+  }
   }
 
   return (
@@ -315,7 +319,7 @@ const AddUserForm = () => {
             </div>
             {/* Submit */}
             <div className="mt-6">
-              <BtnSubmit>{isUpdateMode ? "Update" : "Submit"}</BtnSubmit>
+              <BtnSubmit loading={loading}>{isUpdateMode ? "Update" : "Submit"}</BtnSubmit>
             </div>
           </form>
         </FormProvider>

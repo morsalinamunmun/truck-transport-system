@@ -9,6 +9,7 @@ import axios from "axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateEmployeeForm = () => {
+   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   //   update loader data
   const updateEmployeeLoaderData = useLoaderData();
@@ -56,6 +57,7 @@ const UpdateEmployeeForm = () => {
   };
   const onSubmit = async (data) => {
     try {
+       setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         if (data[key] !== undefined && data[key] !== null) {
@@ -81,7 +83,9 @@ const UpdateEmployeeForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server issue: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -273,7 +277,7 @@ const UpdateEmployeeForm = () => {
               />
             </div>
           )}
-          <BtnSubmit>Submit</BtnSubmit>
+          <BtnSubmit loading={loading}>Submit</BtnSubmit>
         </form>
       </FormProvider>
     </div>

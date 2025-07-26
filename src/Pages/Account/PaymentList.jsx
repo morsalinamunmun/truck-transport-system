@@ -229,85 +229,123 @@ const PaymentList = () => {
   };
   // onsubmit
   const onSubmit = async (data) => {
-    const refId = generateRefId();
-    if (!data.pay_amount || isNaN(data.pay_amount)) {
-      toast.error("Invalid payment amount", { position: "top-right" });
-      return;
-    }
-    if (data.pay_amount > data.due_amount) {
-      toast.error("The payment amount cannot be more than the due amount", {
-        position: "top-right",
-      });
-      return;
-    }
-    const previousAmount = parseFloat(selectedPayment.pay_amount) || 0;
-    const newAmount = parseFloat(data.pay_amount);
-    const updatedAmount = previousAmount + newAmount;
+  // const refId = generateRefId();
+  
+  // Validation
+  if (!data.pay_amount || isNaN(data.pay_amount)) {
+    toast.error("Invalid payment amount", { position: "top-right" });
+    return;
+  }
+  
+  if (data.pay_amount > data.due_amount) {
+    toast.error("The payment amount cannot be more than the due amount", {
+      position: "top-right",
+    });
+    return;
+  }
 
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/payment/update/${selectedPayment.id}`,
-        {
-          pay_amount: updatedAmount,
-        }
+  // Calculate updated amount
+  const previousAmount = parseFloat(selectedPayment.pay_amount) || 0;
+  const newAmount = parseFloat(data.pay_amount);
+  const updatedAmount = previousAmount + newAmount;
+
+  try {
+    // Prepare the complete payment payload
+    const paymentPayload = {
+      supplier_name: selectedPayment.supplier_name,
+      category: selectedPayment.category,
+      item_name: selectedPayment.item_name,
+      quantity: selectedPayment.quantity,
+      unit_price: selectedPayment.unit_price,
+      total_amount: selectedPayment.total_amount,
+      pay_amount: updatedAmount,
+      remarks: data.note || "Partial payment",
+      driver_name: selectedPayment.driver_name,
+      branch_name: selectedPayment.branch_name,
+      vehicle_no: selectedPayment.vehicle_no,
+      created_by: selectedPayment.created_by || "admin"
+    };
+
+    // 1. Update Payment
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/api/payment/update/${selectedPayment.id}`,
+      paymentPayload
+    );
+
+    if (response.data.success) {
+      // 2. Create Supplier Ledger Entry
+      const supplierLedgerPayload = {
+        date: new Date().toISOString().split('T')[0],
+        supplier_name: selectedPayment.supplier_name,
+        remarks: data.note || `Payment for ${selectedPayment.item_name}`,
+        pay_amount: data.pay_amount,
+        // ref_id: refId
+      };
+
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/supplierLedger/create`,
+        supplierLedgerPayload
       );
 
-      if (response.data.status === "Success") {
-        // --- Second API: Supplier Ledger Create ---
-        const supplierFormData = new FormData();
-        supplierFormData.append("date", new Date().toISOString().split("T")[0]);
-        supplierFormData.append("supplier_name", selectedPayment.supplier_name);
-        supplierFormData.append("remarks", data.note);
-        supplierFormData.append("pay_amount", data.pay_amount);
-        await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/supplierLedger/create`,
-          supplierFormData
-        );
+      // 3. Create Branch Ledger Entry
+      const branchLedgerPayload = {
+        date: new Date().toISOString().split('T')[0],
+        branch_name: selectedPayment.branch_name,
+        remarks: data.note || `Payment to ${selectedPayment.supplier_name}`,
+        cash_out: data.pay_amount,
+        // ref_id: refId
+      };
 
-        // --- Third API: Branch Ledger Create ---
-        const branchLedgerFormData = new FormData();
-        branchLedgerFormData.append(
-          "date",
-          new Date().toISOString().split("T")[0]
-        );
-        branchLedgerFormData.append("branch_name", selectedPayment.branch_name);
-        branchLedgerFormData.append("remarks", data.note);
-        branchLedgerFormData.append("cash_out", data.pay_amount);
-        branchLedgerFormData.append("ref_id", refId);
-        await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/branch/create`,
-          branchLedgerFormData
-        );
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/branch/create`,
+        branchLedgerPayload
+      );
 
-        toast.success("Payment updated successfully!", {
-          position: "top-right",
-        });
+      // Update UI state
+      setPayment(prevList =>
+        prevList.map(item =>
+          item.id === selectedPayment.id
+            ? {
+                ...item,
+                pay_amount: updatedAmount,
+                due_amount: parseFloat(item.total_amount) - updatedAmount,
+                status:
+                  updatedAmount === 0
+                    ? "Unpaid"
+                    : updatedAmount >= parseFloat(item.total_amount)
+                    ? "Paid"
+                    : "Partial"
+              }
+            : item
+        )
+      );
 
-        // UI update
-        setPayment((prevList) =>
-          prevList.map((item) =>
-            item.id === selectedPayment.id
-              ? {
-                  ...item,
-                  pay_amount: updatedAmount,
-                  status:
-                    updatedAmount === 0
-                      ? "Unpaid"
-                      : updatedAmount < parseFloat(item.total)
-                      ? "Partial"
-                      : "Paid",
-                }
-              : item
-          )
-        );
-        setShowModal(false);
-      } else {
-        toast.error(response.data.message || "Failed to update.");
+      // Refresh payment list
+      const refreshResponse = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/payment/list`
+      );
+      if (refreshResponse.data.status === "Success") {
+        setPayment(refreshResponse.data.data);
       }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Server error");
+
+      toast.success("Payment updated successfully!", {
+        position: "top-right",
+      });
+      setShowModal(false);
+      reset();
+    } else {
+      toast.error(response.data.message || "Failed to update payment");
     }
-  };
+  } catch (error) {
+    console.error("Payment update error:", error);
+    toast.error(
+      error.response?.data?.message ||
+        error.message ||
+        "An error occurred while updating payment"
+    );
+  }
+};
+
 
   // pagination
   const [currentPage, setCurrentPage] = useState([1]);
@@ -438,7 +476,7 @@ const PaymentList = () => {
                 <th className="px-1 py-2">Quantity</th>
                 <th className="px-1 py-2">Unit Price</th>
                 <th className="px-1 py-2">Total Amount</th>
-                {/* <th className="px-1 py-2">Pay Amount</th> */}
+                <th className="px-1 py-2">Pay Amount</th>
                 <th className="px-1 py-2">Due Amount</th>
                 <th className="px-1 py-2">Status</th>
                 <th className="px-1 py-2">Action</th>
@@ -481,11 +519,11 @@ const PaymentList = () => {
                   <td className="px-1 py-2">{dt.quantity}</td>
                   <td className="px-1 py-2">{dt.unit_price}</td>
                   <td className="px-1 py-2">{dt.total_amount}</td>
-                  {/* <td className="px-1 py-2">{dt.pay_amount}</td> */}
+                  <td className="px-1 py-2">{dt.pay_amount}</td>
                   <td className="px-1 py-2">{dt.due_amount}</td>
                   <td className="px-1 py-2">
                     {(() => {
-                      const total = parseFloat(dt.total) || 0;
+                      const total = parseFloat(dt.total_amount) || 0;
                       const paid = parseFloat(dt.pay_amount) || 0;
                       const due = total - paid;
 
@@ -515,28 +553,28 @@ const PaymentList = () => {
                       <button
                         onClick={() => {
                           if (
-                            parseFloat(dt.total) - parseFloat(dt.pay_amount) <=
+                            parseFloat(dt.total_amount) - parseFloat(dt.pay_amount) <=
                             0
                           )
                             return;
                           setSelectedPayment(dt);
                           setShowModal(true);
                           reset({
-                            due_amount: dt.total - dt.pay_amount,
+                            due_amount: dt.total_amount - dt.pay_amount,
                             pay_amount: dt.pay_amount,
                             // note: dt.item_name,
                           });
                         }}
                         className={`px-1 py-1 rounded shadow-md transition-all cursor-pointer ${
-                          parseFloat(dt.total) - parseFloat(dt.pay_amount) > 0
+                          parseFloat(dt.total_amount) - parseFloat(dt.pay_amount) > 0
                             ? "text-primary hover:bg-primary hover:text-white"
                             : "text-green-700 bg-gray-200 cursor-not-allowed"
                         }`}
                         disabled={
-                          parseFloat(dt.total) - parseFloat(dt.pay_amount) <= 0
+                          parseFloat(dt.total_amount) - parseFloat(dt.pay_amount) <= 0
                         }
                       >
-                        {parseFloat(dt.total) - parseFloat(dt.pay_amount) > 0
+                        {parseFloat(dt.total_amount) - parseFloat(dt.pay_amount) > 0
                           ? "Pay Now"
                           : "Complete"}
                       </button>
@@ -600,13 +638,13 @@ const PaymentList = () => {
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <InputField
-                  name="total_amount"
+                  name="due_amount"
                   label="Due Amount"
                   required
                   readOnly
                 />
                 <InputField name="pay_amount" label="Pay Amount" required />
-                <InputField name="note" label="Note" required />
+                <InputField name="note" label="Note"  />
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"

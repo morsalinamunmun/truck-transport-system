@@ -2,12 +2,13 @@ import BtnSubmit from "../../components/Button/BtnSubmit";
 import { FiCalendar } from "react-icons/fi";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputField, SelectField } from "../../components/Form/FormFields";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateCustomerForm = () => {
+    const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   //   update loader data
   const updateCustomerLoaderData = useLoaderData();
@@ -21,6 +22,7 @@ const UpdateCustomerForm = () => {
   // update customer
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/customer/update/${id}`,
         data,
@@ -45,7 +47,9 @@ const UpdateCustomerForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server issue " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -126,7 +130,7 @@ const UpdateCustomerForm = () => {
 
             {/* Submit Button */}
             <div className="text-left">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </form>
         </FormProvider>

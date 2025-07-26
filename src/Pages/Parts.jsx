@@ -15,6 +15,7 @@ const [editId, setEditId] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   // delete modal
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFuelId, setselectedFuelId] = useState(null);
@@ -82,6 +83,7 @@ axios
   }, []);
 
   const onSubmit = async (data) => {
+ setFormLoading(true);
   try {
     const formData = new FormData();
     for (const key in data) {
@@ -115,6 +117,7 @@ axios
       setShowFilter(false);
       setEditMode(false);
       setEditId(null);
+       resetForm();
       // Refresh data
       fetchParts();
     } else {
@@ -125,16 +128,34 @@ axios
     const errorMessage =
       error.response?.data?.message || error.message || "Unknown error";
     toast.error("Server issue: " + errorMessage);
-  }
+  }finally {
+      setFormLoading(false);
+    }
 };
+// New function to properly reset the form
+  const resetForm = () => {
+    reset({
+      parts_name: "",
+      parts_validity: ""
+    });
+    setEditMode(false);
+    setEditId(null);
+    setShowFilter(false);
+  };
 
 // edit modal handler
 const handleEdit = (part) => {
+  resetForm(); 
   setEditMode(true);        // Activate edit mode
   setEditId(part.id);       // Store part ID for update
   reset(part);              // Fill form with part data
   setShowFilter(true);      // Open the modal
 };
+
+const handleAddClick = () => {
+    resetForm(); // Clear any edit data
+    setShowFilter(true);
+  };
   
 
   if (loading) return <p className="text-center mt-16">Loading parts...</p>;
@@ -212,7 +233,7 @@ const handleEdit = (part) => {
           </h1>
           <div className="mt-3 md:mt-0 flex gap-2">
             <button
-              onClick={() => setShowFilter(true)}
+             onClick={handleAddClick} 
               className="bg-primary text-white px-4 py-1 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 cursor-pointer"
             >
               <FaPlus /> Parts
@@ -458,7 +479,7 @@ const handleEdit = (part) => {
               </div>
               {/* Submit Button */}
               <div className="text-right">
-                <BtnSubmit>{editMode ? "Update" : "Submit"}</BtnSubmit>
+                <BtnSubmit loading={formLoading}>{editMode ? "Update" : "Submit"}</BtnSubmit>
               </div>
             </form>
           </div>

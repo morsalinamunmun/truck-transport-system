@@ -7,6 +7,7 @@ import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
 import { useLoaderData, useNavigate } from "react-router-dom";
 const UpdateCarForm = () => {
+  const [loading, setLoading] = useState(false)
   //   update loader data
   const updateCarLoaderData = useLoaderData();
   const {
@@ -60,6 +61,7 @@ const UpdateCarForm = () => {
 
   // update vehicle
   const onSubmit = async (data) => {
+    setLoading(true); 
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/vehicle/edit/${id}`,
@@ -85,6 +87,8 @@ const UpdateCarForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server issue " + errorMessage);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -395,7 +399,7 @@ const UpdateCarForm = () => {
           </div>
 
           <div className="text-left">
-            <BtnSubmit>Submit</BtnSubmit>
+            <BtnSubmit loading={loading}>Submit</BtnSubmit>
           </div>
         </div>
       </form>

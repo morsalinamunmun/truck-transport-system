@@ -377,7 +377,7 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>Sallary Expense</span>
+                          <span>Salary Expense</span>
                         </Link>
                       </li>
                           </ul>
@@ -463,7 +463,7 @@ const Sidebar = () => {
                           onClick={() => toggleMenu("leave")}
                           className="p-2 cursor-pointer hover:text-primary rounded-sm"
                         >
-                          <li>
+                          {/* <li>
                             <Link
                               to="/tramessy/HR/HRM/Leave"
                               className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -475,7 +475,7 @@ const Sidebar = () => {
                               
                               <span>Leave Request</span>
                             </Link>
-                          </li>
+                          </li> */}
                           {/* <li>
                             <Link
                               to="/tramessy/HR/HRM/MonthAttendance"
@@ -647,7 +647,7 @@ const Sidebar = () => {
                   >
                     <span className="flex items-center gap-2">
                       <RiLuggageCartLine />
-                      <span>Maintenance</span>
+                      <span>Purchase</span>
                     </span>
                     <span
                       className={`transform transition-transform duration-900 ${
@@ -673,7 +673,7 @@ const Sidebar = () => {
                           }`}
                         >
                           
-                          <span>Maintenance </span>
+                          <span>Purchase </span>
                         </Link>
                       </li>
                       <li>
@@ -1001,6 +1001,19 @@ const Sidebar = () => {
                           <span>Fund Transfer</span>
                         </Link>
                       </li> */}
+                      <li>
+                        <Link
+                          to="/tramessy/account/official-expense"
+                          className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
+                            isActive("/tramessy/official-expense")
+                              ? "text-white bg-primary"
+                              : "text-gray-500 hover:text-primary"
+                          }`}
+                        >
+                          
+                          <span>Official Expense</span>
+                        </Link>
+                      </li>
                       <li>
                         <Link
                           to="/tramessy/account/PaymentList"

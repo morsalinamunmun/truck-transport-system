@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { FormProvider, useForm } from "react-hook-form";
 import { InputField } from "../../../components/Form/FormFields";
@@ -10,6 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const OfficeForm = () => {
+    const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const methods = useForm();
   const { handleSubmit, register, reset } = methods;
@@ -18,6 +19,7 @@ const OfficeForm = () => {
   const onSubmit = async (data) => {
     console.log("add fuel data", data);
     try {
+      setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         formData.append(key, data[key]);
@@ -43,7 +45,9 @@ const OfficeForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
   return (
     <div className="mt-10">
@@ -97,7 +101,7 @@ const OfficeForm = () => {
             </div>
             {/* Submit Button */}
             <div className="text-left p-5">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </div>
         </form>

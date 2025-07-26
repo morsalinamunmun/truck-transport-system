@@ -92,6 +92,7 @@ import DailyTripExpense from "../Pages/DailyTripExpense";
 import VendorLedger from "../Pages/Account/VendorLedger";
 import VendorPayment from "../Pages/Account/VendorPayment";
 import VendorPaymentForm from "../Pages/Account/VendorPaymentForm";
+import OfficialExpense from "../Pages/OfficialExpense";
 export const router = createBrowserRouter([
   {
     path: "/tramessy",
@@ -633,6 +634,10 @@ export const router = createBrowserRouter([
       {
         path: "/tramessy/account/PaymentList",
         element: <PaymentList />,
+      },
+      {
+        path: "/tramessy/account/official-expense",
+        element: <OfficialExpense />,
       },
       {
         path: "/tramessy/account/PaymentReceive",

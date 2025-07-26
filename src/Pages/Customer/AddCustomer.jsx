@@ -3,13 +3,14 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import { FiCalendar } from "react-icons/fi";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputField, SelectField } from "../../components/Form/FormFields";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../hooks/useRef";
 import { useNavigate } from "react-router-dom";
 
 const AddCustomer = () => {
+  const [loading, setLoading] = useState(false)
   const dateRef = useRef(null);
   const methods = useForm();
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const AddCustomer = () => {
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         formData.append(key, data[key]);
@@ -42,7 +44,9 @@ const AddCustomer = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -115,7 +119,7 @@ const AddCustomer = () => {
 
             {/* Submit Button */}
             <div className="text-left">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </form>
         </FormProvider>

@@ -1126,9 +1126,11 @@ import toast, { Toaster } from "react-hot-toast"
 import { useEffect, useRef, useState } from "react"
 import { InputField, SelectField } from "../components/Form/FormFields"
 import useRefId from "../hooks/useRef"
+import BtnSubmit from "../components/Button/BtnSubmit"
 
 
 export default function AddTripForm() {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams() // Get ID from URL params
   const dateRef = useRef(null)
@@ -1379,6 +1381,7 @@ console.log(vendors, 'ven')
     }
 
     try {
+      setLoading(true);
       const res = await fetch(url, {
         method: method,
         headers: { "Content-Type": "application/json" },
@@ -1393,7 +1396,9 @@ console.log(vendors, 'ven')
     } catch (error) {
       console.error(error)
       toast.error("Something went wrong.")
-    }
+    } finally {
+    setLoading(false); 
+  }
   }
 
   // Driver name এর পরিবর্তন দেখুন
@@ -1639,12 +1644,13 @@ const vendorOptions = vendors.map((vendor) => ({
             )}
             {/* Submit Button */}
             <div className="flex justify-start">
-              <button
-                type="submit"
-                className="bg-slate-800 text-white px-8 py-2 rounded-md hover:bg-slate-700 transition-colors"
+              <BtnSubmit
+                // type="submit"
+                // className="bg-slate-800 text-white px-8 py-2 rounded-md hover:bg-slate-700 transition-colors"
+                loading={loading}
               >
                 {id ? "Update Trip" : "Submit"}
-              </button>
+              </BtnSubmit>
             </div>
           </div>
           {/* Bottom Navigation */}

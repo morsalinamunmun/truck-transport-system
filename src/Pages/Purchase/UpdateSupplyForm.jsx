@@ -1,7 +1,7 @@
 import BtnSubmit from "../../components/Button/BtnSubmit";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputField, SelectField } from "../../components/Form/FormFields";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import useRefId from "../../hooks/useRef";
@@ -9,6 +9,7 @@ import { FiCalendar } from "react-icons/fi";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateSupplyForm = () => {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   //   update loader data
   const updateDriverLoaderData = useLoaderData();
@@ -28,6 +29,7 @@ const UpdateSupplyForm = () => {
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
     try {
+       setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         formData.append(key, data[key]);
@@ -51,7 +53,9 @@ const UpdateSupplyForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -135,7 +139,7 @@ const UpdateSupplyForm = () => {
             </div>
           </div>
 
-          <BtnSubmit>Submit</BtnSubmit>
+          <BtnSubmit loading={loading}>Submit</BtnSubmit>
         </form>
       </FormProvider>
     </div>

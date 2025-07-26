@@ -222,6 +222,7 @@ import { InputField, SelectField } from "../../components/Form/FormFields"
 import BtnSubmit from "../../components/Button/BtnSubmit"
 
 const PaymentReceiveForm = () => {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams() // Get ID from URL parameters
   const dateRef = useRef(null)
@@ -295,6 +296,7 @@ const PaymentReceiveForm = () => {
 
   // send data on server
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       let paymentResponse
       let paymentData
@@ -370,7 +372,9 @@ const PaymentReceiveForm = () => {
       console.error("Submit error:", error)
       const errorMessage = error.response?.data?.message || error.message || "Unknown error"
       toast.error("Server issue: " + errorMessage)
-    }
+    }finally {
+    setLoading(false); 
+  }
   }
 
   return (
@@ -468,7 +472,7 @@ const PaymentReceiveForm = () => {
             </div>
             {/* Submit Button */}
             <div className="text-left p-5">
-              <BtnSubmit>{id ? "Update" : "Submit"}</BtnSubmit>
+              <BtnSubmit loading={loading}>{id ? "Update" : "Submit"}</BtnSubmit>
             </div>
           </div>
         </form>

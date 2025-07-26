@@ -10,6 +10,7 @@ import useRefId from "../../../hooks/useRef";
 import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
+   const [loading, setLoading] = useState(false)
   const methods = useForm();
   const { handleSubmit, register, control, reset } = methods;
   const dateRef = useRef(null);
@@ -33,6 +34,7 @@ const AddEmployee = () => {
   const onSubmit = async (data) => {
     console.log("add fuel data", data);
     try {
+      setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         formData.append(key, data[key]);
@@ -58,7 +60,9 @@ const AddEmployee = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
   return (
     <div className="mt-10">
@@ -246,7 +250,7 @@ const AddEmployee = () => {
               />
             </div>
           )}
-          <BtnSubmit>Submit</BtnSubmit>
+          <BtnSubmit loading={loading}>Submit</BtnSubmit>
         </form>
       </FormProvider>
     </div>

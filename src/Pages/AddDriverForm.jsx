@@ -10,6 +10,7 @@ import { InputField, SelectField } from "../components/Form/FormFields";
 import { useNavigate } from "react-router-dom";
 
 const AddDriverForm = () => {
+  const [loading, setLoading] = useState(false)
   const methods = useForm();
   const { handleSubmit, register, reset, control } = methods;
   const [previewImage, setPreviewImage] = useState(null);
@@ -17,6 +18,7 @@ const AddDriverForm = () => {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         if (data[key] !== undefined && data[key] !== null) {
@@ -43,7 +45,9 @@ const AddDriverForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server issue: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -206,7 +210,7 @@ const AddDriverForm = () => {
             )}
 
             <div className="mt-6 text-left">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </form>
         </FormProvider>

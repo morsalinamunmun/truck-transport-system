@@ -186,7 +186,7 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Daily Trip</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalDistance.toFixed(0)}</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.todayTrips.toFixed(0)}</p>
               </div>
               <div className="p-3 bg-yellow-100 rounded-full">
                 <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,6 +226,7 @@ const [activeVehicleList, setActiveVehicleList] = useState([])
               </div>
             </div>
           </div>
+          
 
           {/* <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
             <div className="flex items-center justify-between">

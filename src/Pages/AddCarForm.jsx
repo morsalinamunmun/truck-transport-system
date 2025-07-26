@@ -8,6 +8,7 @@ import { InputField, SelectField } from "../components/Form/FormFields";
 import useRefId from "../hooks/useRef";
 import { useNavigate } from "react-router-dom";
 const AddCarForm = () => {
+  const [loading, setLoading] = useState(false);
   const methods = useForm();
   const { handleSubmit, register, reset, control } = methods;
   const registrationDateRef = useRef(null);
@@ -33,6 +34,7 @@ const AddCarForm = () => {
   // post vehicle
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
+     setLoading(true); 
     console.log("add car data", data);
     try {
       const formData = new FormData();
@@ -58,6 +60,8 @@ const AddCarForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server error: " + errorMessage);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -361,7 +365,7 @@ const AddCarForm = () => {
           </div>
 
           <div className="text-left">
-            <BtnSubmit>Submit</BtnSubmit>
+            <BtnSubmit loading={loading}>Submit</BtnSubmit>
           </div>
         </div>
       </form>

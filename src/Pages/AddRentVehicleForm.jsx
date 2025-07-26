@@ -5,14 +5,17 @@ import BtnSubmit from "../components/Button/BtnSubmit";
 import { InputField, SelectField } from "../components/Form/FormFields";
 import useRefId from "../hooks/useRef";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const AddRentVehicleForm = () => {
+   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const methods = useForm();
   const { handleSubmit, reset } = methods;
 
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const formData = new FormData();
       for (const key in data) {
@@ -39,7 +42,9 @@ const AddRentVehicleForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -235,7 +240,7 @@ const AddRentVehicleForm = () => {
             </div>
             {/* Submit Button */}
             <div className="text-left">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </form>
         </FormProvider>

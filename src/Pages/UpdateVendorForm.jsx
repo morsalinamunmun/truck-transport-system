@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { FiCalendar } from "react-icons/fi";
@@ -8,6 +8,7 @@ import { InputField, SelectField } from "../components/Form/FormFields";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateVendorForm = () => {
+   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   //   update loader data
   const updateVendorLoaderData = useLoaderData();
@@ -28,6 +29,7 @@ const UpdateVendorForm = () => {
 
   const onSubmit = async (data) => {
     try {
+       setLoading(true);
       const formData = new FormData();
       for (const key in data) {
         formData.append(key, data[key]);
@@ -50,7 +52,9 @@ const UpdateVendorForm = () => {
       const errorMessage =
         error.response?.data?.message || error.message || "Unknown error";
       toast.error("Server Error: " + errorMessage);
-    }
+    }finally {
+    setLoading(false); 
+  }
   };
 
   return (
@@ -146,7 +150,7 @@ const UpdateVendorForm = () => {
 
             {/* Submit Button */}
             <div className="text-left">
-              <BtnSubmit>Submit</BtnSubmit>
+              <BtnSubmit loading={loading}>Submit</BtnSubmit>
             </div>
           </form>
         </FormProvider>

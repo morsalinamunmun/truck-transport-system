@@ -721,6 +721,7 @@ const PurchaseForm = () => {
   const [isLoadingVehicles, setIsLoadingVehicles] = useState(true)
   const [isLoadingBranches, setIsLoadingBranches] = useState(true)
   const [isLoadingSuppliers, setIsLoadingSuppliers] = useState(true)
+  const [isLoadingFormSubmit, setIsLoadingFormSubmit] = useState(false)
 
   // Calculate Total Expense
   const quantity = Number.parseFloat(watch("quantity") || 0)
@@ -844,8 +845,8 @@ const PurchaseForm = () => {
       .finally(() => setIsLoadingSuppliers(false))
   }, [])
   const supplyOptions = supplier.map((supply) => ({
-    value: supply.contact_person_name,
-    label: supply.contact_person_name,
+    value: supply.business_name,
+    label: supply.business_name,
   }))
 
   // database unique id create
@@ -854,6 +855,7 @@ const PurchaseForm = () => {
   const onSubmit = async (data) => {
     console.log("Submitting purchase data:", data)
     const refId = generateRefId();
+    setIsLoadingFormSubmit(true)
     try {
       const purchaseFormData = new FormData()
       for (const key in data) {
@@ -900,6 +902,8 @@ const PurchaseForm = () => {
       console.error(error)
       const errorMessage = error.response?.data?.message || error.message || "Unknown error"
       toast.error("Server issue: " + errorMessage)
+    }finally{
+      setIsLoadingFormSubmit(false)
     }
   }
 
@@ -985,11 +989,11 @@ const PurchaseForm = () => {
                 <InputField name="service_cost" label="Service Cost" type="number"  />
               </div>
           )}
-              {selectedCategory === "Fuel" && (
+              {/* {selectedCategory === "Fuel" && (
                 <div className="w-full">
                   <InputField name="trip_id" label="Trip ID" required={!id}/>
                 </div>
-              )}
+              )} */}
               {selectedCategory !== "Fuel" && (selectedCategory === "Engine Oil" ) && (
                 <div className="w-full"></div> // Placeholder for alignment
               )}
@@ -1071,11 +1075,13 @@ const PurchaseForm = () => {
 
           <div className="md:flex justify-between gap-3">
             <div className="w-full">
-              <label className="text-primary text-sm font-semibold">Bill Image</label>
+              <label className="text-primary text-sm font-semibold">Bill Image <span className="text-red-500">*</span></label>
               <Controller
                 name="bill_image"
                 control={control}
-                rules={{ required: !id }} // Required only for new purchases
+                rules={{
+  required: !id ? "This field is required" : false
+}}
                 render={({ field: { onChange, ref }, fieldState: { error } }) => (
                   <div className="relative">
                     <label
@@ -1136,7 +1142,7 @@ const PurchaseForm = () => {
               />
             </div>
           )}
-          <BtnSubmit>{submitButtonText}</BtnSubmit>
+          <BtnSubmit loading={isLoadingFormSubmit}>{submitButtonText}</BtnSubmit>
         </form>
       </FormProvider>
     </div>
