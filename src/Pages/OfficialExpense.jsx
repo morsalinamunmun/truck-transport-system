@@ -26,6 +26,7 @@ const OfficialExpense = () => {
     paid_to: "",
     pay_amount: "",
     payment_category: "",
+    branch_name: "",
     remarks: "",
   })
   const [errors, setErrors] = useState({})
@@ -50,6 +51,7 @@ const OfficialExpense = () => {
           paid_to: data?.paid_to || "",
           pay_amount: data?.pay_amount || "",
           payment_category: data?.payment_category || "",
+          branch_name: data?.branch_name || "",
           remarks: data?.remarks || "",
         })
         setEditingId(record.id)
@@ -63,6 +65,7 @@ const OfficialExpense = () => {
         paid_to: "",
         pay_amount: "",
         payment_category: "",
+        branch_name: "",
         remarks: "",
       })
       setEditingId(null)
@@ -76,6 +79,7 @@ const OfficialExpense = () => {
       paid_to: "",
       pay_amount: "",
       payment_category: "",
+      branch_name: "",
       remarks: "",
     })
     setEditingId(null)
@@ -109,6 +113,7 @@ const OfficialExpense = () => {
     if (!formData.date) newErrors.date = "Date is required"
     if (!formData.paid_to) newErrors.paid_to = "Recipient is required"
     if (!formData.pay_amount) newErrors.pay_amount = "Amount is required"
+    if (!formData.branch_name) newErrors.branch_name = "Branch name is required"
     if (!formData.payment_category) newErrors.payment_category = "Category is required"
 
     setErrors(newErrors)
@@ -130,7 +135,7 @@ setIsSubmitting(true);
         await axios.post(`${import.meta.env.VITE_BASE_URL}/api/expense/update/${editingId}`, payload)
         toast.success("Expense Data Update successful")
       } else {
-        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/expense/save`, payload)
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/expense/create`, payload)
         toast.success("Epense Added successful")
       }
 
@@ -476,7 +481,7 @@ setIsSubmitting(true);
               <div className="p-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
                     <input
                       type="date"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -486,7 +491,7 @@ setIsSubmitting(true);
                     {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
                   </div>
                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Paid To *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Paid To <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -501,7 +506,7 @@ setIsSubmitting(true);
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Amount *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Amount <span className="text-red-500">*</span></label>
                     <input
                       type="number"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -512,7 +517,7 @@ setIsSubmitting(true);
                     {errors.pay_amount && <p className="text-red-500 text-xs mt-1">{errors.pay_amount}</p>}
                   </div>
                    <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-red-500">*</span></label>
                     <select
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       value={formData.payment_category}
@@ -529,6 +534,19 @@ setIsSubmitting(true);
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Branch Name <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Branch Name"
+                      value={formData.branch_name}
+                      onChange={(e) => setFormData({ ...formData, branch_name: e.target.value })}
+                    />
+                    {errors.branch_name && <p className="text-red-500 text-xs mt-1">{errors.branch_name}</p>}
+                  </div>
+
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Remarks</label>
                   <input
@@ -538,6 +556,7 @@ setIsSubmitting(true);
                     value={formData.remarks}
                     onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                   />
+                </div>
                 </div>
               </div>
 

@@ -298,7 +298,7 @@ const CarList = () => {
         {/* Table */}
         <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white uppercase text-xs">
+            <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="px-2 py-3">SL.</th>
                 <th className="px-2 py-3">Name</th>

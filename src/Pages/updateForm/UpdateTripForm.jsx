@@ -322,7 +322,7 @@ console.log(initialValues, 'initialValues')
   damarageRate: initialValues?.data?.damarageRate || "",
 
   customerName: initialValues?.data?.customer || "",
-  customerNumber: initialValues?.data?.mobile || "",
+  customerNumber: initialValues?.data?.customer_mobile || "",
 
   rentAmount: initialValues?.data?.rentAmount || "",
   advancePayment: initialValues?.data?.advance || "",

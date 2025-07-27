@@ -348,7 +348,7 @@ const CarList = () => {
                   </td>
                   {/* <td className="px-2 py-4">0</td> */}
                   {/* <td className="px-2 py-4">{vehicle.registration_number}</td> */}
-                  <td className="px-2 py-4">{status}</td>
+                  <td className="px-2 py-4">{vehicle.status}</td>
                   <td className="px-2 py-4 action_column">
                     <div className="flex gap-1">
                       <Link to={`/tramessy/update-vehicel-form/${vehicle.id}`}>

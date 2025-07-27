@@ -819,22 +819,40 @@ const Bill = () => {
   }
 
   // Filter trips based on date range and selected/typed customer
+  // const filteredTrips = yamaha.filter((trip) => {
+  //   const tripDate = new Date(trip.date)
+  //   const start = startDate ? new Date(startDate) : null
+  //   const end = endDate ? new Date(endDate) : null
+
+  //   const matchDate =
+  //     (start && end && tripDate >= start && tripDate <= end) ||
+  //     (start && !end && tripDate.toDateString() === start.toDateString()) ||
+  //     (!start && !end)
+
+  //   // Filter by selectedCustomer (which can be from typing or selection)
+  //   const matchCustomer =
+  //     !selectedCustomer || (trip.customer ?? "").toLowerCase().includes((selectedCustomer ?? "").toLowerCase())
+
+  //   return matchDate && matchCustomer
+  // })
+
   const filteredTrips = yamaha.filter((trip) => {
-    const tripDate = new Date(trip.date)
-    const start = startDate ? new Date(startDate) : null
-    const end = endDate ? new Date(endDate) : null
+  const tripDate = new Date(trip.date);
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
 
-    const matchDate =
-      (start && end && tripDate >= start && tripDate <= end) ||
-      (start && !end && tripDate.toDateString() === start.toDateString()) ||
-      (!start && !end)
+  const matchDate =
+    (!start && !end) ||
+    (start && !end && tripDate >= start) ||
+    (!start && end && tripDate <= end) ||
+    (start && end && tripDate >= start && tripDate <= end);
 
-    // Filter by selectedCustomer (which can be from typing or selection)
-    const matchCustomer =
-      !selectedCustomer || (trip.customer ?? "").toLowerCase().includes((selectedCustomer ?? "").toLowerCase())
+  const matchCustomer =
+    !selectedCustomer || 
+    (trip.customer ?? "").toLowerCase().includes(selectedCustomer.toLowerCase());
 
-    return matchDate && matchCustomer
-  })
+  return matchDate && matchCustomer;
+});
 
   // number to words utility (assuming `toWords` is from `number-to-words` library)
   const numberToWords = (num) => {
@@ -851,48 +869,97 @@ const Bill = () => {
   const totalRent = tripsToCalculate.reduce((sum, dt) => sum + (Number.parseFloat(dt.total_rent) || 0), 0)
 
   // post data on server
+  // const handleSubmit = async () => {
+  //   const selectedData = filteredTrips.filter((_, i) => selectedRows[i])
+  //   if (!selectedData.length) {
+  //     return toast.error("Please select at least one row.", {
+  //       position: "top-right",
+  //     })
+  //   }
+  //   try {
+  //     const loadingToast = toast.loading("Submitting selected rows...")
+  //     for (const dt of selectedData) {
+  //       const fd = new FormData()
+  //       fd.append("bill_date", new Date().toISOString().split("T")[0])
+  //       fd.append("customer_name", dt.customer)
+  //       fd.append("vehicle_no", dt.vehicle_no)
+  //       fd.append("chalan", dt.challan)
+  //       fd.append("load_point", dt.load_point)
+  //       fd.append("unload_point", dt.unload_point)
+  //       fd.append("qty", dt.quantity)
+  //       fd.append("body_cost", dt.body_fare)
+  //       fd.append("fuel_cost", dt.fuel_cost)
+  //       await axios.post(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`, fd)
+  //       await axios.post(`${import.meta.env.VITE_BASE_URL}/api/trip/update/${dt.id}`, { status: "Approved" })
+  //     }
+  //     toast.success("Successfully submitted!", {
+  //       id: loadingToast,
+  //       position: "top-right",
+  //     })
+  //     setSelectedRows({})
+  //     const refreshed = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
+  //     if (refreshed.data.status === "Success") {
+  //       setYamaha(refreshed.data.data)
+  //     }
+  //   } catch (error) {
+  //     console.error("Submission error:", error)
+  //     toast.error("Submission failed. Check console for details.", {
+  //       position: "top-right",
+  //     })
+  //   }
+  // }
+
   const handleSubmit = async () => {
-    const selectedData = filteredTrips.filter((_, i) => selectedRows[i])
-    if (!selectedData.length) {
-      return toast.error("Please select at least one row.", {
-        position: "top-right",
-      })
-    }
-    try {
-      const loadingToast = toast.loading("Submitting selected rows...")
-      for (const dt of selectedData) {
-        const fd = new FormData()
-        fd.append("bill_date", new Date().toISOString().split("T")[0])
-        fd.append("customer_name", dt.customer)
-        fd.append("vehicle_no", dt.vehicle_no)
-        fd.append("chalan", dt.challan)
-        fd.append("load_point", dt.load_point)
-        fd.append("unload_point", dt.unload_point)
-        fd.append("qty", dt.quantity)
-        fd.append("body_cost", dt.body_fare)
-        fd.append("fuel_cost", dt.fuel_cost)
-        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`, fd)
-        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/trip/update/${dt.id}`, { status: "Approved" })
-      }
-      toast.success("Successfully submitted!", {
-        id: loadingToast,
-        position: "top-right",
-      })
-      setSelectedRows({})
-      const refreshed = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/trip/list`)
-      if (refreshed.data.status === "Success") {
-        setYamaha(refreshed.data.data)
-      }
-    } catch (error) {
-      console.error("Submission error:", error)
-      toast.error("Submission failed. Check console for details.", {
-        position: "top-right",
-      })
-    }
+  const selectedData = filteredTrips.filter((_, i) => selectedRows[i]);
+  if (!selectedData.length) {
+    return toast.error("Please select at least one row.");
   }
+
+  try {
+    const loadingToast = toast.loading("Submitting selected rows...");
+    
+    // Create array of promises for all updates
+    const updatePromises = selectedData.map(dt => 
+      axios.post(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`, {
+        bill_date: new Date().toISOString().split('T')[0],
+        customer_name: dt.customer,
+        vehicle_no: dt.vehicle_no,
+        chalan: dt.challan,
+        load_point: dt.load_point,
+        unload_point: dt.unload_point,
+        qty: dt.quantity,
+        body_cost: dt.body_fare,
+        fuel_cost: dt.fuel_cost,
+        bill_amount: dt.total_rent
+      }).then(() => 
+        axios.post(`${import.meta.env.VITE_BASE_URL}/api/trip/update/${dt.id}`, { 
+          status: "Approved" 
+        })
+      )
+    );
+
+    // Wait for all updates to complete
+    await Promise.all(updatePromises);
+
+    // Update local state immediately
+    setYamaha(prev => prev.map(trip => 
+      selectedData.some(dt => dt.id === trip.id) 
+        ? {...trip, status: "Approved"} 
+        : trip
+    ));
+
+    toast.success("Successfully submitted!", { id: loadingToast });
+    setSelectedRows({});
+
+  } catch (error) {
+    console.error("Submission error:", error);
+    toast.error("Submission failed. Check console for details.");
+  }
+}
 
   if (loading) return <p className="text-center mt-16">Loading Yamaha...</p>
 
+  console.log(filteredTrips, 'ft')
   return (
     <div className="">
       <Toaster />
@@ -1065,3 +1132,5 @@ const Bill = () => {
 }
 
 export default Bill
+
+

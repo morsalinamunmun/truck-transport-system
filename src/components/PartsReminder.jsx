@@ -340,7 +340,7 @@ const PartsReminder = () => {
                       {item.daysAgo ? `${item.daysAgo} days ago expired` : "Expires tomorrow"}
                     </span>
                   </div>
-                  <p className="text-xs text-red-600">মেয়াদ: {item.expireDate}</p>
+                  <p className="text-xs text-red-600">Valid: {item.expireDate}</p>
                 </li>
               ))}
             </ul>

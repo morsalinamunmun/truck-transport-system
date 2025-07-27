@@ -78,7 +78,7 @@ const UpdateCarForm = () => {
         toast.success("Vehicle updated successfully!", {
           position: "top-right",
         });
-        navigate('/vehicel')
+        navigate('/tramessy/vehicel')
       } else {
         toast.error("Server issue " + (resData.message || "Unknown problem"));
       }

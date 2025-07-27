@@ -259,7 +259,7 @@ const handleAddClick = () => {
         {/* Table */}
         <div className="mt-5 overflow-x-auto rounded-md border border-gray-200">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-[#11375B] text-white uppercase text-xs">
+            <thead className="bg-[#11375B] text-white capitalize text-xs">
               <tr>
                 <th className="px-2 md:px-4 py-3">SL</th>
                 <th className="px-2 md:px-4 py-3">Name</th>
@@ -309,9 +309,9 @@ const handleAddClick = () => {
                   </td>
                   <td className=" px-2 md:px-4 py-4">
                    {isPartExpired(part.parts_validity) ? (
-    <span className="text-red-500 font-semibold">Expired Date</span>
+    <span className="text-red-500 ">Expired Date</span>
   ) : (
-    <span className="text-green-600 font-semibold">Valid Date</span>
+    <span className="text-green-600 ">Valid Date</span>
   )}
                   </td>
                   <td className="px-2 md:px-4 py-4">
@@ -338,8 +338,7 @@ const handleAddClick = () => {
             </tbody>
           </table>
         </div>
-      </div>
-      {/* pagination */}
+        {/* pagination */}
       {
         currentParts.length === 0 ? (
           ""
@@ -381,6 +380,8 @@ const handleAddClick = () => {
           </button>
         </div>
       </div>)}
+      </div>
+      
       {/* Delete modal */}
       <div className="flex justify-center items-center">
         {isOpen && (

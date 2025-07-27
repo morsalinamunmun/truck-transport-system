@@ -60,7 +60,7 @@ const UpdateDriverForm = () => {
         toast.success("Driver updated successfully", {
           position: "top-right",
         });
-        navigate("/tramessy/DriverList")
+        navigate("/tramessy/HR/HRM/DriverList")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }

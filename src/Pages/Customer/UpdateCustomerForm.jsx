@@ -38,7 +38,7 @@ const UpdateCustomerForm = () => {
         toast.success("Customer updated successfully!", {
           position: "top-right",
         });
-        navigate("/Customer")
+        navigate("/tramessy/Customer")
       } else {
         toast.error("Server issue " + (resData.message || "Unknown problem"));
       }
@@ -56,7 +56,7 @@ const UpdateCustomerForm = () => {
     <div className="mt-10">
       <Toaster />
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
-        Add Customer information
+        Update Customer information
       </h3>
       <div className="mx-auto p-6 rounded-b-md shadow border border-gray-300">
         <FormProvider {...methods} className="">

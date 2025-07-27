@@ -62,7 +62,7 @@ const UpdateSupplyForm = () => {
     <div className="mt-10">
       <Toaster />
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
-        Supply Information Setup
+        Supply Information Update
       </h3>
       <FormProvider {...methods} className="">
         <form

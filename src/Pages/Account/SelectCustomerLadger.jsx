@@ -253,7 +253,7 @@ const SelectCustomerLadger = ({ customer }) => {
   });
 
   const totalRent = filteredLedger.reduce(
-    (sum, entry) => sum + parseFloat(entry.body_cost || 0),
+    (sum, entry) => sum + parseFloat(entry.bill_amount || 0),
     0
   );
 
@@ -333,7 +333,6 @@ const SelectCustomerLadger = ({ customer }) => {
     printWindow.print();
     printWindow.close();
   };
-
   return (
     <div className="md:p-4">
       <div className="w-xs md:w-full overflow-x-auto">
@@ -419,7 +418,7 @@ const SelectCustomerLadger = ({ customer }) => {
                     <td className="border border-gray-700 px-2 py-1">{dt.load_point}</td>
                     <td className="border border-gray-700 px-2 py-1">{dt.unload_point}</td>
                     <td className="border border-gray-700 px-2 py-1">
-                      {parseFloat(dt.body_cost).toFixed(2)}
+                      {parseFloat(dt.bill_amount).toFixed(2)}
                     </td>
                   </tr>
                 ))}

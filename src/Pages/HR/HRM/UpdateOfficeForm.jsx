@@ -52,7 +52,7 @@ const UpdateOfficeForm = () => {
     <div className="mt-10">
       <Toaster position="top-center" reverseOrder={false} />
       <h3 className="px-6 py-2 bg-primary text-white font-semibold rounded-t-md">
-        Office Form
+        Update Office 
       </h3>
       <FormProvider {...methods} className="">
         <form

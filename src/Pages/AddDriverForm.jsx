@@ -36,7 +36,7 @@ const AddDriverForm = () => {
           position: "top-right",
         });
         reset();
-        navigate("/tramessy/DriverList")
+        navigate("/tramessy/HR/HRM/DriverList")
       } else {
         toast.error("Server issue: " + (resData.message || "Unknown issue"));
       }
@@ -125,6 +125,9 @@ const AddDriverForm = () => {
 
             {/* Status & License Image */}
             <div className="md:flex justify-between gap-3">
+              <div className="w-full">
+                <InputField name="opening_balance" label="Opening Balance" required />
+              </div>
               <div className="w-full relative">
                 <SelectField
                   name="status"
@@ -136,8 +139,9 @@ const AddDriverForm = () => {
                   ]}
                 />
               </div>
-
-              <div className="mt-3 md:mt-0 w-full">
+            </div>
+<div className="grid grid-cols-2 gap-3">
+  <div className="mt-3 md:mt-0 w-full">
                 <label className="text-primary text-sm font-semibold">
                   Upload License Image <span className="text-red-500">*</span>
                 </label>
@@ -185,8 +189,7 @@ const AddDriverForm = () => {
                   />
                 </div>
               </div>
-            </div>
-
+</div>
             {/* Preview */}
             {previewImage && (
               <div className="mt-3 relative flex justify-end">

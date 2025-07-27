@@ -44,7 +44,7 @@ const OfficeLedger = () => {
         if (response.data.status === "Success") {
           const data = response.data.data;
           const uniqueOffices = Array.from(
-            new Set(data.map((item) => item.branch_name)) // if field is different, adjust this
+            new Set(data.map((item) => item.branch_name)) 
           );
           setOfficeList(uniqueOffices);
         }
@@ -257,8 +257,8 @@ const handlePrint = () => {
                       )}
                     </td>
                     <td className="border border-gray-700 px-2 py-1">
-                      {dt.destination ? (
-                        dt.destination
+                      {dt.unload_point? (
+                        dt.unload_point
                       ) : (
                         <span className="flex justify-center items-center">
                           --

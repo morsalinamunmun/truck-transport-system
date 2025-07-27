@@ -448,7 +448,9 @@ const handlePrint = useReactToPrint({
                       <p>Load Point: {dt.load_point}</p></td>
                       <td><p>Unload Point: {dt.unload_point}</p>
                     </td>
-                    <td className="p-2">{dt.total_exp}</td>
+                    <td className="p-2">
+  {dt.transport_type === "vendor_transport" ? dt.trip_rent : dt.total_exp}
+</td>
                     <td className="p-2">{dt.total_rent}</td>
                     <td className="p-2">
                       {parseFloat(dt.total_rent || 0) -

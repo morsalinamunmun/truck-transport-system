@@ -107,7 +107,7 @@ const Customer = () => {
                 <th className="px-2 py-3">Mobile</th>
                 <th className="px-2 py-3">Email</th>
                 <th className="px-2 py-3">Address</th>
-                <th className="px-2 py-3">DueBalance</th>
+                <th className="px-2 py-3">Due Balance</th>
                 <th className="px-2 py-3">Status</th>
                 <th className="px-2 py-3 action_column">Action</th>
               </tr>
