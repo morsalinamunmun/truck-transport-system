@@ -877,7 +877,7 @@ const Sidebar = () => {
                           <span>Driver Report</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/tramessy/Reports/Fuel-Report"
                           className={`flex gap-2 items-center p-2 rounded-sm font-medium ${
@@ -889,7 +889,7 @@ const Sidebar = () => {
                           
                           <span>Fuel Report</span>
                         </Link>
-                      </li>
+                      </li> */}
                       {/* <li>
                         <Link
                           to="/tramessy/Reports/Purchase-Report"
@@ -1104,7 +1104,7 @@ const Sidebar = () => {
                               : "text-gray-500 hover:text-primary"
                           }`}
                         >
-                          <span>Vendor-Ledger</span>
+                          <span>Vendor Ledger</span>
                         </Link>
                       </li>
                       <li>

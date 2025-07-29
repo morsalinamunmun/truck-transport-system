@@ -24,13 +24,13 @@ const VendorPaymentForm = () => {
       const fetchPaymentData = async () => {
         try {
           // Assuming an API endpoint to fetch a single payment record by ID
-          const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/paymentRecived/show/${id}`)
+          const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/vendorBill/${id}`)
           const data = response.data.data // Adjust based on your API response structure
           if (data) {
             // Pre-populate the form with fetched data
             reset({
               date: data.date,
-              customer_name: data.customer_name,
+              customer_name: data.vendor_name,
               branch_name: data.branch_name,
               bill_ref: data.bill_ref,
               amount: data.amount,
@@ -42,12 +42,12 @@ const VendorPaymentForm = () => {
             setInitialDataLoaded(true)
           } else {
             toast.error("Payment record not found.")
-            navigate("/tramessy/account/PaymentReceive") // Redirect if not found
+            // navigate("/tramessy/account/PaymentReceive") // Redirect if not found
           }
         } catch (error) {
           console.error("Error fetching payment data:", error)
           toast.error("Failed to load payment data.")
-          navigate("/tramessy/account/PaymentReceive") // Redirect on error
+          // navigate("/tramessy/account/PaymentReceive") // Redirect on error
         }
       }
       fetchPaymentData()
@@ -66,6 +66,18 @@ const VendorPaymentForm = () => {
     value: dt.customer_name,
     label: dt.customer_name,
   }))
+   // select vendor from api
+  const [vendor, setVendor] = useState([])
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/vendor/list`)
+      .then((response) => response.json())
+      .then((data) => setVendor(data.data))
+      .catch((error) => console.error("Error fetching vendor data:", error))
+  }, [])
+  const vendorOptions = vendor.map((dt) => ({
+    value: dt.vendor_name,
+    label: dt.vendor_name,
+  }))
 
   // select branch office from api
   const [branch, setBranch] = useState([])
@@ -82,86 +94,49 @@ const VendorPaymentForm = () => {
 
   // send data on server
   const onSubmit = async (data) => {
-    setLoading(true)
-    try {
-      let paymentResponse
-      let paymentData
+  setLoading(true)
+  try {
+    const formData = new FormData()
+    for (const key in data) {
+      formData.append(key, data[key])
+    }
 
-      const formData = new FormData()
-      for (const key in data) {
-        formData.append(key, data[key])
-      }
+    let paymentResponse
+    let paymentData
 
-      if (id) {
-        // Update existing payment
-        paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/paymentRecived/update/${id}`, formData)
-        paymentData = paymentResponse.data
+    if (id) {
+      // Update existing vendor payment
+      paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/vendorBill/update/${id}`, formData)
+      paymentData = paymentResponse.data
 
-        if (paymentData.success) {
-          // Update branch cash_in
-          const branchFormData = new FormData()
-          branchFormData.append("branch_name", data.branch_name)
-          branchFormData.append("customer", data.customer_name)
-          branchFormData.append("date", data.date)
-          branchFormData.append("cash_in", data.amount)
-          branchFormData.append("remarks", data.note)
-          await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/api/branch/update/${id}`, // Assuming ID is for branch entry too
-            branchFormData,
-          )
-
-          // Update customer ledger
-          const customerFormData = new FormData()
-          customerFormData.append("customer_name", data.customer_name)
-          customerFormData.append("bill_date", data.date)
-          customerFormData.append("bill_amount", data.amount)
-          await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/api/customerLedger/update/${id}`, // Assuming ID is for customer ledger entry too
-            customerFormData,
-          )
-
-          toast.success("Payment updated successfully", { position: "top-right" })
-          navigate("/tramessy/account/PaymentReceive")
-        } else {
-          toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
-        }
+      if (paymentData.success) {
+        toast.success("Payment updated successfully", { position: "top-right" })
+        navigate("/tramessy/account/vendorPayment")
       } else {
-        // Create new payment
-        paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/paymentRecived/create`, formData)
-        paymentData = paymentResponse.data
-
-        if (paymentData.success) {
-          // Save cash_in to branch
-          const branchFormData = new FormData()
-          branchFormData.append("branch_name", data.branch_name)
-          branchFormData.append("customer", data.customer_name)
-          branchFormData.append("date", data.date)
-          branchFormData.append("cash_in", data.amount)
-          branchFormData.append("remarks", data.note)
-          await axios.post(`${import.meta.env.VITE_BASE_URL}/api/branch/create`, branchFormData)
-
-          // Save cash_out to customer ledger
-          const customerFormData = new FormData()
-          customerFormData.append("customer_name", data.customer_name)
-          customerFormData.append("bill_date", data.date)
-          customerFormData.append("bill_amount", data.amount)
-          await axios.post(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`, customerFormData)
-
-          toast.success("Payment saved successfully", { position: "top-right" })
-          reset()
-          navigate("/tramessy/account/PaymentReceive")
-        } else {
-          toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
-        }
+        toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
       }
-    } catch (error) {
-      console.error("Submit error:", error)
-      const errorMessage = error.response?.data?.message || error.message || "Unknown error"
-      toast.error("Server issue: " + errorMessage)
-    }finally {
-    setLoading(false); 
+    } else {
+      // Create new vendor payment
+      paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/vendorBill/create`, formData)
+      paymentData = paymentResponse.data
+
+      if (paymentData.success) {
+        toast.success("Payment saved successfully", { position: "top-right" })
+        reset()
+        navigate("/tramessy/account/vendorPayment")
+      } else {
+        toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
+      }
+    }
+  } catch (error) {
+    console.error("Submit error:", error)
+    const errorMessage = error.response?.data?.message || error.message || "Unknown error"
+    toast.error("Server issue: " + errorMessage)
+  } finally {
+    setLoading(false)
   }
-  }
+}
+
 
   return (
     <div className="mt-10">
@@ -219,11 +194,22 @@ const VendorPaymentForm = () => {
             </div>
             <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
               <div className="w-full">
+                <SelectField
+                  name="vendor_name"
+                  label="Vendor Name"
+                 required={!id}
+                  options={vendorOptions}
+                  control={control}
+                />
+              </div>
+              <div className="w-full">
                 <InputField name="bill_ref" label="Bill Ref" required={!id}/>
               </div>
               <div className="w-full">
                 <InputField name="amount" label="Amount" required={!id} type="number" />
               </div>
+            </div>
+            <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
               <div className="w-full">
                 <SelectField
                   name="cash_type"
@@ -236,8 +222,6 @@ const VendorPaymentForm = () => {
                   ]}
                 />
               </div>
-            </div>
-            <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
               <div className="w-full">
                 <InputField name="remarks" label="Note" />
               </div>

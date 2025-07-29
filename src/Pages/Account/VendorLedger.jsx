@@ -204,7 +204,7 @@ const VendorLedger = () => {
               {filteredVendors.map((item, idx) => (
                 <tr key={idx}>
                   <td className="border px-2 py-1">{item.date}</td>
-                  <td className="border px-2 py-1">{item.customer}</td>
+                  <td className="border px-2 py-1">{item.vendor_name}</td>
                   <td className="border px-2 py-1">{item.load_point}</td>
                   <td className="border px-2 py-1">{item.unload_point}</td>
                   <td className="border px-2 py-1">{item.vehicle_no}</td>

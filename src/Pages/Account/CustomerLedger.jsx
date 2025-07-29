@@ -168,7 +168,7 @@ console.log(customers, 'c')
           </div>
         </div>
 
-        <SelectCustomerLadger customer={filteredCustomer} />
+        <SelectCustomerLadger customer={filteredCustomer} selectedCustomerName={selectedCustomer}/>
       </div>
     </main>
   );

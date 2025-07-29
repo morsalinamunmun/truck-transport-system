@@ -11,14 +11,12 @@ import html2canvas from "html2canvas";
 
 
 const OfficeLedger = () => {
-  let openingBalance = 2000;
-  let currentBalance = openingBalance;
   const [branch, setbranch] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [selectedBranch, setselectedBranch] = useState("");
+  const [selectedBranch, setselectedBranch] = useState("Head Office");
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BASE_URL}/api/branch/list`)
@@ -36,47 +34,57 @@ const OfficeLedger = () => {
         setLoading(false);
       });
   }, []);
-  const [officeList, setOfficeList] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BASE_URL}/api/office/list`)
-      .then((response) => {
-        if (response.data.status === "Success") {
-          const data = response.data.data;
-          const uniqueOffices = Array.from(
-            new Set(data.map((item) => item.branch_name)) 
-          );
-          setOfficeList(uniqueOffices);
+const [openingBalance, setOpeningBalance] = useState(0);
+ let currentBalance = openingBalance;
+ useEffect(() => {
+  axios
+    .get(`${import.meta.env.VITE_BASE_URL}/api/office/list`)
+    .then((response) => {
+      if (response.data.status === "Success") {
+        const data = response.data.data;
+
+        const headOffice = data.find(
+          (item) => item.branch_name === "Head Office"
+        );
+        if (headOffice) {
+          setOpeningBalance(parseFloat(headOffice.opening_balance) || 0);
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching office list:", error);
-      });
-  }, []);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching office list:", error);
+    });
+}, []);
+
+
 
   if (loading) return <p className="text-center mt-16">Loading data...</p>;
   // Filtered data based on selected customer
   const filteredBranch = branch.filter((item) => {
-    const isBranchMatch = selectedBranch
-      ? item.branch_name === selectedBranch
-      : true;
+  const isBranchMatch = selectedBranch
+    ? item.branch_name === selectedBranch
+    : true;
 
-    if (!isBranchMatch) return false;
+  if (!isBranchMatch) return false;
 
-    const itemDate = new Date(item.date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
+  const itemDate = new Date(item.date).setHours(0, 0, 0, 0);
+  const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
+  const end = endDate ? new Date(endDate).setHours(0, 0, 0, 0) : null;
 
-    if (start && end) {
-      return itemDate >= start && itemDate <= end;
-    } else if (start) {
-      return itemDate >= start;
-    } else if (end) {
-      return itemDate <= end;
-    }
+  if (start && end) {
+    // Date range filter inclusive
+    return itemDate >= start && itemDate <= end;
+  } else if (start) {
+    // Exact match on start date
+    return itemDate === start;
+  } else if (end) {
+    // Exact match on end date
+    return itemDate === end;
+  }
 
-    return true;
-  });
+  return true;
+});
+
 
   // excel
   const exportToExcel = () => {
@@ -182,25 +190,46 @@ const handlePrint = () => {
         </div>
         {/* Conditional Filter Section */}
         {showFilter && (
-          <div className="md:flex gap-6 justify-between border border-gray-300 rounded-md p-5 my-5 transition-all duration-300 pb-5">
-            <div className="relative w-full">
-              <input
-                onChange={(e) => setStartDate(e.target.value)}
-                type="date"
-                placeholder="Start date"
-                className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
-              />
-            </div>
-            <div className="relative w-full">
-              <input
-                onChange={(e) => setEndDate(e.target.value)}
-                type="date"
-                placeholder="End date"
-                className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
-              />
-            </div>
-          </div>
-        )}
+  <div className="flex gap-4 border border-gray-300 rounded-md p-5 mb-5">
+    <div className="relative w-full">
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+      />
+      {startDate && (
+        <button
+          onClick={() => setStartDate("")}
+          className="absolute right-8 top-1.5 text-gray-600 hover:text-gray-900"
+          aria-label="Clear start date"
+          type="button"
+        >
+          &times;
+        </button>
+      )}
+    </div>
+
+    <div className="relative w-full">
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+      />
+      {endDate && (
+        <button
+          onClick={() => setEndDate("")}
+          className="absolute right-8 top-1.5 text-gray-600 hover:text-gray-900"
+          aria-label="Clear end date"
+          type="button"
+        >
+          &times;
+        </button>
+      )}
+    </div>
+  </div>
+)}
         {/* Table */}
         <div id="ledger-table" className="w-full mt-5 overflow-x-auto border border-gray-200">
           <table className="w-full text-sm text-left">
@@ -215,21 +244,24 @@ const handlePrint = () => {
                 <th className="border border-gray-700 px-2 py-1">
                   Destination
                 </th>
-                <th className="border border-gray-700 px-2 py-1">TripExp</th>
-                <th className="border border-gray-700 px-2 py-1">Due</th>
+                {/* <th className="border border-gray-700 px-2 py-1">TripExp</th> */}
+                {/* <th className="border border-gray-700 px-2 py-1">Due</th> */}
                 <th className="border border-gray-700 px-2 py-1">CashIn</th>
                 <th className="border border-gray-700 px-2 py-1">CashOut</th>
                 <th className="border border-gray-700 py-1 text-center">
-                  <p className="border-b">OpeningBalance 2000</p>Balance
+                 <th className="border border-gray-700 py-1 text-center">
+  <p className="border-none">OpeningBalance {openingBalance}</p>Balance</th>
                 </th>
-                <th className="border border-gray-700 px-2 py-1">Ref</th>
+                {/* <th className="border border-gray-700 px-2 py-1">Ref</th> */}
               </tr>
             </thead>
             <tbody className="text-black font-semibold">
               {filteredBranch?.map((dt, index) => {
                 const expense = parseFloat(dt.trip_expense) || 0;
                 const cashOut = parseFloat(dt.cash_out) || 0;
-                currentBalance += expense - cashOut;
+                const cashIn = parseFloat(dt.cash_in) || 0;
+                // currentBalance += expense - cashOut;
+                currentBalance += cashIn - cashOut - expense;
                 return (
                   <tr key={index} className="hover:bg-gray-50 transition-all">
                     <td className="border border-gray-700 px-2 py-1 font-bold">
@@ -265,7 +297,7 @@ const handlePrint = () => {
                         </span>
                       )}
                     </td>
-                    <td className="border border-gray-700 px-2 py-1">
+                    {/* <td className="border border-gray-700 px-2 py-1">
                       {dt.trip_expense ? (
                         dt.trip_expense
                       ) : (
@@ -273,10 +305,10 @@ const handlePrint = () => {
                           --
                         </span>
                       )}
-                    </td>
-                    <td className="border border-gray-700 px-2 py-1">
-                      {dt.due}
-                    </td>
+                    </td> */}
+                    {/* <td className="border border-gray-700 px-2 py-1">
+                      {dt.due_amount}
+                    </td> */}
                     <td className="border border-gray-700 px-2 py-1">
                       {dt.cash_in}
                     </td>
@@ -290,13 +322,25 @@ const handlePrint = () => {
                           : currentBalance}
                       </span>
                     </td>
-                    <td className="border border-gray-700 px-2 py-1">
+                    {/* <td className="border border-gray-700 px-2 py-1">
                       {dt.ref}
-                    </td>
+                    </td> */}
                   </tr>
                 );
               })}
             </tbody>
+            <tfoot>
+  <tr className="bg-gray-100 font-bold text-black">
+    <td colSpan="7" className="text-right border border-gray-700 px-2 py-2">
+      Closing Balance:
+    </td>
+    <td className="border border-gray-700 px-2 py-2">
+      {currentBalance < 0 ? `(${Math.abs(currentBalance)})` : currentBalance}
+    </td>
+    {/* <td className="border border-gray-700 px-2 py-2 text-center">--</td> */}
+  </tr>
+</tfoot>
+
           </table>
         </div>
       </div>

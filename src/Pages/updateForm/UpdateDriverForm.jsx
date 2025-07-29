@@ -26,6 +26,7 @@ const UpdateDriverForm = () => {
     note,
     status,
     license_image,
+    opening_balance
   } = updateDriverLoaderData.data;
 
   const methods = useForm({ defaultValues: { status } });
@@ -161,18 +162,24 @@ const UpdateDriverForm = () => {
             </div>
 
             {/* Status & License Image */}
-            <div className="md:flex justify-between gap-3">
+             <div className="md:flex justify-between gap-3">
+              <div className="w-full">
+                <InputField name="opening_balance" label="Opening Balance" defaultValue={opening_balance} />
+              </div>
               <div className="w-full relative">
                 <SelectField
                   name="status"
                   label="Status"
-                  defaultValue={status}
+              
                   options={[
                     { value: "Active", label: "Active" },
                     { value: "Inactive", label: "Inactive" },
                   ]}
                 />
               </div>
+            </div>
+            {/*  License Image */}
+            <div className="grid grid-cols-2 gap-3">
 
               <div className="mt-3 md:mt-0 w-full">
                 <label className="text-primary text-sm font-semibold">

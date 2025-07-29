@@ -21,6 +21,7 @@ const UpdateVendorForm = () => {
     work_area,
     date,
     status,
+    opening_balance
   } = updateVendorLoaderData.data;
 
   const methods = useForm({ defaultValues: { rent_category, status } });
@@ -74,6 +75,9 @@ const UpdateVendorForm = () => {
                   label="Vendor Name"
                   defaultValue={vendor_name}
                 />
+              </div>
+              <div className="w-full relative">
+                <InputField type="number" name="opening_balance" label="Opening Due" defaultValue={opening_balance} />
               </div>
             </div>
             {/*  */}

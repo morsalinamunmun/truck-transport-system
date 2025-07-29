@@ -70,6 +70,9 @@ const AddVendorForm = () => {
               <div className="w-full relative">
                 <InputField name="vendor_name" label="Vendor Name" required />
               </div>
+               <div className="w-full relative">
+                <InputField type="number" name="opening_balance" label="Opening Due" required />
+              </div>
             </div>
             {/*  */}
             <div className="mt-1 md:flex justify-between gap-3">

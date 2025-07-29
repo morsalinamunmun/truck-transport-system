@@ -233,31 +233,61 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { CloudCog } from "lucide-react";
 pdfMake.vfs = pdfFonts.vfs;
 
-const SelectCustomerLadger = ({ customer }) => {
+const SelectCustomerLadger = ({ customer, selectedCustomerName }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const tableRef = useRef();
+   const [customerList, setCustomerList] = useState([]);
+  // customer
+   // Fetch customer list with dues
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BASE_URL}/api/customer/list`)
+      .then(res => {
+        if (res.data.status === "Success") {
+          setCustomerList(res.data.data);
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
+  // Find selected customer due
+  const selectedCustomer = customerList.find(
+    cust => cust.customer_name === selectedCustomerName
+  );
+  const dueAmount = selectedCustomer ? parseFloat(selectedCustomer.due) : 0;
+
+  // filter date 
   const filteredLedger = customer.filter((entry) => {
-    const entryDate = new Date(entry.bill_date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
-    return (
-      (!start || entryDate >= start) &&
-      (!end || entryDate <= end)
-    );
-  });
+  const entryDate = new Date(entry.bill_date).setHours(0,0,0,0);
+  const start = startDate ? new Date(startDate).setHours(0,0,0,0) : null;
+  const end = endDate ? new Date(endDate).setHours(0,0,0,0) : null;
+
+  if (start && !end) {
+    // Filter exact date
+    return entryDate === start;
+  } else if (start && end) {
+    // Filter range inclusive
+    return entryDate >= start && entryDate <= end;
+  } else {
+    // No date filter
+    return true;
+  }
+});
 
   const totalRent = filteredLedger.reduce(
-    (sum, entry) => sum + parseFloat(entry.bill_amount || 0),
+    (sum, entry) => sum + parseFloat(entry.rec_amount || 0),
     0
   );
 
   const customerName = filteredLedger[0]?.customer_name || "All Customers";
+
+
+
 
   const exportToExcel = () => {
     const rows = filteredLedger.map((dt, index) => ({
@@ -376,21 +406,47 @@ const SelectCustomerLadger = ({ customer }) => {
         </div>
 
         {showFilter && (
-          <div className="flex gap-4 border border-gray-300 rounded-md p-5 mb-5">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
-            />
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
-            />
-          </div>
-        )}
+  <div className="flex gap-4 border border-gray-300 rounded-md p-5 mb-5">
+    <div className="relative w-full">
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+      />
+      {startDate && (
+        <button
+          onClick={() => setStartDate("")}
+          className="absolute right-8 top-1.5 text-gray-600 hover:text-gray-900"
+          aria-label="Clear start date"
+          type="button"
+        >
+          &times;
+        </button>
+      )}
+    </div>
+
+    <div className="relative w-full">
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        className="w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
+      />
+      {endDate && (
+        <button
+          onClick={() => setEndDate("")}
+          className="absolute right-8 top-1.5 text-gray-600 hover:text-gray-900"
+          aria-label="Clear end date"
+          type="button"
+        >
+          &times;
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
 
         {loading ? (
           <p className="text-center mt-16">Loading...</p>
@@ -402,10 +458,14 @@ const SelectCustomerLadger = ({ customer }) => {
                   <th className="border border-gray-700 px-2 py-1">SL.</th>
                   <th className="border border-gray-700 px-2 py-1">Date</th>
                   <th className="border border-gray-700 px-2 py-1">Customer</th>
-                  <th className="border border-gray-700 px-2 py-1">Vehicle No</th>
-                  <th className="border border-gray-700 px-2 py-1">Loading Point</th>
-                  <th className="border border-gray-700 px-2 py-1">Unloading Point</th>
-                  <th className="border border-gray-700 px-2 py-1">Total Rent</th>
+                  <th className="border border-gray-700 px-2 py-1">Create</th>
+                  {/* <th className="border border-gray-700 px-2 py-1">Loading Point</th> */}
+                  {/* <th className="border border-gray-700 px-2 py-1">Unloading Point</th> */}
+                  <th className="border border-gray-700 px-2 py-1">Total Rent {selectedCustomerName && (
+            <p className="text-sm font-medium text-gray-800">
+               Opening Amount: ৳{dueAmount.toFixed(2)}
+            </p>
+          )}</th>
                 </tr>
               </thead>
               <tbody>
@@ -414,21 +474,21 @@ const SelectCustomerLadger = ({ customer }) => {
                     <td className="border border-gray-700 px-2 py-1">{index + 1}</td>
                     <td className="border border-gray-700 px-2 py-1">{dt.bill_date}</td>
                     <td className="border border-gray-700 px-2 py-1">{dt.customer_name}</td>
-                    <td className="border border-gray-700 px-2 py-1">{dt.vehicle_no}</td>
-                    <td className="border border-gray-700 px-2 py-1">{dt.load_point}</td>
-                    <td className="border border-gray-700 px-2 py-1">{dt.unload_point}</td>
+                    <td className="border border-gray-700 px-2 py-1">{dt.created_by}</td>
+                    {/* <td className="border border-gray-700 px-2 py-1">{dt.load_point}</td> */}
+                    {/* <td className="border border-gray-700 px-2 py-1">{dt.unload_point}</td> */}
                     <td className="border border-gray-700 px-2 py-1">
-                      {parseFloat(dt.bill_amount).toFixed(2)}
+                      {parseFloat(dt.rec_amount).toFixed(2)}
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-bold bg-gray-100">
-                  <td colSpan={6} className="border border-black px-2 py-1 text-right">
-                    Total
+                  <td colSpan={4} className="border border-black px-2 py-1 text-right">
+                   Total (Including Opening Amount)
                   </td>
-                  <td className="border border-black px-2 py-1">{totalRent.toFixed(2)}</td>
+                  <td className="border border-black px-2 py-1">{(totalRent + dueAmount).toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>

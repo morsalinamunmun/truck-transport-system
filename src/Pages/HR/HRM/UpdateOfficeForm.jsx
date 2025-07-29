@@ -99,6 +99,9 @@ const UpdateOfficeForm = () => {
             </div>
             <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
               <div className="w-full">
+                              <InputField type="number" name="opening_balance" label="Opening Balance"  />
+                            </div>
+              <div className="w-full">
                 <InputField
                   name="address"
                   label="Address"

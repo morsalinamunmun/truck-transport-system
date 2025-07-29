@@ -1632,7 +1632,7 @@ const vendorOptions = vendors.map((vendor) => ({
             {selectedTransport === "vendor_transport" && (
               <div className="border border-gray-300 p-5 rounded-md mt-5 md:mt-3 md:flex justify-between gap-3">
                 <div className="w-full">
-                  <InputField name="trip_rent" label="Trip Rent" required={!id} type="number" />
+                  <InputField name="total_exp" label="Trip Expense" required={!id} type="number" />
                 </div>
                 <div className="w-full">
                   <InputField name="advance" label="Advance" required={!id} type="number" />

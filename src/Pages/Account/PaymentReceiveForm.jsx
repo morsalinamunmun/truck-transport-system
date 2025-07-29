@@ -295,87 +295,56 @@ const PaymentReceiveForm = () => {
   }))
 
   // send data on server
-  const onSubmit = async (data) => {
-    setLoading(true);
-    try {
-      let paymentResponse
-      let paymentData
+ const onSubmit = async (data) => {
+  setLoading(true);
+  try {
+    let paymentResponse;
+    let paymentData;
 
-      const formData = new FormData()
-      for (const key in data) {
-        formData.append(key, data[key])
-      }
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
 
-      if (id) {
-        // Update existing payment
-        paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/paymentRecived/update/${id}`, formData)
-        paymentData = paymentResponse.data
+    if (id) {
+      paymentResponse = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/paymentRecived/update/${id}`,
+        formData
+      );
+      paymentData = paymentResponse.data;
 
-        if (paymentData.success) {
-          // Update branch cash_in
-          const branchFormData = new FormData()
-          branchFormData.append("branch_name", data.branch_name)
-          branchFormData.append("customer", data.customer_name)
-          branchFormData.append("date", data.date)
-          branchFormData.append("cash_in", data.amount)
-          branchFormData.append("remarks", data.note)
-          await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/api/branch/update/${id}`, // Assuming ID is for branch entry too
-            branchFormData,
-          )
-
-          // Update customer ledger
-          const customerFormData = new FormData()
-          customerFormData.append("customer_name", data.customer_name)
-          customerFormData.append("bill_date", data.date)
-          customerFormData.append("bill_amount", data.amount)
-          await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/api/customerLedger/update/${id}`, // Assuming ID is for customer ledger entry too
-            customerFormData,
-          )
-
-          toast.success("Payment updated successfully", { position: "top-right" })
-          navigate("/tramessy/account/PaymentReceive")
-        } else {
-          toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
-        }
+      if (paymentData.success === true) {
+        toast.success("Payment updated successfully", { position: "top-right" });
+        navigate("/tramessy/account/PaymentReceive");
       } else {
-        // Create new payment
-        paymentResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/paymentRecived/create`, formData)
-        paymentData = paymentResponse.data
-
-        if (paymentData.success) {
-          // Save cash_in to branch
-          const branchFormData = new FormData()
-          branchFormData.append("branch_name", data.branch_name)
-          branchFormData.append("customer", data.customer_name)
-          branchFormData.append("date", data.date)
-          branchFormData.append("cash_in", data.amount)
-          branchFormData.append("remarks", data.note)
-          await axios.post(`${import.meta.env.VITE_BASE_URL}/api/branch/create`, branchFormData)
-
-          // Save cash_out to customer ledger
-          const customerFormData = new FormData()
-          customerFormData.append("customer_name", data.customer_name)
-          customerFormData.append("bill_date", data.date)
-          customerFormData.append("bill_amount", data.amount)
-          await axios.post(`${import.meta.env.VITE_BASE_URL}/api/customerLedger/create`, customerFormData)
-
-          toast.success("Payment saved successfully", { position: "top-right" })
-          reset()
-          navigate("/tramessy/account/PaymentReceive")
-        } else {
-          toast.error("Payment API failed: " + (paymentData.message || "Unknown error"))
-        }
+        toast.error("Payment API failed: " + (paymentData.message || "Unknown error"));
       }
-    } catch (error) {
-      console.error("Submit error:", error)
-      const errorMessage = error.response?.data?.message || error.message || "Unknown error"
-      toast.error("Server issue: " + errorMessage)
-    }finally {
-    setLoading(false); 
+
+    } else {
+      paymentResponse = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/paymentRecived/create`,
+        formData
+      );
+      paymentData = paymentResponse.data;
+
+      if (paymentData.success === true) {
+        toast.success("Payment saved successfully", { position: "top-right" });
+        reset();
+        navigate("/tramessy/account/PaymentReceive");
+      } else {
+        toast.error("Payment API failed: " + (paymentData.message || "Unknown error"));
+      }
+    }
+  } catch (error) {
+    console.error("Submit error:", error);
+    const errorMessage = error.response?.data?.message || error.message || "Unknown error";
+    toast.error("Server issue: " + errorMessage);
+  } finally {
+    setLoading(false);
   }
-  }
+};
+
+
 
   return (
     <div className="mt-10">
@@ -472,7 +441,7 @@ const PaymentReceiveForm = () => {
             </div>
             {/* Submit Button */}
             <div className="text-left p-5">
-              <BtnSubmit loading={loading}>{id ? "Update" : "Submit"}</BtnSubmit>
+              <BtnSubmit loading={loading} >{id ? "Update" : "Submit"}</BtnSubmit>
             </div>
           </div>
         </form>
