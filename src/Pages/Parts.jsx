@@ -31,37 +31,7 @@ const [editId, setEditId] = useState(null);
     formState: { errors },
   } = useForm();
   const partsDateRef = useRef(null);
-  // post parts
-  // const onSubmit = async (data) => {
-  //   console.log("add car data", data);
-  //   try {
-  //     const formData = new FormData();
-  //     for (const key in data) {
-  //       formData.append(key, data[key]);
-  //     }
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BASE_URL}/api/parts/create`,
-  //       formData
-  //     );
-  //     const resData = response.data;
-  //     console.log("resData", resData);
-  //     if (resData.status === "Success") {
-  //       toast.success("Parts saved successfully!", {
-  //         position: "top-right",
-  //       });
-  //       reset();
-  //       setIsOpen(false)
-  //     } else {
-  //       toast.error("Server issue: " + (resData.message || "Unknown error"));
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     const errorMessage =
-  //       error.response?.data?.message || error.message || "Unknown error";
-  //     toast.error("Server issue: " + errorMessage);
-  //   }
-  // };
-
+ 
   // fetch all parts
   const fetchParts = () => {
 axios
@@ -160,7 +130,6 @@ const handleAddClick = () => {
 
   if (loading) return <p className="text-center mt-16">Loading parts...</p>;
 
-  console.log(parts);
   // delete by id
   const handleDelete = async (id) => {
     try {

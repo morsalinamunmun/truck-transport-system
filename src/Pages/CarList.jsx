@@ -178,7 +178,6 @@ const CarList = () => {
     }, 500);
   };
 
-  console.log(vehicles);
   // view car by id
   const handleViewCar = async (id) => {
     try {

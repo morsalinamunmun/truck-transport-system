@@ -36,7 +36,7 @@ const AddVendorForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+
       if (resData.status === "Success") {
         toast.success("Vendor saved successfully!", {
           position: "top-right",

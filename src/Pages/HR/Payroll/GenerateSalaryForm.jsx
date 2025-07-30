@@ -7,7 +7,7 @@ import BtnSubmit from "../../../components/Button/BtnSubmit";
 const GenerateSalaryForm = () => {
   const methods = useForm();
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    // console.log("Form Data:", data);
   };
   return (
     <div className="mt-10">

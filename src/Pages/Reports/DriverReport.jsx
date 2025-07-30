@@ -428,7 +428,6 @@ const DriverReport = () => {
     });
 }, []);
 
-  console.log(drivers, "drivers") // Debugging: Check fetched drivers
 
   // Filter trips by month AND date range
   const tripsFiltered = trips.filter((t) => {
@@ -464,7 +463,6 @@ const DriverReport = () => {
     // Filter out drivers with no activity to avoid showing empty rows
     .filter((driver) => driver.totalTrips > 0 || driver.totalRent > 0 || driver.totalExp > 0)
 
-  console.log(driverStats, "driverStats") // Debugging: Check calculated driver stats
 
   const exportExcel = () => {
     const data = driverStats.map((d, i) => ({

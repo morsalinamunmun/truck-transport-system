@@ -141,7 +141,7 @@ const PaymentList = () => {
             <FormProvider {...methods}>
               <form
                 onSubmit={handleSubmit((data) => {
-                  console.log("pay data", data);
+                  // console.log("pay data", data);
                   const formData = new FormData();
                   formData.append("main_amount", data.main_amount);
                   // formData.append("note", data.note);

@@ -68,6 +68,7 @@ const PurchaseList = () => {
                 <th className="px-2 py-2">Supplier Name</th>
                 <th className="px-2 py-2">Category</th>
                 <th className="px-2 py-2">Item Name</th>
+                <th className="px-2 py-2">Service Cost</th>
                 <th className="px-2 py-2">Quantity</th>
                 <th className="px-2 py-2">Unit Price</th>
                 <th className="px-2 py-2">Total</th>
@@ -76,7 +77,30 @@ const PurchaseList = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700 ">
-              {currentPurchase?.map((dt, index) => (
+              {
+                currentPurchase?.length === 0 ? (
+    <tr>
+      <td colSpan="8" className="text-center py-10 text-gray-500 italic">
+        <div className="flex flex-col items-center">
+          <svg
+            className="w-12 h-12 text-gray-300 mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.75 9.75L14.25 14.25M9.75 14.25L14.25 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          No Purchase data found.
+        </div>
+      </td>
+    </tr>
+  ) 
+              :(currentPurchase?.map((dt, index) => (
                 <tr
                   key={index}
                   className="hover:bg-gray-50 transition-all border-b border-gray-200"
@@ -85,10 +109,10 @@ const PurchaseList = () => {
                   <td className="px-2 py-2">{dt.supplier_name}</td>
                   <td className="px-2 py-2">{dt.category}</td>
                   <td className="px-2 py-2">{dt.item_name}</td>
-
+                  <td className="px-2 py-2">{dt.service_cost || "0"}</td>
                   <td className="px-2 py-2">{dt.quantity}</td>
                   <td className="px-2 py-2">{dt.unit_price}</td>
-                  <td className="px-2 py-2">{dt.total}</td>
+                  <td className="px-2 py-2">{dt.purchase_amount}</td>
                   <td className="px-2 py-2">
                     <img
                       src={`${import.meta.env.VITE_BASE_URL}/public/uploads/purchase/${dt.bill_image}`}
@@ -114,13 +138,14 @@ const PurchaseList = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )))
+              }
             </tbody>
           </table>
         </div>
          {/* Pagination */}
               {
-                currentPurchase?.length ===0 ? ("")
+                currentPurchase?.length === 0 ? ("")
               :(<div className="mt-10 flex justify-center">
                 <div className="space-x-2 flex items-center">
                   <button

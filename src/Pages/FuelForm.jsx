@@ -51,7 +51,7 @@ const FuelForm = () => {
   }));
 
   const onSubmit = async (data) => {
-    console.log("add fuel data", data);
+    // console.log("add fuel data", data);
     data.total_price = total;
     try {
       const formData = new FormData();
@@ -63,7 +63,7 @@ const FuelForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+
       if (resData.status === "Success") {
         toast.success("Fuel saved successfully!", {
           position: "top-right",

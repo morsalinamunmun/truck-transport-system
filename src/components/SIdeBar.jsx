@@ -386,7 +386,7 @@ const Sidebar = () => {
                     </ul>
                   </div>
 
-                  <div
+                  {/* <div
                     className={`transition-all duration-300 overflow-hidden px-1 ${
                       openMenu.hrManagement ? "max-h-[200px]" : "max-h-0"
                     }`}
@@ -433,7 +433,7 @@ const Sidebar = () => {
                               </Link>
                             </li>
 
-                            {/* <li>
+                            <li>
                               <Link
                                 to="/tramessy/HR/attendance/attendance-report"
                                 className={`block p-2 rounded-sm ${
@@ -444,12 +444,12 @@ const Sidebar = () => {
                               >
                                 Attendance Report
                               </Link>
-                            </li> */}
+                            </li>
                           </ul>
                         </div>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
                 
                   <div
                     className={`transition-all duration-300 overflow-hidden px-1 ${

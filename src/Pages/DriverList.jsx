@@ -41,7 +41,6 @@ const CarList = () => {
 
   if (loading) return <p className="text-center mt-16">Loading drivers...</p>;
 
-  console.log("drivers", drivers);
   // delete by id
   const handleDelete = async (id) => {
     try {

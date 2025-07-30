@@ -69,7 +69,6 @@ const UpdateEmployeeForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Employee updated successfully", {
           position: "top-right",

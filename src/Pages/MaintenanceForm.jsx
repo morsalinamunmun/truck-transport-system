@@ -50,7 +50,7 @@ const MaintenanceForm = () => {
 
   // post data on server
   const onSubmit = async (data) => {
-    console.log("add car data", data);
+    // console.log("add car data", data);
     try {
       const formData = new FormData();
       for (const key in data) {
@@ -63,7 +63,7 @@ const MaintenanceForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "success") {
         toast.success("Info saved successfully!", {
           position: "top-right",

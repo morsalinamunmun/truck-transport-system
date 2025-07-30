@@ -29,7 +29,7 @@ const AddCustomer = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Customer data saved successfully!", {
           position: "top-right",

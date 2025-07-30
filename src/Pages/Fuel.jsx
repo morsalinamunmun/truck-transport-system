@@ -46,7 +46,6 @@ const Fuel = () => {
 
   if (loading) return <p className="text-center mt-16">Loading fuel...</p>;
 
-  console.log("fuel", fuel);
   // export functionality
   const headers = [
     { label: "#", key: "index" },

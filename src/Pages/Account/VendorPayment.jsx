@@ -72,7 +72,7 @@ const VendorPayment = () => {
                 <th className="px-2 py-3">BillRef</th>
                 <th className="px-2 py-3">Amount</th>
                 <th className="px-2 py-3">Cash Type</th>
-                <th className="px-2 py-3">Created By</th>
+                {/* <th className="px-2 py-3">Created By</th> */}
                 <th className="px-2 py-3">Status</th>
                 <th className="px-2 py-3">Action</th>
               </tr>
@@ -105,11 +105,11 @@ const VendorPayment = () => {
                 <tr className="hover:bg-gray-50 transition-all border border-gray-200">
                   <td className="p-2 font-bold">{index + 1}.</td>
                   <td className="p-2">{dt.date}</td>
-                  <td className="p-2">{dt.customer_name}</td>
+                  <td className="p-2">{dt.vendor_name}</td>
                   <td className="p-2">{dt.bill_ref}</td>
                   <td className="p-2">{dt.amount}</td>
                   <td className="p-2">{dt.cash_type}</td>
-                  <td className="p-2">{dt.created_by}</td>
+                  {/* <td className="p-2">{dt.created_by}</td> */}
                   <td className="p-2">{dt.status}</td>
                   <td className="px-2 action_column">
                     <div className="flex gap-1">

@@ -39,7 +39,7 @@ const AttendanceForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Attendance saved successfully!", {
           position: "top-right",

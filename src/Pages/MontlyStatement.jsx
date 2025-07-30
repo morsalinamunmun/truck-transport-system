@@ -749,7 +749,7 @@ const MonthlyStatement = () => {
             (parseFloat(trip.labor) || 0);
         } else if (trip.transport_type === "vendor_transport") {
           monthlyData[month].vendorTripIncome += parseFloat(trip.total_rent) || 0;
-          monthlyData[month].vendorTripCost += parseFloat(trip.trip_rent) || 0;
+          monthlyData[month].vendorTripCost += parseFloat(trip.total_exp) || 0;
         }
       });
 

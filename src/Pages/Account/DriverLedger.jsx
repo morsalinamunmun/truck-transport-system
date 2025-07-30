@@ -15,6 +15,8 @@ const DriverLedger = () => {
   const [driverOpeningBalances, setDriverOpeningBalances] = useState({});
   const openingBalance = selectedDriver ? (driverOpeningBalances[selectedDriver] || 0) : 0;
   const TADA_RATE = 300;
+  const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10;
 
   // driver 
   useEffect(() => {
@@ -58,7 +60,7 @@ const DriverLedger = () => {
   if (loading) return <p className="text-center mt-16">Loading Driver...</p>;
 
   const driverNames = [...new Set(driver.map((d) => d.driver_name))];
-  console.log(selectedDriver, 'dri')
+
   // Get unique months from data for dropdown
   const availableMonths = [...new Set(driver.map(item => {
     const date = new Date(item.date);
@@ -72,6 +74,15 @@ const DriverLedger = () => {
       new Date(d.date).toISOString().slice(0, 7) === selectedMonth : true;
     return matchesDriver && matchesMonth;
   });
+
+  // Pagination logic
+  // const pageCount = Math.ceil(filteredDriver.length / itemsPerPage);
+  // const offset = currentPage * itemsPerPage;
+  // const currentItems = filteredDriver.slice(offset, offset + itemsPerPage);
+
+  // const handlePageClick = ({ selected }) => {
+  //   setCurrentPage(selected);
+  // };
 
   // Calculate TADA (300 BDT per day) for each unique date per driver
   const calculateTADA = () => {
@@ -399,7 +410,9 @@ const getFinalBalance = () => {
                 <label className="text-primary text-sm font-semibold">Select Month</label>
                 <select
                   value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  onChange={(e) => {setSelectedMonth(e.target.value)
+                    // setCurrentPage(0);
+                  }}
                   className="mt-1 w-full text-sm border border-gray-300 px-3 py-2 rounded bg-white outline-none"
                 >
                   <option value="">All Months</option>
@@ -459,6 +472,16 @@ const getFinalBalance = () => {
         <div id="driver-ledger-table" className="overflow-x-auto">
           <table className="min-w-full text-sm text-left text-gray-900">
             <thead>
+               <tr className="font-bold bg-gray-100">
+                    <td colSpan={14} className="border px-2 py-1">
+                      <div className="flex justify-between">
+                        <span>Final Balance (After TADA Deduction):</span>
+                        <span>
+                          {finalBalance < 0 ? `(${Math.abs(finalBalance)})` : finalBalance}  BDT
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
               <tr>
                 <th rowSpan="2" className="border px-2 py-1">
                   Date
@@ -595,6 +618,27 @@ Balance
             </tfoot>
           </table>
         </div>
+         {/* Pagination */}
+        {/* {pageCount > 1 && (
+          <div className="mt-4 flex justify-center">
+            <ReactPaginate
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              breakLabel={"..."}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={"flex items-center gap-1"}
+              pageClassName={"px-3 py-1 border rounded hover:bg-gray-100 hover:text-black cursor-pointer"}
+              previousClassName={"px-3 py-1 border rounded hover:bg-gray-100"}
+              nextClassName={"px-3 py-1 border rounded hover:bg-gray-100"}
+              breakClassName={"px-3 py-1"}
+              activeClassName={"bg-primary text-white border-primary"}
+              forcePage={currentPage}
+            />
+          </div>
+        )} */}
       </div>
     </div>
   );

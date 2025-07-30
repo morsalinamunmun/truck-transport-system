@@ -56,7 +56,6 @@ const UpdateDriverForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Driver updated successfully", {
           position: "top-right",

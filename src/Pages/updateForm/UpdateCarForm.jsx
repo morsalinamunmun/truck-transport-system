@@ -38,7 +38,6 @@ const UpdateCarForm = () => {
   // select driver
   const [drivers, setDrivers] = useState([]);
 
-  console.log("updateCarLoaderData", updateCarLoaderData.data.vehicle_name);
   useEffect(() => {
     fetch("https://api.tramessy.com/api/driver")
       .then((response) => response.json())
@@ -64,7 +63,6 @@ const UpdateCarForm = () => {
       );
 
       const resData = response.data;
-      console.log("resData", resData);
 
       if (resData.status === "Vehicle updated successfully") {
         toast.success("Vehicle updated successfully!", {

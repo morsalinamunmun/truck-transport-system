@@ -77,7 +77,6 @@ const EmployeeList = () => {
     setCurrentPage(number)
   }
   if (loading) return <p className="text-center mt-16">Loading employee...</p>;
-  console.log("employee:", employee);
   return (
     <div className=" md:p-4">
       <Toaster />

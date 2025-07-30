@@ -314,8 +314,6 @@ const VehicleReport = () => {
 }, [])
 
 
-  console.log("Fetched Vehicles:", vehicles) // Debugging: Check fetched vehicles
-  console.log("Fetched Trips:", trips) // Debugging: Check fetched trips
 
   // Helper to construct the full vehicle registration number
   const getFullRegistrationNumber = (vehicle) => {
@@ -362,7 +360,6 @@ const VehicleReport = () => {
     // Filter out vehicles with no activity to avoid showing empty rows
     .filter((v) => v.tripsCount > 0 || v.rentSum > 0 || v.expSum > 0)
 
-  console.log("Calculated Vehicle Stats:", vehicleStats) // Debugging: Check calculated vehicle stats
 
   const exportExcel = () => {
     const data = vehicleStats.map((v, i) => ({
@@ -416,7 +413,7 @@ const VehicleReport = () => {
   const handlePageClick = (number) => {
     setCurrentPage(number)
   }
-  console.log(vehicleStats, "vehicleReport")
+
   if(loading)return<div>
       <div colSpan="7" className="text-center py-10 text-gray-500">
         <div className="flex justify-center items-center gap-2">

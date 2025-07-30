@@ -47,7 +47,6 @@ const RentList = () => {
 
   if (loading) return <p className="text-center mt-16">Loading data...</p>;
 
-  console.log("fuel", fuel);
   // export functionality
   const headers = [
     { label: "#", key: "index" },

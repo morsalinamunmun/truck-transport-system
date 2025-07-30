@@ -6,7 +6,7 @@ import { InputField } from "../../../components/Form/FormFields";
 const AdvanceSalaryForm = () => {
   const methods = useForm();
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    // console.log("Form Data:", data);
   };
   return (
     <div className="mt-10">

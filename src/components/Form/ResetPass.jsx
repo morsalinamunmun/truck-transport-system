@@ -5,7 +5,7 @@ import ReusableForm from "./ReusableForm";
 
 const ResetPass = () => {
   const handleLogin = (data) => {
-    console.log("Login Data:", data);
+    // console.log("Login Data:", data);
     // Add login logic here
   };
 

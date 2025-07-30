@@ -30,7 +30,7 @@ const AddDriverForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Driver saved successfully", {
           position: "top-right",

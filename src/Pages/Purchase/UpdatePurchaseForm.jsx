@@ -103,7 +103,7 @@ const UpdatePurchaseForm = () => {
   };
   // post data on server
   const onSubmit = async (data) => {
-    console.log("purchase", data);
+    // console.log("purchase", data);
     try {
       const purchaseFormData = new FormData();
       // Append form fields

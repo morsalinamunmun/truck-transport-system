@@ -40,7 +40,7 @@ const UpdateLeaveForm = () => {
     value: name.full_name,
     label: name.full_name,
   }));
-  console.log("employee", employee);
+
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
     try {
@@ -54,7 +54,7 @@ const UpdateLeaveForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Leave application update successfully!", {
           position: "top-right",

@@ -300,7 +300,6 @@ import { InputField, SelectField } from "../../components/Form/FormFields";
 export default function UpdateTripForm() {
   const navigate = useNavigate();
 const initialValues = useLoaderData(); 
-console.log(initialValues, 'initialValues')
 
   const methods = useForm({
   defaultValues: {
@@ -545,7 +544,6 @@ useEffect(() => {
     label: customer.customer_name,
      mobile: customer.mobile,
   }));
-  console.log(customer, "c")
    // Driver name এর পরিবর্তন দেখুন
 const selectedCustomerName = useWatch({
   control,

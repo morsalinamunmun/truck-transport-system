@@ -13,7 +13,7 @@ const InventorySupplierForm = () => {
   const { handleSubmit, reset, register } = methods;
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
-    console.log("add fuel data", data);
+    // console.log("add fuel data", data);
     try {
       const formData = new FormData();
       for (const key in data) {
@@ -25,7 +25,7 @@ const InventorySupplierForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Inventory supplier saved successfully!", {
           position: "top-right",

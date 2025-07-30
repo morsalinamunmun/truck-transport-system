@@ -32,7 +32,7 @@ const AddEmployee = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
-    console.log("add fuel data", data);
+    // console.log("add fuel data", data);
     try {
       setLoading(true);
       const formData = new FormData();
@@ -45,7 +45,7 @@ const AddEmployee = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Employee saved successfully!", {
           position: "top-right",

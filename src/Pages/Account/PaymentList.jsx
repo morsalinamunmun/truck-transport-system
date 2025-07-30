@@ -369,7 +369,7 @@ const PaymentList = () => {
   };
 
   if (loading) return <p className="text-center mt-16">Loading data...</p>;
-  console.log(currentPayments, "p")
+
 
   return (
     <div className=" ">

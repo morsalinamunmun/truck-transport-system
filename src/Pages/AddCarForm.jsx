@@ -35,7 +35,7 @@ const AddCarForm = () => {
   const generateRefId = useRefId();
   const onSubmit = async (data) => {
      setLoading(true); 
-    console.log("add car data", data);
+    // console.log("add car data", data);
     try {
       const formData = new FormData();
       for (const key in data) {
@@ -47,7 +47,7 @@ const AddCarForm = () => {
         formData
       );
       const resData = response.data;
-      console.log("resData", resData);
+      // console.log("resData", resData);
       if (resData.status === "Success") {
         toast.success("Vehicle saved successfully!", { position: "top-right" });
         reset();

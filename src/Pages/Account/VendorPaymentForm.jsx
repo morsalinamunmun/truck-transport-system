@@ -169,12 +169,21 @@ const VendorPaymentForm = () => {
                   }
                 />
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <SelectField
                   name="customer_name"
                   label="Customer Name"
                  required={!id}
                   options={customerOptions}
+                  control={control}
+                />
+              </div> */}
+               <div className="w-full">
+                <SelectField
+                  name="vendor_name"
+                  label="Vendor Name"
+                 required={!id}
+                  options={vendorOptions}
                   control={control}
                 />
               </div>
@@ -193,15 +202,6 @@ const VendorPaymentForm = () => {
               </div>
             </div>
             <div className="mt-5 md:mt-1 md:flex justify-between gap-3">
-              <div className="w-full">
-                <SelectField
-                  name="vendor_name"
-                  label="Vendor Name"
-                 required={!id}
-                  options={vendorOptions}
-                  control={control}
-                />
-              </div>
               <div className="w-full">
                 <InputField name="bill_ref" label="Bill Ref" required={!id}/>
               </div>

@@ -34,7 +34,6 @@ const UpdateExpenseForm = () => {
   const gas = parseFloat(gas_price) || 0;
   const other = parseFloat(other_expenses) || 0;
   const total = fuel + gas + other;
-  console.log("total trip", total);
   const onSubmit = async (data) => {
     try {
       const updatedData = {
@@ -65,7 +64,6 @@ const UpdateExpenseForm = () => {
       );
 
       const resData = response.data;
-      console.log("resData", resData);
 
       if (resData.status === "success") {
         toast.success("Daily expense updated successfully!", {
