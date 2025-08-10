@@ -30,7 +30,7 @@ const VendorPaymentForm = () => {
             // Pre-populate the form with fetched data
             reset({
               date: data.date,
-              customer_name: data.vendor_name,
+              vendor_name: data.vendor_name,
               branch_name: data.branch_name,
               bill_ref: data.bill_ref,
               amount: data.amount,
@@ -223,19 +223,19 @@ const VendorPaymentForm = () => {
                 />
               </div>
               <div className="w-full">
-                <InputField name="remarks" label="Note" />
+                <InputField name="note" label="Note" />
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <InputField name="created_by" label="Created By" required={!id} />
-              </div>
+              </div> */}
               <div className="w-full">
                 <SelectField
                   name="status"
                   label="Status"
                   required={!id}
                   options={[
-                    { value: "Active", label: "Active" },
-                    { value: "Inactive", label: "Inactive" },
+                    { value: "Paid", label: "Paid" },
+                    { value: "Unaid", label: "Unpaid" },
                   ]}
                 />
               </div>

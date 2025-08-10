@@ -229,14 +229,12 @@ const PaymentList = () => {
   };
   // onsubmit
   const onSubmit = async (data) => {
-  // const refId = generateRefId();
-  
   // Validation
   if (!data.pay_amount || isNaN(data.pay_amount)) {
     toast.error("Invalid payment amount", { position: "top-right" });
     return;
   }
-  
+
   if (data.pay_amount > data.due_amount) {
     toast.error("The payment amount cannot be more than the due amount", {
       position: "top-right",
@@ -273,34 +271,6 @@ const PaymentList = () => {
     );
 
     if (response.data.success) {
-      // 2. Create Supplier Ledger Entry
-      const supplierLedgerPayload = {
-        date: new Date().toISOString().split('T')[0],
-        supplier_name: selectedPayment.supplier_name,
-        remarks: data.note || `Payment for ${selectedPayment.item_name}`,
-        pay_amount: data.pay_amount,
-        // ref_id: refId
-      };
-
-      await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/supplierLedger/create`,
-        supplierLedgerPayload
-      );
-
-      // 3. Create Branch Ledger Entry
-      const branchLedgerPayload = {
-        date: new Date().toISOString().split('T')[0],
-        branch_name: selectedPayment.branch_name,
-        remarks: data.note || `Payment to ${selectedPayment.supplier_name}`,
-        cash_out: data.pay_amount,
-        // ref_id: refId
-      };
-
-      await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/branch/create`,
-        branchLedgerPayload
-      );
-
       // Update UI state
       setPayment(prevList =>
         prevList.map(item =>
@@ -345,6 +315,7 @@ const PaymentList = () => {
     );
   }
 };
+
 
 
   // pagination

@@ -244,7 +244,7 @@ const OfficeLedger = () => {
                 </td>
                 <td className="border border-gray-700 px-2 py-2">
                   {calculateRunningBalance() < 0 
-                    ? `(${Math.abs(calculateRunningBalance())})` 
+                    ? `${Math.abs(calculateRunningBalance())}` 
                     : calculateRunningBalance()}
                 </td>
               </tr>

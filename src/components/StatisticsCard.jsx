@@ -206,7 +206,7 @@ const StatisticsCard = () => {
         </div>
 
         {/* Active Vehicles Card */}
-        <div onClick={handleActiveVehicleClick} className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 cursor-pointer">
+        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 cursor-pointer">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">Active Vehicles</p>
