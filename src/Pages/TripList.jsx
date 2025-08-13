@@ -399,8 +399,9 @@ const handlePrint = useReactToPrint({
                 <th className="p-2">DriverInfo</th>
                 <th className="p-2">Load</th>
                 <th className="p-2">Unload</th>
-                <th className="p-2">Trip Cost</th>
-                <th className="p-2">Trip Rent</th>
+                <th className="p-2">Trip Rent</th>               
+                <th className="p-2">Trip Demurrage</th>
+                 <th className="p-2">Trip Cost</th>
                 <th className="p-2">Total Profit</th>
                 {/* <th className="p-2">Status</th> */}
                 <th className="p-2 action_column">Action</th>
@@ -437,7 +438,7 @@ const handlePrint = useReactToPrint({
                     className="hover:bg-gray-50 transition-all border-b border-gray-300"
                   >
                     <td className="p-2 font-bold">{index + 1}</td>
-                    <td className="p-2">{dt?.ref_id}</td>
+                    <td className="p-2">{dt?.id}</td>
                     <td className="p-2">{dt?.date}</td>
                     <td className="p-2">
                       <p>Name: {dt.driver_name}</p>
@@ -445,13 +446,14 @@ const handlePrint = useReactToPrint({
                       <p>Commission: {dt.driver_commission}</p>
                     </td>
                     <td className="p-2">
-                      <p>Load Point: {dt.load_point}</p></td>
-                      <td><p>Unload Point: {dt.unload_point}</p>
+                      <p> {dt.load_point}</p></td>
+                      <td><p> {dt.unload_point}</p>
                     </td>
+                    <td className="p-2">{dt.total_rent}</td>
+                    <td className="p-2">{dt.d_total}</td>
                     <td className="p-2">
   {dt.transport_type === "vendor_transport" ? dt.trip_rent : dt.total_exp}
 </td>
-                    <td className="p-2">{dt.total_rent}</td>
                     <td className="p-2">
                       {parseFloat(dt.total_rent || 0) -
                         parseFloat(dt.total_exp || 0)}{" "}

@@ -737,7 +737,7 @@ const MonthlyStatement = () => {
         }
 
         if (trip.transport_type === "own_transport") {
-          monthlyData[month].ownTripIncome += parseFloat(trip.total_rent) || 0;
+          monthlyData[month].ownTripIncome += parseFloat(trip.total_rent) || 0 + (parseFloat(trip.d_total) || 0);
           monthlyData[month].ownTripCost += 
             (parseFloat(trip.fuel_cost) || 0) +
             (parseFloat(trip.driver_commission) || 0) +
