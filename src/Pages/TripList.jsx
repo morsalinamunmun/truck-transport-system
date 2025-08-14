@@ -699,6 +699,9 @@ import {
   FaEye,
   FaTrashAlt,
   FaPen,
+  FaFileExcel,
+  FaFilePdf,
+  FaPrint,
 } from "react-icons/fa";
 import { IoIosRemoveCircle, IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -766,18 +769,18 @@ const TripList = () => {
   // excel
   const exportTripsToExcel = () => {
     const tableData = filteredTrips.map((dt, index) => ({
-      "SL.": index + 1,
-      Date: dt.date,
-      "Driver Name": dt.driver_name || "N/A",
-      "Driver Mobile": dt.driver_mobile || "N/A",
-      Commission: dt.driver_commission || "0",
-      "Load Point": dt.load_point,
-      "Unload Point": dt.unload_point,
-      "Trip Cost": dt.total_exp || 0,
-      "Trip Fare": dt.total_rent || 0,
-      "Total Profit":
-        parseFloat(dt.total_rent || 0) - parseFloat(dt.total_exp || 0),
-    }));
+  "SL.": index + 1,
+  Date: dt.date,
+  "Driver Name": dt.driver_name || "N/A",
+  "Driver Mobile": dt.driver_mobile || "N/A",
+  Commission: dt.driver_commission || "0",
+  "Load Point": dt.load_point,
+  "Unload Point": dt.unload_point,
+  "Trip Cost": dt.total_exp || 0,
+  "Trip Fare": dt.total_rent || 0,
+  "Demurrage": dt.d_total || 0,
+  "Total Profit": (parseFloat(dt.total_rent || 0) + parseFloat(dt.d_total || 0)) - parseFloat(dt.total_exp || 0),
+}));
 
     const worksheet = XLSX.utils.json_to_sheet(tableData);
     const workbook = XLSX.utils.book_new();
@@ -803,8 +806,9 @@ const TripList = () => {
       "Commission",
       "Load Point",
       "Unload Point",
+      "Trip Rent",
+      "Demurrage",
       "Trip Cost",
-      "Trip Fare",
       "Profit",
     ];
 
@@ -816,9 +820,10 @@ const TripList = () => {
       dt.driver_commission || "0",
       dt.load_point,
       dt.unload_point,
-      dt.total_exp || "0",
       dt.total_rent || "0",
-      parseFloat(dt.total_rent || 0) - parseFloat(dt.total_exp || 0),
+      dt.d_total || "0",
+      dt.total_exp || "0",
+      (parseFloat(dt.total_rent || 0) + parseFloat(dt.d_total || 0)) - parseFloat(dt.total_exp || 0),
     ]);
 
     autoTable(doc, {
@@ -998,23 +1003,28 @@ const TripList = () => {
         </div>
         {/* export and search */}
         <div className="md:flex justify-between items-center">
-          <div className="flex gap-1 md:gap-3 text-primary font-semibold rounded-md">
-            <button
+           <div className="flex flex-wrap md:flex-row gap-1 md:gap-3 text-primary font-semibold rounded-md">
+             <button
               onClick={exportTripsToExcel}
-              className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+              className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-green-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
             >
+              <FaFileExcel className="" />
               Excel
             </button>
+          
             <button
               onClick={exportTripsToPDF}
-              className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+              className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-amber-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
             >
+              <FaFilePdf className="" />
               PDF
             </button>
+          
             <button
               onClick={printTripsTable}
-              className="py-2 px-5 hover:bg-primary bg-gray-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
+              className="flex items-center gap-2 py-2 px-5 hover:bg-primary bg-gray-50 shadow-md shadow-blue-200 hover:text-white rounded-md transition-all duration-300 cursor-pointer"
             >
+              <FaPrint className="" />
               Print
             </button>
           </div>
@@ -1108,13 +1118,18 @@ const TripList = () => {
               <tr>
                 <th className="p-2">SL.</th>
                 <th className="p-2">Date</th>
+                 <th className="p-2 ">TripID</th>
                 <th className="p-2">Customer</th>
                 <th className="p-2">Transport Type</th>
-                <th className="p-2">Vendor Name</th>
+                {/* <th className="p-2">Vendor Name</th> */}
                 <th className="p-2">Driver Info</th>
                 <th className="p-2">Trip & Destination</th>
-                <th className="p-2">Trip Cost</th>
-                <th className="p-2">Trip Fare</th>
+                {/* <th className="p-2">Trip Cost</th>
+                <th className="p-2">Trip Fare</th> */}
+                                <th className="p-2">Trip Rent</th>               
+                 <th className="p-2">Demurrage</th>
+                  <th className="p-2">Trip Cost</th>
+                 <th className="p-2">Total Profit</th>
                 <th className="p-2 action_column">Action</th>
               </tr>
             </thead>
@@ -1127,6 +1142,10 @@ const TripList = () => {
                 </tr>
               ) : (
                 currentTrip?.map((dt, index) => {
+                  const totalRent = parseFloat(dt.total_rent || 0);
+    const demurrage = parseFloat(dt.d_total || 0);
+    const totalExpenses = parseFloat(dt.total_exp || 0);
+    const totalProfit = (totalRent + demurrage) - totalExpenses;
                   return (
                     <tr
                       key={index}
@@ -1136,15 +1155,16 @@ const TripList = () => {
                         {indexOfFirstItem + index + 1}
                       </td>
                       <td className="p-2">{dt?.date}</td>
+                      <td className="p-2">{dt?.id}</td>
                       <td className="p-2">
                         <p>{dt.customer}</p>
                       </td>
                       <td className="p-2 capitalize">
                         {dt.transport_type?.replace("_", " ")}
                       </td>
-                      <td className="p-2">
+                      {/* <td className="p-2">
                         {dt.vendor_name || "N/A"}
-                      </td>
+                      </td> */}
                       <td className="p-2">
                         <p>Name: {dt.driver_name}</p>
                         <p>Mobile: {dt.driver_mobile}</p>
@@ -1154,8 +1174,10 @@ const TripList = () => {
                         <p>Load Point: {dt.load_point}</p>
                         <p>Unload Point: {dt.unload_point}</p>
                       </td>
-                      <td className="p-2">{dt.total_exp}</td>
                       <td className="p-2">{dt.total_rent}</td>
+                      <td className="p-2">{dt.d_total}</td>
+                      <td className="p-2">{dt.total_exp}</td>
+                      <td className="p-2">{totalProfit}</td>
                       <td className="p-2 action_column">
                         <div className="flex gap-1">
                           <Link to={`/tramessy/UpdateTripForm/${dt.id}`}>
