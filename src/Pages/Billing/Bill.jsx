@@ -2672,7 +2672,7 @@ const Bill = () => {
           </style>
         </head>
         <body>
-        <div class="bill-info">
+        <div class="bill-info" style="margin-top:3in;">
             <div class="to-section">
               <div>To</div>
               <div><strong>${customerName}</strong></div>
