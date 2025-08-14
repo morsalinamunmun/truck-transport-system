@@ -690,7 +690,7 @@
 
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import {
   FaTruck,
@@ -710,6 +710,9 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { Printer } from "lucide-react";
+import { useReactToPrint } from "react-to-print";
+import InvoicePrint from "../components/Shared/InvoicePrint";
 
 const TripList = () => {
   const [trip, setTrip] = useState([]);
@@ -764,6 +767,48 @@ const TripList = () => {
         setLoading(false);
       });
   }, []);
+
+  //  invoice print func
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const printRef = useRef();
+
+const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: "Invoice Print",
+    onAfterPrint: () => {
+      console.log("Print completed")
+      setSelectedInvoice(null)
+    },
+    onPrintError: (error) => {
+      console.error("Print error:", error)
+    },
+  })
+
+  const handlePrintClick = (tripData) => {
+    const formatted = {
+      voucherNo: tripData.id,
+      receiver: tripData.customer,
+      address: tripData.unload_point,
+      truckNo: tripData.vehicle_no,
+      dln: tripData.date,
+      loadingPoint: tripData.load_point,
+      unloadingPoint: tripData.unload_point,
+      rent: tripData.total_rent,
+      loadingDemurrage: tripData.labor,
+      inTime: tripData.date,
+      outTime: tripData.date,
+      totalDay: "1",
+      totalDemurrage: tripData.labor,
+      others: tripData.remarks || "N/A",
+    }
+
+    setSelectedInvoice(formatted)
+
+    // Use setTimeout to ensure the component is rendered before printing
+    setTimeout(() => {
+      handlePrint()
+    }, 100)
+  }
   if (loading) return <p className="text-center mt-16">Loading trip...</p>;
 
   // excel
@@ -1166,13 +1211,13 @@ const TripList = () => {
                         {dt.vendor_name || "N/A"}
                       </td> */}
                       <td className="p-2">
-                        <p>Name: {dt.driver_name}</p>
-                        <p>Mobile: {dt.driver_mobile}</p>
-                        <p>Commission: {dt.driver_commission}</p>
+                        <p>{dt.driver_name}</p>
+                        {/* <p>Mobile: {dt.driver_mobile}</p> */}
+                        {/* <p>Com: {dt.driver_commission}</p> */}
                       </td>
                       <td className="p-2">
-                        <p>Load Point: {dt.load_point}</p>
-                        <p>Unload Point: {dt.unload_point}</p>
+                        <p>Load: {dt.load_point}</p>
+                        <p>Unload: {dt.unload_point}</p>
                       </td>
                       <td className="p-2">{dt.total_rent}</td>
                       <td className="p-2">{dt.d_total}</td>
@@ -1191,6 +1236,12 @@ const TripList = () => {
                           >
                             <FaEye className="text-[12px]" />
                           </button>
+                           <button
+                           onClick={() => handlePrintClick(dt)}
+                          className="text-primary hover:bg-primary hover:text-white px-2 py-1 rounded shadow-md transition-all cursor-pointer"
+                        >
+                          <Printer className="h-4 w-4" />
+                        </button>
                         </div>
                       </td>
                     </tr>
@@ -1241,6 +1292,11 @@ const TripList = () => {
           </div>
         )}
       </div>
+
+      {/* Hidden Component for Printing */}
+       <div  style={{ display: "none" }} >
+         {selectedInvoice && <InvoicePrint ref={printRef} data={selectedInvoice} />}
+       </div>
       
       {/* Delete Modal */}
       <div className="flex justify-center items-center">
